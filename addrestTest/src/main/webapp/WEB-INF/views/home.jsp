@@ -36,7 +36,8 @@
 			<caption>회원 가입</caption>
 			<tr>
 				<td>주소</td>
-				<td><input type=text size=45 id="address" name="address" placeholder="주소검색을 이용해주세요">
+				<td><input type=text size=45 id="address" name="addr1" placeholder="주소검색을 이용해주세요">
+					<input type=text size=45 id="address" name="addr2" placeholder="주소검색을 이용해주세요">
 					<input type=button value="주소검색" onClick="openDaumPostcode()"></td>
 			</tr>
 			<tr>

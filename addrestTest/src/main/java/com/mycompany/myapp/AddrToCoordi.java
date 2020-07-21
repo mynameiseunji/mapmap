@@ -19,12 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.myapp.json.JsonParsing;
+import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.service.service;
 @Service
 public class AddrToCoordi implements service {
 	@Autowired
-	private JsonParsing par = new JsonParsing();
-	public String getCoordi(String location) {
+	private JsonParsing par=new JsonParsing();
+	public Coordinate getCoordi(String location) {
 	    HttpURLConnection conn = null;
 	    StringBuilder sb = new StringBuilder();
 	    try {

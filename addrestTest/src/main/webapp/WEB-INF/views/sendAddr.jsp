@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +16,11 @@ String str = request.getParameter("address");
 %>
 
 주소 : <%=str%>
+<c:forEach var="name" items="${coor}" varStatus="status">
 
-데이타 : ${data}
+    <p>좌표${status.count} : <c:out value="${name.x}" /></p>
+
+</c:forEach>
+
 </body>
 </html>
