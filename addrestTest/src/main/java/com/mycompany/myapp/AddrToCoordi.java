@@ -21,22 +21,23 @@ import org.springframework.stereotype.Service;
 import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.service.service;
+
 @Service
 public class AddrToCoordi implements service {
 	@Autowired
-	private JsonParsing par=new JsonParsing();
+	private JsonParsing par;
+	
 	public Coordinate getCoordi(String location) {
 	    HttpURLConnection conn = null;
 	    StringBuilder sb = new StringBuilder();
 	    try {
 	        //URL 설정
-//	    	location = new String(location.getBytes("UTF-8"));
+	    	// request param 인코딩 타입 맞춰야함. URLEncoder.encode(location, "utf-8")
 	        URL url = new URL("https://dapi.kakao.com/v2/local/search/address.json?query="+URLEncoder.encode(location, "utf-8"));
 	        
 	        conn = (HttpURLConnection) url.openConnection();
 	        //Request 형식 설정
 	        conn.setRequestMethod("GET");
-//	        conn.setRequestProperty("query", location);
 	        conn.setRequestProperty("Authorization", "KakaoAK "+"cdca325d6efe88cfb6c48440908a80c2");
 	        
 

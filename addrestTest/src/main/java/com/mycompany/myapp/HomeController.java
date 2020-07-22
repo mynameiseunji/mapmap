@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +22,8 @@ import com.mycompany.myapp.service.AddrArray;
  */
 @Controller
 public class HomeController {
-	
-	
+	@Autowired
+	private AddrToCoordi atc;
 	
 	@RequestMapping("test.do")
 	public String home(Model model) {
@@ -33,24 +34,17 @@ public class HomeController {
 	@RequestMapping("sendAddr.do")
 	public String sendAddr(InputAddrs address, Model model) {
 		String[] strArr = new AddrArray().toArray(address);
-		//System.out.println(strArr[0]+"  99999999 ");
-		model.addAttribute(address);
-		//서비스 클래스삽입
+		
+		model.addAttribute("address",strArr);
+		
 		
 		Coordinate[] coor = new Coordinate[address.getCnt()];
 		
 		for(int i=0; i<address.getCnt(); i++) {
-			//System.out.println("진입");
-			coor[i]= new AddrToCoordi().getCoordi(strArr[i]);
-			//System.out.println("퇴출");
+			
+			coor[i]= atc.getCoordi(strArr[i]);
+			
 		}
-		//String wow =new AddrToCoordi().getCoordi(address);
-		//List<Coordinate> list = new ArrayLiset<Coordinate>();
-		
-//		System.out.println(coor[0].getX()+"  99999999 ");
-//		System.out.println(coor[0].getY()+"  99999999 ");
-//		System.out.println(coor[1].getX()+"  99999999 ");
-//		System.out.println(coor[1].getY()+"  99999999 ");
 		model.addAttribute("coor",coor);
 		return "sendAddr";
 	}

@@ -4,12 +4,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.InputAddrs;
 
-@Service
+@Service("jsonParsing")
 public class JsonParsing {
 	private Coordinate coor = null;
 	public Coordinate getCoordi(String jsonData) {

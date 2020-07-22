@@ -11,14 +11,13 @@
 <body>
 <%
 request.setCharacterEncoding("utf-8");
-String str = request.getParameter("address");
 
 %>
 
-주소 : <%=str%>
-<c:forEach var="name" items="${coor}" varStatus="status">
 
-    <p>좌표${status.count} : <c:out value="${name.x}" /></p>
+<c:forEach var="name" items="${coor}"  varStatus="status">
+	<p>주소${status.count} : <c:out value="${address[status.index]}" /></p>
+    <p>좌표 값 :: <c:out value="( ${name.x} , ${name.y} )" /></p><br>
 
 </c:forEach>
 

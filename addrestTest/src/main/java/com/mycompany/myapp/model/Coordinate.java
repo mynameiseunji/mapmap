@@ -1,5 +1,6 @@
 package com.mycompany.myapp.model;
 
+
 public class Coordinate {
 	private String x;
 	private String y;
