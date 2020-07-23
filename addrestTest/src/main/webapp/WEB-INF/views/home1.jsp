@@ -15,21 +15,21 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9c1a242a443c7edc13a52efacd107b25&libraries=services"></script>
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0b6c81e5d496e486ca93f4d82d0a0027&libraries=services"></script>
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
 <script>
 	var places = new kakao.maps.services.Places();
-
 	var callback = function(result, status) {
 		if (status === kakao.maps.services.Status.OK) {
 			console.log(result);
 			$(".modal-body").empty();
 			for ( var i in result) {
-				var str = "<p onclick='down(this)'>"
+				var str = "<p>"
 						+ result[i].place_name
 						+ "<input type='hidden' name='x' value='" + result[i].x +"'/><input type='hidden' name='addr_name' value='" 
-						+ result[i].address_name +"'/><input type='hidden' name='y' value='" + result[i].y +"'/></p>";
+						+ result[i].address_name +"'/><input type='hidden' name='y' value='" + result[i].y 
+						+"'> <input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
 				$(".modal-body").append(str);
 			}
 		}
@@ -37,26 +37,33 @@
 	$(document).ready(function() {
 		$('.btn-primary').click(function() {
 			var keyword = $("#bt").val();
+			if(keyword.trim() == ""){
+				alert("검색어를 입력해주세요.");
+				return false;
+			}
 			places.keywordSearch(keyword, callback);
 		});
 	});
-	var cnt = 1;
-	function down(item) {
+	function down(btn) {
+		item =$(btn).closest('p');
+		
 		if ($('div.list input[name="x"]').length == 10) {
 			alert("최대10개");
 		} else {
-			var d = "<div class='sel' id='sel"+cnt+"'>" + item.innerHTML + "<input type='button' onclick='remove_addr("+cnt+")' value='x'></div>";
+			$(btn).attr('onclick','remove_addr(this)');
+			$(btn).attr('value','삭제');
+			
+			var d = "<div class='sel' >" + item.html() + "</div>";
 			$('form div.list').append(d);
 			$('button.close').click();
-			cnt++;
 		}
 	}
 	
-	function remove_addr(num){
-		var sel="div#sel"+num;
-		$(sel).empty();
+	function remove_addr(it){
+		$(it).closest('div').remove();
+		//var sel="div#sel"+num;
+		//$(sel).empty();
 	}
-
 	// 	places.keywordSearch('판교 치킨', callback);
 </script>
 </head>
@@ -101,5 +108,3 @@
 	</div>
 </body>
 </html>
-
-
