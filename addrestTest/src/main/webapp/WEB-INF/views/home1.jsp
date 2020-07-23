@@ -40,10 +40,21 @@
 			places.keywordSearch(keyword, callback);
 		});
 	});
-
+	var cnt = 1;
 	function down(item) {
-		$('form').append(item);
-		$('button.close').click();
+		if ($('div.list input[name="x"]').length == 10) {
+			alert("최대10개");
+		} else {
+			var d = "<div class='sel' id='sel"+cnt+"'>" + item.innerHTML + "<input type='button' onclick='remove_addr("+cnt+")' value='x'></div>";
+			$('form div.list').append(d);
+			$('button.close').click();
+			cnt++;
+		}
+	}
+	
+	function remove_addr(num){
+		var sel="div#sel"+num;
+		$(sel).empty();
 	}
 
 	// 	places.keywordSearch('판교 치킨', callback);
@@ -84,6 +95,7 @@
 	</div>
 	<div class="container">
 		<form method='post' action="sendAddr.do">
+			<div class="list"></div>
 			<input type='submit' value='전송'>
 		</form>
 	</div>
