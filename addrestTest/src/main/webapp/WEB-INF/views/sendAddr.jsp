@@ -15,11 +15,14 @@ request.setCharacterEncoding("utf-8");
 %>
 
 
-<c:forEach var="name" items="${coor}"  varStatus="status">
-	<p>주소${status.count} : <c:out value="${address[status.index]}" /></p>
-    <p>좌표 값 :: <c:out value="( ${name.x} , ${name.y} )" /></p><br>
-
+<c:forEach var="ad" items="${addr}" >
+	<p>주소 : <c:out value="${ad}" /></p>
 </c:forEach>
-
+<c:forEach var="xx" items="${x}" >
+	<p>주소 : <c:out value="${xx}" /></p>
+</c:forEach>
+<c:forEach var="yy" items="${y}" >
+	<p>주소 : <c:out value="${yy}" /></p>
+</c:forEach>
 </body>
 </html>

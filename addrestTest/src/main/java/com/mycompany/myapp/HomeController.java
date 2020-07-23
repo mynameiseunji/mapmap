@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,24 +30,34 @@ public class HomeController {
 	@RequestMapping("test.do")
 	public String home(Model model) {
 		
-		return "home";
+		return "home1";
 	}
 	
 	@RequestMapping("sendAddr.do")
-	public String sendAddr(InputAddrs address, Model model) {
-		String[] strArr = new AddrArray().toArray(address);
+	public String sendAddr(HttpServletRequest request, Model model) {
 		
-		model.addAttribute("address",strArr);
+		String[] addr = request.getParameterValues("addr_name");
+		String[] x = request.getParameterValues("x");
+		String[] y = request.getParameterValues("y");
+		
+		model.addAttribute("addr",addr);
+		model.addAttribute("x",x);
+		model.addAttribute("y",y);
 		
 		
-		Coordinate[] coor = new Coordinate[address.getCnt()];
-		
-		for(int i=0; i<address.getCnt(); i++) {
-			
-			coor[i]= atc.getCoordi(strArr[i]);
-			
-		}
-		model.addAttribute("coor",coor);
+//		String[] strArr = new AddrArray().toArray(address);
+//		
+//		model.addAttribute("address",strArr);
+//		
+//		
+//		Coordinate[] coor = new Coordinate[address.getCnt()];
+//		
+//		for(int i=0; i<address.getCnt(); i++) {
+//			
+//			coor[i]= atc.getCoordi(strArr[i]);
+//			
+//		}
+//		model.addAttribute("coor",coor);
 		return "sendAddr";
 	}
 	
