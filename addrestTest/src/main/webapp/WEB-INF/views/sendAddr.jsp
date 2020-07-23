@@ -19,10 +19,10 @@ request.setCharacterEncoding("utf-8");
 	<p>주소 : <c:out value="${ad}" /></p>
 </c:forEach>
 <c:forEach var="xx" items="${x}" >
-	<p>주소 : <c:out value="${xx}" /></p>
+	<p>x : <c:out value="${xx}" /></p>
 </c:forEach>
 <c:forEach var="yy" items="${y}" >
-	<p>주소 : <c:out value="${yy}" /></p>
+	<p>y : <c:out value="${yy}" /></p>
 </c:forEach>
 </body>
 </html>
