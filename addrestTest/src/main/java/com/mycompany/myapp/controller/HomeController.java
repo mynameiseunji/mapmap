@@ -1,23 +1,17 @@
-package com.mycompany.myapp;
+package com.mycompany.myapp.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mycompany.myapp.model.Coordinate;
-import com.mycompany.myapp.model.InputAddrs;
-import com.mycompany.myapp.service.AddrArray;
+import com.mycompany.myapp.model.stationXY;
+import com.mycompany.myapp.service.MapService;
 
 /**
  * Handles requests for the application home page.
@@ -25,11 +19,10 @@ import com.mycompany.myapp.service.AddrArray;
 @Controller
 public class HomeController {
 	@Autowired
-	private AddrToCoordi atc;
+	private MapService ms;
 	
 	@RequestMapping("test.do")
 	public String home(Model model) {
-		
 		return "home1";
 	}
 	
@@ -44,21 +37,13 @@ public class HomeController {
 		model.addAttribute("x",x);
 		model.addAttribute("y",y);
 		
+		//은지님
+		Coordinate coor = ms.getCenter(x,y);
+		List<stationXY> stationList = ms.getStationCoord(coor);
+		model.addAttribute("stationList", stationList);
+		model.addAttribute("center", coor);
 		
-//		String[] strArr = new AddrArray().toArray(address);
-//		
-//		model.addAttribute("address",strArr);
-//		
-//		
-//		Coordinate[] coor = new Coordinate[address.getCnt()];
-//		
-//		for(int i=0; i<address.getCnt(); i++) {
-//			
-//			coor[i]= atc.getCoordi(strArr[i]);
-//			
-//		}
-//		model.addAttribute("coor",coor);
-		return "sendAddr";
+		return "foundplace";
 	}
 	
 }
