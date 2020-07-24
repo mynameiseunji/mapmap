@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,11 +26,12 @@
 			console.log(result);
 			$(".modal-body").empty();
 			for ( var i in result) {
-				var str = "<p>"
-						+ result[i].place_name
-						+ "<input type='hidden' name='x' value='" + result[i].x +"'/><input type='hidden' name='addr_name' value='" 
-						+ result[i].address_name +"'/><input type='hidden' name='y' value='" + result[i].y 
-						+"'> <input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
+				var str = "<p>"+ result[i].place_name
+						+ "<input type='hidden' name='name' value='" + result[i].place_name +
+						"'/><input type='hidden' name='x' value='" + result[i].x +
+						"'/><input type='hidden' name='addr_name' value='"+ result[i].address_name +
+						"'/><input type='hidden' name='y' value='" + result[i].y 
+						+"'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
 				$(".modal-body").append(str);
 			}
 		}
@@ -102,7 +104,21 @@
 	</div>
 	<div class="container">
 		<form method='post' action="sendAddr.do">
-			<div class="list"></div>
+			<div class="list">
+				<!-- 세션 처리 위한 코드  -->
+				<c:if test="${sessionScope._name != null}">
+					<c:forEach var="name" items="${sessionScope._name}" varStatus="status">
+						<div class="sel">
+						${name}
+						<input type='hidden' name='name' value='${name}'/>
+						<input type='hidden' name='addr_name' value='${sessionScope._addr[status.index]}'/>
+						<input type='hidden' name='x' value='${sessionScope._x[status.index]}'/>
+						<input type='hidden' name='y' value='${sessionScope._y[status.index]}'/>
+						<input type='button' class='btn btn-info' onclick='remove_addr(this)' value='삭제'>
+						</div>
+					</c:forEach>
+				</c:if>
+			</div>
 			<input type='submit' value='전송'>
 		</form>
 	</div>

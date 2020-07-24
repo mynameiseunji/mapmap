@@ -92,15 +92,15 @@ public class MapServiceImpl implements MapService {
 	// 출발지 좌표 값의 평균.
 	public Coordinate getCenter(String[] x, String[] y) {
 		Coordinate coor = new Coordinate();
-		float n = (float)x.length;
-		float sumX =0;
-		float sumY =0;
+		double n = (double)x.length;
+		double sumX =0;
+		double sumY =0;
 		for(int i=0; i<x.length; i++) {
-			sumX+=Float.parseFloat(x[i]);
-			sumY+=Float.parseFloat(y[i]);
+			sumX+=Double.parseDouble(x[i]);
+			sumY+=Double.parseDouble(y[i]);
 		}
-		coor.setX(Float.toString(sumX/n));
-		coor.setY(Float.toString(sumY/n));
+		coor.setX(Double.toString(sumX/n));
+		coor.setY(Double.toString(sumY/n));
 		return coor;
 	}
 }
