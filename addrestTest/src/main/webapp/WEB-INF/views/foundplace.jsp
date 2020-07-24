@@ -8,7 +8,8 @@
 <title>Test found station list</title>
 </head>
 <body>
-입력된 출발지의 개수 :  ${fn:length(addr)}
+<!-- taglib prefix="fn"필요 -->
+입력된 출발지의 개수 :  ${fn:length(addr)} 
 	<table border=1>
 		<caption>출발지 목록</caption>
 		<tr align='center'>

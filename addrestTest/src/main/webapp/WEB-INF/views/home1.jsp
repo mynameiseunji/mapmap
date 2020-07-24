@@ -20,10 +20,25 @@
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
 <script>
+var keyword="";
 	var places = new kakao.maps.services.Places();
-	var callback = function(result, status) {
+	
+	$(document).ready(function() {
+		$('.btn-primary').click(function() {
+			keyword = $("#bt").val();
+			if(keyword.trim() == ""){
+				alert("검색어를 입력해주세요.");
+				return false;
+			}
+			//option으로 검색량 조절하기.
+			places.keywordSearch(keyword, keywordCallback);
+		});
+	});
+	
+	var keywordCallback = function(result, status) {
 		if (status === kakao.maps.services.Status.OK) {
 			console.log(result);
+			console.log("keword");
 			$(".modal-body").empty();
 			for ( var i in result) {
 				var str = "<p>"+ result[i].place_name
@@ -34,18 +49,32 @@
 						+"'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
 				$(".modal-body").append(str);
 			}
+		}else{
+			var geocoder = new kakao.maps.services.Geocoder();
+			return geocoder.addressSearch(keyword, geoCallback);
 		}
 	};
-	$(document).ready(function() {
-		$('.btn-primary').click(function() {
-			var keyword = $("#bt").val();
-			if(keyword.trim() == ""){
-				alert("검색어를 입력해주세요.");
-				return false;
+	var geoCallback = function(result, status) {
+	    if (status === kakao.maps.services.Status.OK) {
+	        console.log(result);
+	        console.log("geo");
+	        $(".modal-body").empty();
+			for ( var i in result) {
+				var str = "<p>"+ result[i].address_name
+						+ "<input type='hidden' name='name' value='" + result[i].address_name +
+						"'/><input type='hidden' name='x' value='" + result[i].x +
+						"'/><input type='hidden' name='addr_name' value='"+ result[i].address_name +
+						"'/><input type='hidden' name='y' value='" + result[i].y 
+						+"'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
+				$(".modal-body").append(str);
 			}
-			places.keywordSearch(keyword, callback);
-		});
-	});
+	    }else{
+	    	$(".modal-body").empty();
+			$(".modal-body").append("검색 결과가 없습니다.");
+	    }
+	};
+	
+	
 	function down(btn) {
 		item =$(btn).closest('p');
 		
@@ -67,6 +96,19 @@
 		//$(sel).empty();
 	}
 	// 	places.keywordSearch('판교 치킨', callback);
+	
+	
+	//뒤로가기 이벤트 감지 코드
+	// 참고 링크 :: https://dev-t-blog.tistory.com/9
+	window.onpageshow = function(event) {
+	    if ( event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+			// Back Forward Cache로 브라우저가 로딩될 경우 혹은 브라우저 뒤로가기 했을 경우
+			console.log("뒤로가기로 들어왔습니다.");
+			location.reload();
+	    }else{
+	    	console.log("새로 진입");
+	    }
+	}
 </script>
 </head>
 <body>
@@ -105,7 +147,7 @@
 	<div class="container">
 		<form method='post' action="sendAddr.do">
 			<div class="list">
-				<!-- 세션 처리 위한 코드  -->
+				<!-- 세션 처리 위한 코드 07.24 김재성 -->
 				<c:if test="${sessionScope._name != null}">
 					<c:forEach var="name" items="${sessionScope._name}" varStatus="status">
 						<div class="sel">
