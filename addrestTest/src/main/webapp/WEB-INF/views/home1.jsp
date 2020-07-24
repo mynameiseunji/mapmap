@@ -31,49 +31,41 @@ var keyword="";
 				return false;
 			}
 			//option으로 검색량 조절하기.
-			places.keywordSearch(keyword, keywordCallback);
+			places.keywordSearch(keyword, callback);
 		});
 	});
-	
-	var keywordCallback = function(result, status) {
+	var search_type ="keyword";
+	var callback = function(result, status) {
 		if (status === kakao.maps.services.Status.OK) {
-			console.log(result);
-			console.log("keword");
+			console.log(search_type);
 			$(".modal-body").empty();
 			for ( var i in result) {
-				var str = "<p>"+ result[i].place_name
-						+ "<input type='hidden' name='name' value='" + result[i].place_name +
+				
+				var p_name = "";
+				if(search_type=='keyword'){
+					p_name=result[i].place_name;
+				}else{	//search_type='geo'
+					p_name=result[i].address_name;
+				}
+				
+				var str = "<p>"+ p_name
+						+ "<input type='hidden' name='name' value='" + p_name +
 						"'/><input type='hidden' name='x' value='" + result[i].x +
 						"'/><input type='hidden' name='addr_name' value='"+ result[i].address_name +
 						"'/><input type='hidden' name='y' value='" + result[i].y 
 						+"'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
 				$(".modal-body").append(str);
 			}
-		}else{
+		}else if(search_type=='keyword'){
+			search_type="geo"
 			var geocoder = new kakao.maps.services.Geocoder();
-			return geocoder.addressSearch(keyword, geoCallback);
-		}
-	};
-	var geoCallback = function(result, status) {
-	    if (status === kakao.maps.services.Status.OK) {
-	        console.log(result);
-	        console.log("geo");
-	        $(".modal-body").empty();
-			for ( var i in result) {
-				var str = "<p>"+ result[i].address_name
-						+ "<input type='hidden' name='name' value='" + result[i].address_name +
-						"'/><input type='hidden' name='x' value='" + result[i].x +
-						"'/><input type='hidden' name='addr_name' value='"+ result[i].address_name +
-						"'/><input type='hidden' name='y' value='" + result[i].y 
-						+"'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
-				$(".modal-body").append(str);
-			}
-	    }else{
-	    	$(".modal-body").empty();
+			return geocoder.addressSearch(keyword, callback);
+		}else{
+			$(".modal-body").empty();
 			$(".modal-body").append("검색 결과가 없습니다.");
-	    }
-	};
-	
+		}
+		search_type="keyword";
+	};	
 	
 	function down(btn) {
 		item =$(btn).closest('p');
