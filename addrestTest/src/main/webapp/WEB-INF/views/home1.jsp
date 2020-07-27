@@ -71,7 +71,6 @@
 			$(".modal-body").empty();
 			$(".modal-body").append("검색 결과가 없습니다.");
 		}
-
 		search_type="keyword";
 	};	
 	
@@ -184,12 +183,3 @@
 	</div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
