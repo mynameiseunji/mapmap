@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -55,23 +56,28 @@
 
 		<div class="tab-content">
 			<div class="tab-pane container active" id="home">
-			<h1>loc1</h1>
+				<h1>loc1</h1>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 				eiusmod<br>tempor incididunt ut labore et dolore.
 			</div>
 			<div class="tab-pane container fade" id="menu1">
-			<h1>loc2</h1>
+				<h1>loc2</h1>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 				eiusmod<br>tempor incididunt ut labore et dolore.
 			</div>
 			<div class="tab-pane container fade" id="menu2">
-			<h1>loc3</h1>
+				<h1>loc3</h1>
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 				eiusmod<br>tempor incididunt ut labore et dolore.
 			</div>
 		</div>
 	</div>
-	<br><br><br><br><br><br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
 	<div class="container">
 		<!-- taglib prefix="fn"필요 -->
 		입력된 출발지의 개수 : ${fn:length(addr)}
@@ -115,32 +121,33 @@
 	<script>
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 		mapOption = {
-			center : new kakao.maps.LatLng(37.5668260054857, 126.978656785931), // 지도의 중심좌표
+			center : new kakao.maps.LatLng(37.56498949199894, 126.94852219358815), // 지도의 중심좌표 현재는 '이대역'로 설정
 			level : 3
 		// 지도의 확대 레벨
 		};
 
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-		//마커를 표시할 위치와 title 객체 배열입니다 
-		var positions = [ {
-			title : '카카오',
-			latlng : new kakao.maps.LatLng(33.450705, 126.570677)
-		}, {
-			title : '생태연못',
-			latlng : new kakao.maps.LatLng(33.450936, 126.569477)
-		}, {
-			title : '텃밭',
-			latlng : new kakao.maps.LatLng(33.450879, 126.569940)
-		}, {
-			title : '근린공원',
-			latlng : new kakao.maps.LatLng(33.451393, 126.570738)
-		} ];
-
+		
+		// 출발지 마커 좌표와 이름 
+		var arr_x = new Array(); // 이대 홍대 당산
+		var arr_y = new Array();
+		var titles = new Array();
+		
+		var bounds = new kakao.maps.LatLngBounds();
+		<c:forEach items="${sessionScope._x}" var="item" varStatus="sts">
+			arr_x.push(parseFloat('${item}'));
+			arr_y.push(parseFloat('${sessionScope._y[sts.index]}'));
+			titles.push('${sessionScope._name[sts.index]}');
+			bounds.extend(new kakao.maps.LatLng(arr_y[${sts.index}],arr_x[${sts.index}]));
+		</c:forEach>
+		
+		//모든 마커 보이게 지도 영역 설정
+		map.setBounds(bounds);
+		
 		//마커 이미지의 이미지 주소입니다
 		var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
-		for (var i = 0; i < positions.length; i++) {
+		for (var i = 0; i < arr_x.length; i++) {
 
 			// 마커 이미지의 이미지 크기 입니다
 			var imageSize = new kakao.maps.Size(24, 35);
@@ -151,8 +158,11 @@
 			// 마커를 생성합니다
 			var marker = new kakao.maps.Marker({
 				map : map, // 마커를 표시할 지도
-				position : positions[i].latlng, // 마커를 표시할 위치
-				title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+				
+				position : new kakao.maps.LatLng(arr_y[i],arr_x[i]), // 마커를 표시할 위치
+				
+				title :	titles[i], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+				
 				image : markerImage
 			// 마커 이미지 
 			});

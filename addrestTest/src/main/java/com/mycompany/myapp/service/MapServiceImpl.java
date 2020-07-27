@@ -26,49 +26,49 @@ public class MapServiceImpl implements MapService {
 	private JsonParsing par;
 	//= new JsonParsing();
 
-	// REST API¿¡ ¿äÃ»ÇØ¼­ json Çü½Ä µ¥ÀÌÅÍ ¹Þ¾Æ¿Ã ºÎºÐ
+	// REST APIï¿½ï¿½ ï¿½ï¿½Ã»ï¿½Ø¼ï¿½ json ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ ï¿½Îºï¿½
 	@Override
 	public List<stationXY> getStationCoord(Coordinate coor) {
 		HttpURLConnection conn = null;
 		StringBuilder sb = new StringBuilder();
 		try {
-			// URL ¼³Á¤
+			// URL ï¿½ï¿½ï¿½ï¿½
 //	    	location = new String(location.getBytes("UTF-8"));
 //			URL url = new
 //			URL("https://dapi.kakao.com/v2/local/search/address.json?query="+URLEncoder.encode(location, "utf-8"));
 
 			String base_url = "https://dapi.kakao.com/v2/local/search/category.json";
 			String Authorization = "KakaoAK " + "cdca325d6efe88cfb6c48440908a80c2";
-			String category_group_code = "SW8"; // ÁöÇÏÃ¶ ¿ª Ä«Å×°í¸®¸¸ °Ë»öÇÏ±â À§ÇÑ ÄÚµå
+			String category_group_code = "SW8"; // ï¿½ï¿½ï¿½ï¿½Ã¶ ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
 			String x = coor.getX();
 			String y = coor.getY();
-			String page = "1"; //ÆäÀÌÁö ¼ö ¼³Á¤
-			String size ="10"; //ÆäÀÌÁö´ç °Ë»ö °³¼ö ¼³Á¤
-			String radius = "2000"; // °Ë»ö ¹Ý°æ ÀÓÀÇ·Î ¼³Á¤(0~2000±îÁö ¼³Á¤°¡´É)
+			String page = "1"; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			String size ="10"; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			String radius = "2000"; // ï¿½Ë»ï¿½ ï¿½Ý°ï¿½ ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½(0~2000ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 
 			String findStationList = base_url + "?category_group_code=" + category_group_code + "&x=" + x + "&y=" + y
-					+ "&radius=" + radius+ "&page"+page+"&size"+size+"&sort=distance";
-			//ÁÖ¼Ò È®ÀÎ¿ë µð¹ö±ë ÄÚµå
+					+ "&radius=" + radius+ "&page="+page+"&size="+size+"&sort=distance";
+			//ï¿½Ö¼ï¿½ È®ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
 			System.out.println(findStationList);
 			URL url = new URL(findStationList);
 			conn = (HttpURLConnection) url.openConnection();
-			// Request Çü½Ä ¼³Á¤
+			// Request ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			conn.setRequestMethod("GET");
-			// Å° ÀÔ·Â
+			// Å° ï¿½Ô·ï¿½
 			conn.setRequestProperty("Authorization", Authorization);
 
-			// º¸³»°í °á°ú°ª ¹Þ±â
-			// Åë½Å »óÅÂ È®ÀÎ ÄÚµå.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ±ï¿½
+			// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Úµï¿½.
 			int responseCode = conn.getResponseCode();
 			System.out.println(responseCode);
 			if (responseCode == 400) {
 				System.out.println(
-						"400:: ÇØ´ç ¸í·ÉÀ» ½ÇÇàÇÒ ¼ö ¾øÀ½ (½ÇÇàÇÒ ¼ö ¾ø´Â »óÅÂÀÏ ¶§, ¿¤¸®º£ÀÌÅÍ ¼ö¿Í Command ¼ö°¡ ÀÏÄ¡ÇÏÁö ¾ÊÀ» ¶§, ¿¤¸®º£ÀÌÅÍ Á¤¿øÀ» ÃÊ°úÇÏ¿© ÅÂ¿ï ¶§)");
+						"400:: ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Command ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½Ï¿ï¿½ ï¿½Â¿ï¿½ ï¿½ï¿½)");
 			} else if (responseCode == 401) {
-				System.out.println("401:: X-Auth-Token Header°¡ Àß¸øµÊ");
+				System.out.println("401:: X-Auth-Token Headerï¿½ï¿½ ï¿½ß¸ï¿½ï¿½ï¿½");
 			} else if (responseCode == 500) {
-				System.out.println("500:: ¼­¹ö ¿¡·¯, ¹®ÀÇ ÇÊ¿ä");
-			} else { // ¼º°ø ÈÄ ÀÀ´ä JSON µ¥ÀÌÅÍ¹Þ±â
+				System.out.println("500:: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½");
+			} else { // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½Í¹Þ±ï¿½
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
 				String line = "";
@@ -89,8 +89,8 @@ public class MapServiceImpl implements MapService {
 		return stationList;
 	}
 	
-	//Áß½É ÁÂÇ¥ ±¸ÇÏ±â.
-	// Ãâ¹ßÁö ÁÂÇ¥ °ªÀÇ Æò±Õ.
+	//ï¿½ß½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½Ï±ï¿½.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½.
 	public Coordinate getCenter(String[] x, String[] y) {
 		Coordinate coor = new Coordinate();
 		double n = (double)x.length;

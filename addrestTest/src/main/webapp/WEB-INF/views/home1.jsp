@@ -168,6 +168,7 @@
 					<c:forEach var="name" items="${sessionScope._name}" varStatus="status">
 						<tr>
 						<td width="75%">${name}
+						<br> ${sessionScope._addr[status.index]}
 						<input type='hidden' name='name' value='${name}'/>
 						<input type='hidden' name='addr_name' value='${sessionScope._addr[status.index]}'/>
 						<input type='hidden' name='x' value='${sessionScope._x[status.index]}'/>
