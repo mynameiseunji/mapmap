@@ -27,7 +27,7 @@
 	// 지도 중심위치 설정
 	var latlng = new kakao.maps.LatLng(37.5668260054857, 126.978656785931);
 	var options = {
-			location : latlng
+			location : latlng 
 	};
 	$(document).ready(function() {
 		$('.btn-success').click(function() {

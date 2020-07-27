@@ -18,12 +18,12 @@
 			<td>X 좌표</td>
 			<td>Y 좌표</td>
 		</tr>
-		<c:forEach var="addr" items="${addr}" varStatus="status">
+		<c:forEach var="addr" items="${sessionScope._name}" varStatus="status">
 			<tr>
 				<td> ${status.count}번 </td>
-				<td> ${addr} </td>
-				<td> X : ${x[status.index]} </td>
-				<td> Y : ${y[status.index]} </td>
+				<td> ${sessionScope._addr[status.index]} </td>
+				<td> X : ${sessionScope._x[status.index]} </td>
+				<td> Y : ${sessionScope._y[status.index]} </td>
 			</tr>
 		</c:forEach>
 	</table>

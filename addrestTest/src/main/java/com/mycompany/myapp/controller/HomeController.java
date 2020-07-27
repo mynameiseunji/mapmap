@@ -42,14 +42,20 @@ public class HomeController {
 		session.setAttribute("_x", x);
 		session.setAttribute("_y", y);
 
-		model.addAttribute("addr", addr);
+		/*model.addAttribute("addr", addr);
 		model.addAttribute("x", x);
-		model.addAttribute("y", y);
+		model.addAttribute("y", y);*/
 
 		// 은지님
 		Coordinate coor = ms.getCenter(x, y);
 		List<stationXY> stationList = ms.getStationCoord(coor);
 		model.addAttribute("stationList", stationList);
+		
+		/*
+		 
+		 각 후보지에 대해서 소요시간 보여주기.
+		 
+		 */
 		model.addAttribute("center", coor);
 
 		return "foundplace";
