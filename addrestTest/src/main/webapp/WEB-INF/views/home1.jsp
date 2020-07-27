@@ -27,7 +27,7 @@
 	// 지도 중심위치 설정
 	var latlng = new kakao.maps.LatLng(37.5668260054857, 126.978656785931);
 	var options = {
-			location : latlng 
+			location : latlng
 	};
 	$(document).ready(function() {
 		$('.btn-success').click(function() {
@@ -71,6 +71,7 @@
 			$(".modal-body").empty();
 			$(".modal-body").append("검색 결과가 없습니다.");
 		}
+
 		search_type="keyword";
 	};	
 	
@@ -91,7 +92,7 @@
 	}
 	
 	function remove_addr(it){
-		$(it).closest('div').remove();
+		$(it).closest('tr').remove();
 		//var sel="div#sel"+num;
 		//$(sel).empty();
 	}
@@ -183,3 +184,12 @@
 	</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
