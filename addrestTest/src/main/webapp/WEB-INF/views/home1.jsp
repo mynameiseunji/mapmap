@@ -92,7 +92,7 @@
 	}
 	
 	function remove_addr(it){
-		$(it).closest('div').remove();
+		$(it).closest('tr').remove();
 		//var sel="div#sel"+num;
 		//$(sel).empty();
 	}
