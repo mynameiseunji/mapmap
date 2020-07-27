@@ -23,51 +23,52 @@ import com.mycompany.myapp.model.stationXY;
 public class MapServiceImpl implements MapService {
 
 	@Autowired
-	private JsonParsing par = new JsonParsing();
+	private JsonParsing par;
+	//= new JsonParsing();
 
-	// REST APIì— ìš”ì²­í•´ì„œ json í˜•ì‹ ë°ì´í„° ë°›ì•„ì˜¬ ë¶€ë¶„
+	// REST API¿¡ ¿äÃ»ÇØ¼­ json Çü½Ä µ¥ÀÌÅÍ ¹Ş¾Æ¿Ã ºÎºĞ
 	@Override
 	public List<stationXY> getStationCoord(Coordinate coor) {
 		HttpURLConnection conn = null;
 		StringBuilder sb = new StringBuilder();
 		try {
-			// URL ì„¤ì •
+			// URL ¼³Á¤
 //	    	location = new String(location.getBytes("UTF-8"));
-			// URL url = new
-			// URL("https://dapi.kakao.com/v2/local/search/address.json?query="+URLEncoder.encode(location, "utf-8"));
+//			URL url = new
+//			URL("https://dapi.kakao.com/v2/local/search/address.json?query="+URLEncoder.encode(location, "utf-8"));
 
 			String base_url = "https://dapi.kakao.com/v2/local/search/category.json";
 			String Authorization = "KakaoAK " + "cdca325d6efe88cfb6c48440908a80c2";
-			String category_group_code = "SW8"; // ì§€í•˜ì²  ì—­ ì¹´í…Œê³ ë¦¬ë§Œ ê²€ìƒ‰í•˜ê¸° ìœ„í•œ ì½”ë“œ
+			String category_group_code = "SW8"; // ÁöÇÏÃ¶ ¿ª Ä«Å×°í¸®¸¸ °Ë»öÇÏ±â À§ÇÑ ÄÚµå
 			String x = coor.getX();
 			String y = coor.getY();
-			String page = "1"; //í˜ì´ì§€ ìˆ˜ ì„¤ì •
-			String size ="10"; //í˜ì´ì§€ë‹¹ ê²€ìƒ‰ ê°œìˆ˜ ì„¤ì •
-			String radius = "2000"; // ê²€ìƒ‰ ë°˜ê²½ ì„ì˜ë¡œ ì„¤ì •(0~2000ê¹Œì§€ ì„¤ì •ê°€ëŠ¥)
+			String page = "1"; //ÆäÀÌÁö ¼ö ¼³Á¤
+			String size ="10"; //ÆäÀÌÁö´ç °Ë»ö °³¼ö ¼³Á¤
+			String radius = "2000"; // °Ë»ö ¹İ°æ ÀÓÀÇ·Î ¼³Á¤(0~2000±îÁö ¼³Á¤°¡´É)
 
 			String findStationList = base_url + "?category_group_code=" + category_group_code + "&x=" + x + "&y=" + y
 					+ "&radius=" + radius+ "&page"+page+"&size"+size+"&sort=distance";
-			//ì£¼ì†Œ í™•ì¸ìš© ë””ë²„ê¹… ì½”ë“œ
+			//ÁÖ¼Ò È®ÀÎ¿ë µğ¹ö±ë ÄÚµå
 			System.out.println(findStationList);
 			URL url = new URL(findStationList);
 			conn = (HttpURLConnection) url.openConnection();
-			// Request í˜•ì‹ ì„¤ì •
+			// Request Çü½Ä ¼³Á¤
 			conn.setRequestMethod("GET");
-			// í‚¤ ì…ë ¥
+			// Å° ÀÔ·Â
 			conn.setRequestProperty("Authorization", Authorization);
 
-			// ë³´ë‚´ê³  ê²°ê³¼ê°’ ë°›ê¸°
-			// í†µì‹  ìƒíƒœ í™•ì¸ ì½”ë“œ.
+			// º¸³»°í °á°ú°ª ¹Ş±â
+			// Åë½Å »óÅÂ È®ÀÎ ÄÚµå.
 			int responseCode = conn.getResponseCode();
 			System.out.println(responseCode);
 			if (responseCode == 400) {
 				System.out.println(
-						"400:: í•´ë‹¹ ëª…ë ¹ì„ ì‹¤í–‰í•  ìˆ˜ ì—†ìŒ (ì‹¤í–‰í•  ìˆ˜ ì—†ëŠ” ìƒíƒœì¼ ë•Œ, ì—˜ë¦¬ë² ì´í„° ìˆ˜ì™€ Command ìˆ˜ê°€ ì¼ì¹˜í•˜ì§€ ì•Šì„ ë•Œ, ì—˜ë¦¬ë² ì´í„° ì •ì›ì„ ì´ˆê³¼í•˜ì—¬ íƒœìš¸ ë•Œ)");
+						"400:: ÇØ´ç ¸í·ÉÀ» ½ÇÇàÇÒ ¼ö ¾øÀ½ (½ÇÇàÇÒ ¼ö ¾ø´Â »óÅÂÀÏ ¶§, ¿¤¸®º£ÀÌÅÍ ¼ö¿Í Command ¼ö°¡ ÀÏÄ¡ÇÏÁö ¾ÊÀ» ¶§, ¿¤¸®º£ÀÌÅÍ Á¤¿øÀ» ÃÊ°úÇÏ¿© ÅÂ¿ï ¶§)");
 			} else if (responseCode == 401) {
-				System.out.println("401:: X-Auth-Token Headerê°€ ì˜ëª»ë¨");
+				System.out.println("401:: X-Auth-Token Header°¡ Àß¸øµÊ");
 			} else if (responseCode == 500) {
-				System.out.println("500:: ì„œë²„ ì—ëŸ¬, ë¬¸ì˜ í•„ìš”");
-			} else { // ì„±ê³µ í›„ ì‘ë‹µ JSON ë°ì´í„°ë°›ê¸°
+				System.out.println("500:: ¼­¹ö ¿¡·¯, ¹®ÀÇ ÇÊ¿ä");
+			} else { // ¼º°ø ÈÄ ÀÀ´ä JSON µ¥ÀÌÅÍ¹Ş±â
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
 				String line = "";
@@ -88,8 +89,8 @@ public class MapServiceImpl implements MapService {
 		return stationList;
 	}
 	
-	//ì¤‘ì‹¬ ì¢Œí‘œ êµ¬í•˜ê¸°.
-	// ì¶œë°œì§€ ì¢Œí‘œ ê°’ì˜ í‰ê· .
+	//Áß½É ÁÂÇ¥ ±¸ÇÏ±â.
+	// Ãâ¹ßÁö ÁÂÇ¥ °ªÀÇ Æò±Õ.
 	public Coordinate getCenter(String[] x, String[] y) {
 		Coordinate coor = new Coordinate();
 		double n = (double)x.length;

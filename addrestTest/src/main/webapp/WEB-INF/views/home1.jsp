@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,13 +20,13 @@
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
 <script>
-var keyword="";
+	var keyword = "";
 	var places = new kakao.maps.services.Places();
-	
+
 	$(document).ready(function() {
 		$('.btn-primary').click(function() {
 			keyword = $("#bt").val();
-			if(keyword.trim() == ""){
+			if (keyword.trim() == "") {
 				alert("검색어를 입력해주세요.");
 				return false;
 			}
@@ -34,21 +34,24 @@ var keyword="";
 			places.keywordSearch(keyword, callback);
 		});
 	});
-	var search_type ="keyword";
+	var search_type = "keyword";
 	var callback = function(result, status) {
 		if (status === kakao.maps.services.Status.OK) {
 			console.log(search_type);
 			$(".modal-body").empty();
 			for ( var i in result) {
-				
+
 				var p_name = "";
-				if(search_type=='keyword'){
-					p_name=result[i].place_name;
-				}else{	//search_type='geo'
-					p_name=result[i].address_name;
+				if (search_type == 'keyword') {
+					p_name = result[i].place_name;
+				} else { //search_type='geo'
+					p_name = result[i].address_name;
 				}
-				
-				var str = "<p>"+ p_name
+				// result[i].address_name 추가 >> 두 가지 이상의 같은 지명 검색어 입력시 잘못된 선택 우려. 대략적인 위치 확인 용도
+				var str = "<p>"
+						+ p_name
+						+ "<br>"
+						+ result[i].address_name
 						+ "<input type='hidden' name='name' value='" + p_name +
 						"'/><input type='hidden' name='x' value='" + result[i].x +
 						"'/><input type='hidden' name='addr_name' value='"+ result[i].address_name +
@@ -56,50 +59,50 @@ var keyword="";
 						+"'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></p>";
 				$(".modal-body").append(str);
 			}
-		}else if(search_type=='keyword'){
-			search_type="geo"
+		} else if (search_type == 'keyword') {
+			search_type = "geo"
 			var geocoder = new kakao.maps.services.Geocoder();
 			return geocoder.addressSearch(keyword, callback);
-		}else{
+		} else {
 			$(".modal-body").empty();
 			$(".modal-body").append("검색 결과가 없습니다.");
 		}
-		search_type="keyword";
-	};	
-	
+		search_type = "keyword";
+	};
+
 	function down(btn) {
-		item =$(btn).closest('p');
-		
+		item = $(btn).closest('p');
+
 		if ($('div.list input[name="x"]').length == 10) {
 			alert("최대10개");
 		} else {
-			$(btn).attr('onclick','remove_addr(this)');
-			$(btn).attr('value','삭제');
-			
+			$(btn).attr('onclick', 'remove_addr(this)');
+			$(btn).attr('value', '삭제');
+
 			var d = "<div class='sel' >" + item.html() + "</div>";
 			$('form div.list').append(d);
 			$('button.close').click();
 		}
 	}
-	
-	function remove_addr(it){
+
+	function remove_addr(it) {
 		$(it).closest('div').remove();
 		//var sel="div#sel"+num;
 		//$(sel).empty();
 	}
 	// 	places.keywordSearch('판교 치킨', callback);
-	
-	
+
 	//뒤로가기 이벤트 감지 코드
 	// 참고 링크 :: https://dev-t-blog.tistory.com/9
 	window.onpageshow = function(event) {
-	    if ( event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+		if (event.persisted
+				|| (window.performance && window.performance.navigation.type == 2)) {
 			// Back Forward Cache로 브라우저가 로딩될 경우 혹은 브라우저 뒤로가기 했을 경우
 			console.log("뒤로가기로 들어왔습니다.");
 			location.reload();
-	    }else{
-	    	console.log("새로 진입");
-	    }
+		} else {
+			console.log("새로 진입");
+		}
 	}
 </script>
 </head>
@@ -141,14 +144,16 @@ var keyword="";
 			<div class="list">
 				<!-- 세션 처리 위한 코드 07.24 김재성 -->
 				<c:if test="${sessionScope._name != null}">
-					<c:forEach var="name" items="${sessionScope._name}" varStatus="status">
+					<c:forEach var="name" items="${sessionScope._name}"
+						varStatus="status">
 						<div class="sel">
-						${name}
-						<input type='hidden' name='name' value='${name}'/>
-						<input type='hidden' name='addr_name' value='${sessionScope._addr[status.index]}'/>
-						<input type='hidden' name='x' value='${sessionScope._x[status.index]}'/>
-						<input type='hidden' name='y' value='${sessionScope._y[status.index]}'/>
-						<input type='button' class='btn btn-info' onclick='remove_addr(this)' value='삭제'>
+							${name} <input type='hidden' name='name' value='${name}' /> <input
+								type='hidden' name='addr_name'
+								value='${sessionScope._addr[status.index]}' /> <input
+								type='hidden' name='x' value='${sessionScope._x[status.index]}' />
+							<input type='hidden' name='y'
+								value='${sessionScope._y[status.index]}' /> <input type='button'
+								class='btn btn-info' onclick='remove_addr(this)' value='삭제'>
 						</div>
 					</c:forEach>
 				</c:if>

@@ -21,12 +21,12 @@ import com.mycompany.myapp.service.MapService;
 public class HomeController {
 	@Autowired
 	private MapService ms;
-	
+
 	@RequestMapping("test.do")
-	public String home(Model model) {
+	public String home() {
 		return "home1";
 	}
-	
+
 	@RequestMapping("sendAddr.do")
 	public String sendAddr(HttpServletRequest request, Model model) {
 		String[] name = request.getParameterValues("name");
@@ -34,25 +34,25 @@ public class HomeController {
 		String[] addr = request.getParameterValues("addr_name");
 		String[] x = request.getParameterValues("x");
 		String[] y = request.getParameterValues("y");
-		
-		//세션
+
+		// 세션
 		HttpSession session = request.getSession();
 		session.setAttribute("_name", name);
 		session.setAttribute("_addr", addr);
 		session.setAttribute("_x", x);
 		session.setAttribute("_y", y);
-		
-		model.addAttribute("addr",addr);
-		model.addAttribute("x",x);
-		model.addAttribute("y",y);
-		
-		//은지님
-		Coordinate coor = ms.getCenter(x,y);
+
+		model.addAttribute("addr", addr);
+		model.addAttribute("x", x);
+		model.addAttribute("y", y);
+
+		// 은지님
+		Coordinate coor = ms.getCenter(x, y);
 		List<stationXY> stationList = ms.getStationCoord(coor);
 		model.addAttribute("stationList", stationList);
 		model.addAttribute("center", coor);
-		
+
 		return "foundplace";
 	}
-	
+
 }
