@@ -138,7 +138,8 @@
 			arr_x.push(parseFloat('${item}'));
 			arr_y.push(parseFloat('${sessionScope._y[sts.index]}'));
 			titles.push('${sessionScope._name[sts.index]}');
-			bounds.extend(new kakao.maps.LatLng(arr_y[${sts.index}],arr_x[${sts.index}]));
+			var latlng = new kakakao.maps.LatLng(arr_y[${sts.index}], arr_x[${sts.index}]);
+			bounds.extend(latlng);
 		</c:forEach>
 		
 		//모든 마커 보이게 지도 영역 설정
