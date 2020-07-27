@@ -135,15 +135,21 @@
 		
 		var bounds = new kakao.maps.LatLngBounds();
 		<c:forEach items="${sessionScope._x}" var="item" varStatus="sts">
-			arr_x.push(parseFloat('${item}'));
-			arr_y.push(parseFloat('${sessionScope._y[sts.index]}'));
+			var xx = parseFloat('${item}');
+			var yy = parseFloat('${sessionScope._y[sts.index]}');
+			arr_x.push(xx);
+			arr_y.push(yy);
 			titles.push('${sessionScope._name[sts.index]}');
-			var latlng = new kakakao.maps.LatLng(arr_y[${sts.index}], arr_x[${sts.index}]);
-			bounds.extend(latlng);
+			bounds.extend(new kakao.maps.LatLng(yy, xx));
 		</c:forEach>
 		
 		//모든 마커 보이게 지도 영역 설정
 		map.setBounds(bounds);
+		
+		/*
+		130~144 코드 와
+		157~176 코드 합칠 수 있음.
+		*/
 		
 		//마커 이미지의 이미지 주소입니다
 		var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
