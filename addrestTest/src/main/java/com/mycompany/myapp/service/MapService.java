@@ -10,7 +10,8 @@ import com.mycompany.myapp.model.stationXY;
 
 public interface MapService {
 
-	List<stationXY> getStationCoord(Coordinate coor);
+	//List<stationXY> getStationCoord(Coordinate coor);
+	String getStationCoord(String coor);
 	public Coordinate getCenter(String[] x, String[] y);
 
 }

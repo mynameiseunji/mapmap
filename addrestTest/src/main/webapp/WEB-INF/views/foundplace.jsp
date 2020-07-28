@@ -142,7 +142,6 @@
 			titles.push('${sessionScope._name[sts.index]}');
 			bounds.extend(new kakao.maps.LatLng(yy, xx));
 		</c:forEach>
-		
 		//모든 마커 보이게 지도 영역 설정
 		map.setBounds(bounds);
 		

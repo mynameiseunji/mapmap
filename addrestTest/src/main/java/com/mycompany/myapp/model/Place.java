@@ -1,6 +1,6 @@
 package com.mycompany.myapp.model;
 
-public class stationXY {
+public class Place {
 	private String subName;
 	private String xs;
 	private String ys;
@@ -30,7 +30,10 @@ public class stationXY {
 	public void setYs(String ys) {
 		this.ys = ys;
 	}
+	@Override
+	public String toString() {
+		return "Place [subName=" + subName + ", xs=" + xs + ", ys=" + ys + ", adress=" + adress + "]";
+	}
 	
-
 	
 }
