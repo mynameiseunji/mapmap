@@ -45,32 +45,23 @@
 	<div id="map" class="container"
 		style="margin-top: 80px; width: 100%; height: 350px;"></div>
 	<div class="container" style="margin-top: 20px; margin-bottom: 20px">
+<!-- 07.29 재성 (삭제 가능)--><span id="selected_location"></span> 
 		<ul class="nav nav-tabs">
 			<li class="nav-item"><a class="nav-link active"
 				data-toggle="tab" href="#home">location1</a></li>
-			<li class="nav-item"><a class="nav-link" data-toggle="tab"
-				href="#menu1">location2</a></li>
-			<li class="nav-item"><a class="nav-link" data-toggle="tab"
-				href="#menu2">location3</a></li>
+			
 		</ul>
-
+		<form method="get" action="category.do" >
+		<input type="hidden" id="selected_x" name="x" value="">
+		<input type="hidden" id="selected_y" name="y" value="">
+		<input type="hidden" id="selected_name" name="name" value="">
 		<div class="tab-content">
 			<div class="tab-pane container active" id="home">
-				<h1>loc1</h1>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-				eiusmod<br>tempor incididunt ut labore et dolore.
 			</div>
-			<div class="tab-pane container fade" id="menu1">
-				<h1>loc2</h1>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-				eiusmod<br>tempor incididunt ut labore et dolore.
-			</div>
-			<div class="tab-pane container fade" id="menu2">
-				<h1>loc3</h1>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-				eiusmod<br>tempor incididunt ut labore et dolore.
-			</div>
+		<input type="submit" value="전송">
 		</div>
+		
+		</form>
 	</div>
 	<br>
 	<br>
@@ -78,7 +69,7 @@
 	<br>
 	<br>
 	<br>
-	<div class="container">
+	<%-- <div class="container">
 		<!-- taglib prefix="fn"필요 -->
 		입력된 출발지의 개수 : ${fn:length(addr)}
 		<table class="table">
@@ -98,8 +89,8 @@
 				</tr>
 			</c:forEach>
 		</table>
-		<br> <br> 중심 좌표 <br> x : ${center.x} <br> y :
-		${center.y} <br>
+		<br> <br> 중심 좌표 <br> x : ${center.x} <br> y :${center.y} <br>
+		
 		<table class="table">
 			<caption>지하철 역 -중심 좌표로 부터 거리 순</caption>
 			<tr align='center'>
@@ -111,14 +102,60 @@
 			<c:forEach var="station" items="${stationList}" varStatus="status">
 				<tr>
 					<td>${status.count}번</td>
-					<td>${station.subName}</td>
-					<td>X : ${station.xs}</td>
-					<td>Y : ${station.ys}</td>
+					<td>${station.name}</td>
+					<td>X : ${station.x}</td>
+					<td>Y : ${station.y}</td>
 				</tr>
 			</c:forEach>
 		</table>
-	</div>
+	</div> --%>
 	<script>
+		// 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 시작 ===========================
+		var possible_list_name = new Array();
+		var posi_x = new Array();
+		var posi_y = new Array();
+		
+		<c:forEach items="${stationList}" var="station" varStatus="status">
+			possible_list_name.push('${station.name}');
+			posi_x.push('${station.x}');
+			posi_y.push('${station.y}');
+		</c:forEach>
+		
+		var posi_li_active = '<h1>'+possible_list_name[0]+'</h1>'+
+					'평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'+
+					'<span data-x="'+posi_x[0]+'" data-y="'+posi_y[0]+'"></span>'+
+					'<input type="button" onclick="choice(this)" value="선택">';
+		$('#home').append(posi_li_active);
+		
+		for(var i=1; i<possible_list_name.length; i++){
+			
+			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
+							'<h1>'+possible_list_name[i]+'</h1>'+
+							'평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'+
+							'<span data-x="'+posi_x[i]+'" data-y="'+posi_y[i]+'"></span>'+
+							'<input type="button" onclick="choice(this)" value="선택"></div>';
+							
+			var posi_li_nav ='<li class="nav-item">'+
+							'<a class="nav-link" data-toggle="tab" href="#menu'+i+'">'+
+							possible_list_name[i]+'</a></li>';
+			
+			
+			$('.tab-content').append(posi_li_fade);
+			$('.nav.nav-tabs').append(posi_li_nav);
+		}
+		
+		function choice(btn){
+			//console.log($(btn).closest('div').children('span').data('x'));
+			var coor_x = $(btn).closest('div').children('span').data('x');
+			var coor_y = $(btn).closest('div').children('span').data('y');
+			var pname= $(btn).closest('div').children('h1').text();
+			$('#selected_location').text('선택된 장소 : '+pname);
+			$('#selected_x').attr('value',coor_x);
+			$('#selected_y').attr('value',coor_y);
+			$('#selected_name').attr('value',pname);
+		};
+		// 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 끝 ===========================
+		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 		mapOption = {
 			center : new kakao.maps.LatLng(37.56498949199894, 126.94852219358815), // 지도의 중심좌표 현재는 '이대역'로 설정

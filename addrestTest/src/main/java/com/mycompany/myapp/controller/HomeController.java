@@ -48,7 +48,7 @@ public class HomeController {
 		
 		
 		//옵션 값 형식
-		String option ="x/"+center_coor.getX()+"/y/"+center_coor.getY()+"/page/1/size/10/radius/2000";
+		String option ="x/"+center_coor.getX()+"/y/"+center_coor.getY()+"/page/1/size/5/radius/2000";
 		
 		// 지하철 category_group_code ="SW8"
 		List<Place> placeList =ms.categorySearch("SW8", option);		
@@ -61,6 +61,17 @@ public class HomeController {
 		model.addAttribute("center", center_coor);
 
 		return "foundplace";
+	}
+	@RequestMapping("category.do")
+	public String categorySelect(Place place, Model model) {
+		
+		System.out.println(place.getX());
+		System.out.println(place.getY());
+		System.out.println(place.getName());
+		
+		model.addAttribute("place", place);
+		
+		return "category";
 	}
 
 }

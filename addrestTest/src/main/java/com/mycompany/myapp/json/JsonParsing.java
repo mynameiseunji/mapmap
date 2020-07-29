@@ -26,9 +26,9 @@ public class JsonParsing {
 				JSONObject docOb = (JSONObject) docArray.get(i);
 				stcoor = new Place();
 				//String pname = docO
-				stcoor.setSubName((String) docOb.get("place_name"));
-				stcoor.setXs((String) docOb.get("x"));
-				stcoor.setYs((String) docOb.get("y"));
+				stcoor.setName((String) docOb.get("place_name"));
+				stcoor.setX((String) docOb.get("x"));
+				stcoor.setY((String) docOb.get("y"));
 				stcoor.setAdress((String) docOb.get("address_name"));
 				stationList.add(stcoor);
 			}

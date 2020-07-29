@@ -1,9 +1,9 @@
 package com.mycompany.myapp.model;
 
 public class Place {
-	private String subName;
-	private String xs;
-	private String ys;
+	private String name;
+	private String x;
+	private String y;
 	private String adress;
 	
 	public String getAdress() {
@@ -12,28 +12,29 @@ public class Place {
 	public void setAdress(String adress) {
 		this.adress = adress;
 	}
-	public String getSubName() {
-		return subName;
+	public String getName() {
+		return name;
 	}
-	public void setSubName(String subName) {
-		this.subName = subName;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getXs() {
-		return xs;
+	public String getX() {
+		return x;
 	}
-	public void setXs(String xs) {
-		this.xs = xs;
+	public void setX(String x) {
+		this.x = x;
 	}
-	public String getYs() {
-		return ys;
+	public String getY() {
+		return y;
 	}
-	public void setYs(String ys) {
-		this.ys = ys;
+	public void setY(String y) {
+		this.y = y;
 	}
 	@Override
 	public String toString() {
-		return "Place [subName=" + subName + ", xs=" + xs + ", ys=" + ys + ", adress=" + adress + "]";
+		return "Place [name=" + name + ", x=" + x + ", y=" + y + ", adress=" + adress + "]";
 	}
+	
 	
 	
 }
