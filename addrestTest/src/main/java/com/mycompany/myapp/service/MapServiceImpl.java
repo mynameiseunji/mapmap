@@ -23,23 +23,21 @@ import com.mycompany.myapp.model.stationXY;
 
 @Service
 public class MapServiceImpl {
-	public final String URL_HOME = "https://dapi.kakao.com";
-	public final String URL_CATEGORY = "/v2/local/search/category.json";
-	public final String URL_KEYWORD = "/v2/local/search/keyword.json";
-	public final String URL_ADRESS = "/v2/local/search/address.json";
+	private final String URL_HOME = "https://dapi.kakao.com";
+	private final String URL_CATEGORY = "/v2/local/search/category.json";
+	private final String URL_KEYWORD = "/v2/local/search/keyword.json";
+	private final String URL_ADRESS = "/v2/local/search/address.json";
 	
 	public List<Place> categorySearch(String categoryCode) {
 		String url = URL_HOME + URL_CATEGORY + "?";
 		String options = "category_group_code/"+categoryCode;
 		return getStationCoord(url, options);
 	}
-
 	public List<Place> categorySearch(String categoryCode, String option) {
 		String url = URL_HOME + URL_CATEGORY + "?";
 		String options = "category_group_code/"+categoryCode+"/"+option;
 		return getStationCoord(url, options);
 	}
-
 	public List<Place> keywordSearch(String query) {
 		String url = URL_HOME + URL_KEYWORD + "?";
 		String options=null;
@@ -50,7 +48,6 @@ public class MapServiceImpl {
 		}
 		return getStationCoord(url, options);
 	}
-
 	public List<Place> keywordSearch(String query, String option) {
 		String url = URL_HOME + URL_KEYWORD + "?";
 		String options=null;
@@ -61,7 +58,26 @@ public class MapServiceImpl {
 		}
 		return getStationCoord(url, options);
 	}
-		
+	public List<Place> addressSearch(String address) {
+		String url = URL_HOME + URL_ADRESS + "?";
+		String options=null;
+		try {
+			options = "query/"+URLEncoder.encode(address,"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return getStationCoord(url, options);
+	}
+	public List<Place> addressSearch(String address, String option) {
+		String url = URL_HOME + URL_ADRESS + "?";
+		String options=null;
+		try {
+			options = "query/"+URLEncoder.encode(address,"utf-8")+"/"+option;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return getStationCoord(url, options);
+	}
 	@Autowired
 	private JsonParsing par = new JsonParsing();
 

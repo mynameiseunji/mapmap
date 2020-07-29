@@ -25,6 +25,7 @@ public class JsonParsing {
 			for (int i = 0; i < docArray.size(); i++) {
 				JSONObject docOb = (JSONObject) docArray.get(i);
 				stcoor = new Place();
+				//String pname = docO
 				stcoor.setSubName((String) docOb.get("place_name"));
 				stcoor.setXs((String) docOb.get("x"));
 				stcoor.setYs((String) docOb.get("y"));
