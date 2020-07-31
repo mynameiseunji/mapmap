@@ -1,0 +1,84 @@
+==============	Map Interface	==============
+
+<View>
+- home1
+	메인 주소검색 페이지
+ 	(유효성 검사 js코드, 뒤로가기 감지 코드, 주소 검색 요청)
+	> js파일 분리 및 리팩토링 필요, 페이지명 재정의 필요
+- sendAddr
+	파생된 중간 지점 좌표 지도 위에 표시 페이지
+	각 출발지로부터 중점까지의 경로 표시
+	각 출발지로부터 약속 지점까지 소요시간 표시
+- foundPlace
+	중점으로부터 가까운 역 순으로 리스트 보여주는 페이지
+	추천 역 가까운 순으로 리스트 보여주는 페이지
+- category 
+	카테고리 별로 장소를 표시해주는 최종 페이지
+
+-----------------------------------------------------------------------
+<Model>
+- Coordinate
+	출발지 정보, 중심좌표에 사용되는 DTO
+	x, y 좌표 저장
+- stationXY
+	지하철 역 구분에 사용되는 DTO
+	subNmae, xs, ys, address 저장
+- Place
+	세부 장소 표현에 사용되는 DTO
+	name, x, y, address 정보 저장
+
+-----------------------------------------------------------------------
+<Controller>
+== HomeController 하위 기능
+  > 컨트롤러 이름 MapController로 바꿀 것
+
+- @RequestMapping("sendAddr.do") : home1 > foundPlace
+	input > home1에서 입력된 출발지 정보
+	return > 중간지점 좌표, 소요시간 정보, 역 리스트
+- @RequestMapping("category.do") : foundPlace > category
+	input > foundPlace에서 선택된 역 정보
+	return > 선택된 장소 정보
+
+-----------------------------------------------------------------------
+<Service>
+== MapServiceImpl 하위 기능 : 같은 메소드 명으로 오버로딩 / 요청 파라미터 여부
+	String options : 검색 요청할 상세 url 주소 (요구되는 parameter 값 확인 후 사용)
+		         요청시 값 구분 기준 : "/"
+		         ex) "형식/값/형식/값..."
+
+== SearchMethodTest : AOP 관련 개발중
+
+- 카테고리 검색
+	public List<Place> categorySearch(String categoryCode)
+	public List<Place> categorySearch(String categoryCode, String option) 
+
+- 키워드로 검색
+	public List<Place> keywordSearch(String query) 
+	public List<Place> keywordSearch(String query, String option)
+
+- 주소로 검색
+	public List<Place> addressSearch(String address)
+	public List<Place> addressSearch(String address, String option)
+
+- Kakao REST API 연결 설정
+	public List<Place> getStationCoord(String url_, String options)
+	input > 요청 url
+	return > response 된 json 객체 파싱 요청 및 결과 (파싱은 JsonParsing 메소드에서 DTO에 맞게 반환)
+
+- 출발지 주소 배열로 받아 중심좌표 반환
+	public Coordinate getCenter(String[] x, String[] y)
+
+-----------------------------------------------------------------------
+<Dao>
+
+-----------------------------------------------------------------------
+<json>
+- Response로 받은 Json Data를 각 DTO 형태에 맞게 파싱해서 리스트 형태로 반환
+	public List<Place> getPlaceInfo(String jsonData) 
+	input > jsonData
+	return > list
+>> 아직 완전한 모듈 아님 (개발중) / 현재 Place DTO 형태로만 테스트 가능
+
+-----------------------------------------------------------------------
+<advice>
+- AOP 개발을 위한 테스트중
