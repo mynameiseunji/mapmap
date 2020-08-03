@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mycompany.myapp.dao.MapDaoImpl;
 import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
@@ -23,63 +24,72 @@ import com.mycompany.myapp.model.stationXY;
 
 @Service
 public class MapServiceImpl {
+
+	@Autowired
+	private MapDaoImpl md;
+	@Autowired
+	private JsonParsing par;
+
 	private final String URL_HOME = "https://dapi.kakao.com";
 	private final String URL_CATEGORY = "/v2/local/search/category.json";
 	private final String URL_KEYWORD = "/v2/local/search/keyword.json";
 	private final String URL_ADRESS = "/v2/local/search/address.json";
-	
+
 	public List<Place> categorySearch(String categoryCode) {
 		String url = URL_HOME + URL_CATEGORY + "?";
-		String options = "category_group_code/"+categoryCode;
+		String options = "category_group_code/" + categoryCode;
 		return getStationCoord(url, options);
 	}
+
 	public List<Place> categorySearch(String categoryCode, String option) {
 		String url = URL_HOME + URL_CATEGORY + "?";
-		String options = "category_group_code/"+categoryCode+"/"+option;
+		String options = "category_group_code/" + categoryCode + "/" + option;
 		return getStationCoord(url, options);
 	}
+
 	public List<Place> keywordSearch(String query) {
 		String url = URL_HOME + URL_KEYWORD + "?";
-		String options=null;
+		String options = null;
 		try {
-			options = "query/"+URLEncoder.encode(query,"utf-8");
+			options = "query/" + URLEncoder.encode(query, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return getStationCoord(url, options);
 	}
+
 	public List<Place> keywordSearch(String query, String option) {
 		String url = URL_HOME + URL_KEYWORD + "?";
-		String options=null;
+		String options = null;
 		try {
-			options = "query/"+URLEncoder.encode(query,"utf-8")+"/"+option;
+			options = "query/" + URLEncoder.encode(query, "utf-8") + "/" + option;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return getStationCoord(url, options);
 	}
+
 	public List<Place> addressSearch(String address) {
 		String url = URL_HOME + URL_ADRESS + "?";
-		String options=null;
+		String options = null;
 		try {
-			options = "query/"+URLEncoder.encode(address,"utf-8");
+			options = "query/" + URLEncoder.encode(address, "utf-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return getStationCoord(url, options);
 	}
+
 	public List<Place> addressSearch(String address, String option) {
 		String url = URL_HOME + URL_ADRESS + "?";
-		String options=null;
+		String options = null;
 		try {
-			options = "query/"+URLEncoder.encode(address,"utf-8")+"/"+option;
+			options = "query/" + URLEncoder.encode(address, "utf-8") + "/" + option;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return getStationCoord(url, options);
 	}
-	@Autowired
-	private JsonParsing par = new JsonParsing();
 
 	// REST API에 요청해서 json 형식 데이터 받아올 부분
 	public List<Place> getStationCoord(String url_, String options) {
@@ -90,15 +100,15 @@ public class MapServiceImpl {
 			sb.append(url_);
 			StringTokenizer st = new StringTokenizer(options, "/");
 			String Authorization = "KakaoAK " + "cdca325d6efe88cfb6c48440908a80c2";
-			while(st.hasMoreTokens()) {
+			while (st.hasMoreTokens()) {
 				sb.append(st.nextToken()).append("=").append(st.nextToken()).append("&");
 			}
-			
+
 			// 주소 확인용 디버깅 코드
 			String final_request_url = sb.toString();
 			System.out.println(final_request_url);
 			URL url = new URL(final_request_url);
-			
+
 			conn = (HttpURLConnection) url.openConnection();
 			// Request 형식 설정
 			conn.setRequestMethod("GET");
@@ -132,7 +142,7 @@ public class MapServiceImpl {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return par.getPlaceInfo(sb.toString());
 	}
 
@@ -150,5 +160,10 @@ public class MapServiceImpl {
 		coor.setX(Float.toString(sumX / n));
 		coor.setY(Float.toString(sumY / n));
 		return coor;
+	}
+
+	public stationXY getRcm_station(String subName) throws Exception {
+		System.out.println("service 호출 완료 : " + subName);
+		return md.getRcm_station(subName);
 	}
 }

@@ -45,22 +45,22 @@
 	<div id="map" class="container"
 		style="margin-top: 80px; width: 100%; height: 350px;"></div>
 	<div class="container" style="margin-top: 20px; margin-bottom: 20px">
-<!-- 07.29 재성 (삭제 가능)--><span id="selected_location"></span> 
+		<!-- 07.29 재성 (삭제 가능)-->
+		<span id="selected_location"></span>
 		<ul class="nav nav-tabs">
 			<li class="nav-item"><a class="nav-link active"
 				data-toggle="tab" href="#home">location1</a></li>
-			
+
 		</ul>
-		<form method="get" action="category.do" >
-		<input type="hidden" id="selected_x" name="x" value="">
-		<input type="hidden" id="selected_y" name="y" value="">
-		<input type="hidden" id="selected_name" name="name" value="">
-		<div class="tab-content">
-			<div class="tab-pane container active" id="home">
+		<form method="get" action="category.do">
+			<input type="hidden" id="selected_x" name="x" value=""> <input
+				type="hidden" id="selected_y" name="y" value=""> <input
+				type="hidden" id="selected_name" name="name" value="">
+			<div class="tab-content">
+				<div class="tab-pane container active" id="home"></div>
+				<input type="submit" value="전송">
 			</div>
-		<input type="submit" value="전송">
-		</div>
-		
+
 		</form>
 	</div>
 	<br>
@@ -69,6 +69,7 @@
 	<br>
 	<br>
 	<br>
+
 	<%-- <div class="container">
 		<!-- taglib prefix="fn"필요 -->
 		입력된 출발지의 개수 : ${fn:length(addr)}
@@ -114,79 +115,81 @@
 		var possible_list_name = new Array();
 		var posi_x = new Array();
 		var posi_y = new Array();
-		
+
 		<c:forEach items="${stationList}" var="station" varStatus="status">
-			possible_list_name.push('${station.name}');
-			posi_x.push('${station.x}');
-			posi_y.push('${station.y}');
+		possible_list_name.push('${station.name}');
+		posi_x.push('${station.x}');
+		posi_y.push('${station.y}');
 		</c:forEach>
-		
-		var posi_li_active = '<h1>'+possible_list_name[0]+'</h1>'+
-					'평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'+
-					'<span data-x="'+posi_x[0]+'" data-y="'+posi_y[0]+'"></span>'+
-					'<input type="button" onclick="choice(this)" value="선택">';
+
+		var posi_li_active = '<h1>' + possible_list_name[0] + '</h1>'
+				+ '평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'
+				+ '<span data-x="'+posi_x[0]+'" data-y="'+posi_y[0]+'"></span>'
+				+ '<input type="button" onclick="choice(this)" value="선택">';
 		$('#home').append(posi_li_active);
-		
-		for(var i=1; i<possible_list_name.length; i++){
-			
-			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
-							'<h1>'+possible_list_name[i]+'</h1>'+
-							'평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'+
-							'<span data-x="'+posi_x[i]+'" data-y="'+posi_y[i]+'"></span>'+
-							'<input type="button" onclick="choice(this)" value="선택"></div>';
-							
-			var posi_li_nav ='<li class="nav-item">'+
-							'<a class="nav-link" data-toggle="tab" href="#menu'+i+'">'+
-							possible_list_name[i]+'</a></li>';
-			
-			
+
+		for (var i = 1; i < possible_list_name.length; i++) {
+
+			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'
+					+ '<h1>'
+					+ possible_list_name[i]
+					+ '</h1>'
+					+ '평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'
+					+ '<span data-x="'+posi_x[i]+'" data-y="'+posi_y[i]+'"></span>'
+					+ '<input type="button" onclick="choice(this)" value="선택"></div>';
+
+			var posi_li_nav = '<li class="nav-item">'
+					+ '<a class="nav-link" data-toggle="tab" href="#menu'+i+'">'
+					+ possible_list_name[i] + '</a></li>';
+
 			$('.tab-content').append(posi_li_fade);
 			$('.nav.nav-tabs').append(posi_li_nav);
 		}
-		
-		function choice(btn){
+
+		function choice(btn) {
 			//console.log($(btn).closest('div').children('span').data('x'));
 			var coor_x = $(btn).closest('div').children('span').data('x');
 			var coor_y = $(btn).closest('div').children('span').data('y');
-			var pname= $(btn).closest('div').children('h1').text();
-			$('#selected_location').text('선택된 장소 : '+pname);
-			$('#selected_x').attr('value',coor_x);
-			$('#selected_y').attr('value',coor_y);
-			$('#selected_name').attr('value',pname);
+			var pname = $(btn).closest('div').children('h1').text();
+			$('#selected_location').text('선택된 장소 : ' + pname);
+			$('#selected_x').attr('value', coor_x);
+			$('#selected_y').attr('value', coor_y);
+			$('#selected_name').attr('value', pname);
 		};
 		// 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 끝 ===========================
-		
+
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 		mapOption = {
-			center : new kakao.maps.LatLng(37.56498949199894, 126.94852219358815), // 지도의 중심좌표 현재는 '이대역'로 설정
+			center : new kakao.maps.LatLng(37.56498949199894,
+					126.94852219358815), // 지도의 중심좌표 현재는 '이대역'로 설정
 			level : 3
 		// 지도의 확대 레벨
 		};
 
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-		
+
 		// 출발지 마커 좌표와 이름 
 		var arr_x = new Array(); // 이대 홍대 당산
 		var arr_y = new Array();
 		var titles = new Array();
-		
+
 		var bounds = new kakao.maps.LatLngBounds();
 		<c:forEach items="${sessionScope._x}" var="item" varStatus="sts">
-			var xx = parseFloat('${item}');
-			var yy = parseFloat('${sessionScope._y[sts.index]}');
-			arr_x.push(xx);
-			arr_y.push(yy);
-			titles.push('${sessionScope._name[sts.index]}');
-			bounds.extend(new kakao.maps.LatLng(yy, xx));
+		var xx = parseFloat('${item}');
+		var yy = parseFloat('${sessionScope._y[sts.index]}');
+		arr_x.push(xx);
+		arr_y.push(yy);
+		titles.push('${sessionScope._name[sts.index]}');
+		bounds.extend(new kakao.maps.LatLng(yy, xx));
 		</c:forEach>
 		//모든 마커 보이게 지도 영역 설정
 		map.setBounds(bounds);
-		
+
 		/*
 		130~144 코드 와
 		157~176 코드 합칠 수 있음.
-		*/
-		
+		 */
+
 		//마커 이미지의 이미지 주소입니다
 		var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
@@ -201,17 +204,34 @@
 			// 마커를 생성합니다
 			var marker = new kakao.maps.Marker({
 				map : map, // 마커를 표시할 지도
-				
-				position : new kakao.maps.LatLng(arr_y[i],arr_x[i]), // 마커를 표시할 위치
-				
-				title :	titles[i], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-				
+
+				position : new kakao.maps.LatLng(arr_y[i], arr_x[i]), // 마커를 표시할 위치
+
+				title : titles[i], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+
 				image : markerImage
 			// 마커 이미지 
 			});
 		}
-		
 	</script>
+	
+	<!-- 08/03 권은지 : 추천 지하철 역 테스트용 코드 -->
+	<table border="1">
+		<thead>
+			<th>역이름</th>
+			<th>xs</th>
+			<th>ys</th>
+		</thead>
+		<tbody>
+			<c:forEach items="${rcm_stationList}" var="rcm">
+				<tr>
+					<td>${rcm.subname}</td>
+					<td>${rcm.xs}</td>
+					<td>${rcm.ys}</td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 </body>
 
 </html>

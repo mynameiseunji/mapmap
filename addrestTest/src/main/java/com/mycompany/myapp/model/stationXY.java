@@ -1,22 +1,15 @@
 package com.mycompany.myapp.model;
 
 public class stationXY {
-	private String subName;
+	// 08/03 권은지 : address 삭제(테스트 형식과 맞지 않아서)
+	private String subname;
 	private String xs;
 	private String ys;
-	private String adress;
-	
-	public String getAdress() {
-		return adress;
+	public String getSubname() {
+		return subname;
 	}
-	public void setAdress(String adress) {
-		this.adress = adress;
-	}
-	public String getSubName() {
-		return subName;
-	}
-	public void setSubName(String subName) {
-		this.subName = subName;
+	public void setSubname(String subname) {
+		this.subname = subname;
 	}
 	public String getXs() {
 		return xs;

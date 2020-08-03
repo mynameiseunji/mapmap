@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
@@ -23,6 +23,7 @@
 	var keyword = "";
 	var places = new kakao.maps.services.Places();
 	var search_type = "keyword";
+	
 
 	// 지도 중심위치 설정
 	var latlng = new kakao.maps.LatLng(37.5668260054857, 126.978656785931);
@@ -30,11 +31,24 @@
 		location : latlng,
 		size : 5
 	};
+
+ 	
 	$(document).ready(function() {
+	
+		
 		$('.btn-success').click(function() {
-			check = /[a-zA-Z0-9가-힣]/;  //검색 형식 검사(숫자, 영어 대소문자, 한글(자음따로 모음따로는 검색 x))
-			keyword = $("#bt").val();
-			if (keyword.trim() == "") {
+			check = /[a-zA-Z0-9가-힣]/; //검색 형식 검사(숫자, 영어 대소문자, 한글(자음따로 모음따로는 검색 x))
+	 		keyword = $("#bt").val();
+/* 			keyword.replace(/\s*\1\=(.*)+/, "");
+			console.log("keyword2 = ")
+			console.log(keyword);
+			keyword.replace(/\s*(or|and|null|where|limit)/i, " ");
+			console.log(keyword);
+			keyword.replace(/[\s\t\;\=]+/, "");
+			console.log(keyword);
+			keyword.trim();  */
+			
+			if (keyword.trim()== "") {
 				alert("검색어를 입력해주세요.");
 				return false;
 			}
@@ -45,7 +59,18 @@
 			//option으로 검색량 조절하기.
 			places.keywordSearch(keyword, callback, options);
 		});
-
+		//출처: https://link2me.tistory.com/1654 [소소한 일상 및 업무TIP 다루기]
+		//SQL Injection 방지 필터링 코드
+/* 		function SQLFiltering(str) {
+			str.replace(/\s*\1\=(.*)+/, ""); // 공백이후 1=1이 있을 경우 제거
+			console.log(str);
+			str.replace(/\s*(or|and|null|where|limit)/i, " "); // 공백이후 or, and 등이 있을 경우 제거
+			console.log(str);
+			str.replace(/[\s\t\'\;\=]+/, ""); // 공백이나 탭 제거, 특수문자 제거
+			console.log(str);
+			return str;
+		} */
+		
 		// 전송 버튼 누를 경우 : 주소지 정보 2개 이상 입력 필수
 		$('#check_data').click(function() {
 			if ($('#table_part tr').length < 2) {
@@ -54,13 +79,19 @@
 			}
 		});
 	});
+	
 
 	var callback = function(result, status) {
 		if (status === kakao.maps.services.Status.OK) {
 			console.log(search_type);
 			$(".modal-body table").empty();
 			for ( var i in result) {
-
+				
+				var city = result[i].address_name.substring(0,2);
+				console.log(city);
+				/* if (city != '서울' || city != '인천' || city !='경기'){
+					continue;
+				} */
 				var p_name = "";
 				if (search_type == 'keyword') {
 					p_name = result[i].place_name;
@@ -144,7 +175,7 @@
 			<input type="text" id="bt" class="form-control"
 				placeholder="placeholder">
 			<div class="input-group-append">
-				<button type="button" class="btn btn-success" data-toggle="modal"
+				<button type="button" id="search" class="btn btn-success" data-toggle="modal"
 					data-target="#myModal">Search</button>
 			</div>
 		</div>
