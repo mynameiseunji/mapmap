@@ -24,7 +24,19 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.mycompany.myapp" />
+	<!-- interceptor -->	
 	
+	<beans:bean id="sessionChk" class="com.mycompany.myapp.controller.SessionCheckInter"/>	
+	 <interceptors>
+		<interceptor>
+			<mapping path="/member_edit.do"/>
+			<mapping path="/member_edit_ok.do"/>			
+			<mapping path="/member_del.do"/>
+			<mapping path="/member_del_ok.do"/>
+			<mapping path="/member_logout.do"/>
+			<beans:ref bean="sessionChk"/>
+		</interceptor>
+	</interceptors>	 
 	<beans:bean id="log" class="com.mycompany.myapp.advice.logTestAdvice"></beans:bean>
 	
 	<aop:config>
