@@ -97,7 +97,7 @@ public class MapServiceImpl implements MapService {
 		return getStationCoord(url, options);
 	}
 
-	// REST API¿¡ ¿äÃ»ÇØ¼­ json Çü½Ä µ¥ÀÌÅÍ ¹Ş¾Æ¿Ã ºÎºĞ
+	// REST APIï¿½ï¿½ ï¿½ï¿½Ã»ï¿½Ø¼ï¿½ json ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ş¾Æ¿ï¿½ ï¿½Îºï¿½
 	@Override
 	public List<Place> getStationCoord(String url_, String options) {
 		HttpURLConnection conn = null;
@@ -111,29 +111,29 @@ public class MapServiceImpl implements MapService {
 				sb.append(st.nextToken()).append("=").append(st.nextToken()).append("&");
 			}
 
-			// ÁÖ¼Ò È®ÀÎ¿ë µğ¹ö±ë ÄÚµå
+			// ï¿½Ö¼ï¿½ È®ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
 			String final_request_url = sb.toString();
 			System.out.println(final_request_url);
 			URL url = new URL(final_request_url);
 
 			conn = (HttpURLConnection) url.openConnection();
-			// Request Çü½Ä ¼³Á¤
+			// Request ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			conn.setRequestMethod("GET");
-			// Å° ÀÔ·Â
+			// Å° ï¿½Ô·ï¿½
 			conn.setRequestProperty("Authorization", Authorization);
 
-			// º¸³»°í °á°ú°ª ¹Ş±â
-			// Åë½Å »óÅÂ È®ÀÎ ÄÚµå.
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ş±ï¿½
+			// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½Úµï¿½.
 			int responseCode = conn.getResponseCode();
 			System.out.println(responseCode);
 			if (responseCode == 400) {
 				System.out.println(
-						"400:: ÇØ´ç ¸í·ÉÀ» ½ÇÇàÇÒ ¼ö ¾øÀ½ (½ÇÇàÇÒ ¼ö ¾ø´Â »óÅÂÀÏ ¶§, ¿¤¸®º£ÀÌÅÍ ¼ö¿Í Command ¼ö°¡ ÀÏÄ¡ÇÏÁö ¾ÊÀ» ¶§, ¿¤¸®º£ÀÌÅÍ Á¤¿øÀ» ÃÊ°úÇÏ¿© ÅÂ¿ï ¶§)");
+						"400:: ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Command ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½Ï¿ï¿½ ï¿½Â¿ï¿½ ï¿½ï¿½)");
 			} else if (responseCode == 401) {
-				System.out.println("401:: X-Auth-Token Header°¡ Àß¸øµÊ");
+				System.out.println("401:: X-Auth-Token Headerï¿½ï¿½ ï¿½ß¸ï¿½ï¿½ï¿½");
 			} else if (responseCode == 500) {
-				System.out.println("500:: ¼­¹ö ¿¡·¯, ¹®ÀÇ ÇÊ¿ä");
-			} else { // ¼º°ø ÈÄ ÀÀ´ä JSON µ¥ÀÌÅÍ¹Ş±â
+				System.out.println("500:: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½");
+			} else { // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ JSON ï¿½ï¿½ï¿½ï¿½ï¿½Í¹Ş±ï¿½
 				sb = new StringBuilder();
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
@@ -153,8 +153,8 @@ public class MapServiceImpl implements MapService {
 		return par.getPlaceInfo(sb.toString());
 	}
 
-	// Áß½É ÁÂÇ¥ ±¸ÇÏ±â.
-	// Ãâ¹ßÁö ÁÂÇ¥ °ªÀÇ Æò±Õ.
+	// ï¿½ß½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½Ï±ï¿½.
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½.
 	@Override
 	public Coordinate getCenter(String[] x, String[] y) {
 		Coordinate coor = new Coordinate();
@@ -173,5 +173,20 @@ public class MapServiceImpl implements MapService {
 	@Override
 	public stationXY getRcm_station(String subName) throws Exception {
 		return md.getRcm_station(subName);
+	}
+	
+	//ê³µê³µë°ì´í„°í¬í„¸ì—ì„œ ê²½ë¡œì™€ ì‹œê°„ êµ¬í•´ì˜¤ëŠ” ë©”ì†Œë“œ
+	//ë¦¬í„´ í˜•ì‹ì€ '/'ì™€ '#' ë¥¼ êµ¬ë¶„ìë¡œí•˜ëŠ” ë¬¸ìì—´ íƒ€ì…
+	//ê° ê²½ë¡œëŠ” '/'ë¡œ êµ¬ë¶„
+	//í•˜ë‚˜ì˜ ê²½ë¡œì—ì„œ ì‹œê°„ ê±°ë¦¬ ì¶œë°œì§€ ë„ì°©ì§€ ë“± ì •ë³´ëŠ” '#'ë¡œ êµ¬ë¶„
+	public String getPathInfo(String[] startX, String[] startY, List<Place> placeList) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<placeList.size(); i++) {
+			PublicDataService pds = new PublicDataService();
+			for(int j=0; j<startX.length; j++) {
+				sb.append(pds.getPath(startX[j], startY[j], placeList.get(i).getX(), placeList.get(i).getY())).append("/");
+			}
+		}
+		return sb.toString();
 	}
 }

@@ -85,8 +85,11 @@ public class HomeController {
 		}
 		
 		//--------------------------------------------------------------------------
-
-
+		
+		
+		
+		
+		
 		// 중심좌표 return
 		model.addAttribute("center", center_coor);
 
@@ -95,13 +98,15 @@ public class HomeController {
 		
 		// DB에서 검색결과 return
 		model.addAttribute("rcm_stationList", rcm_stationList);
-
-		/*
-		 * 
-		 * 각 후보지에 대해서 소요시간 보여주기.
-		 * 
-		 */
-
+		System.out.println(rcm_stationList.size());
+		
+		// 각 후보지에 대해서 소요시간 보여주기.		
+		// 공공데이터포털에서 경로 찾아오기
+		// 필요한 정보. 친구들 출발지 정보, 도착 후보지 정보
+		String pathInfo = ms.getPathInfo(arr_x, arr_y, placeList);
+		System.out.println(pathInfo);
+		model.addAttribute("pathInfo",pathInfo);
+		model.addAttribute("x_num",arr_x.length);
 		return "map/foundplace";
 	}
 
@@ -116,5 +121,4 @@ public class HomeController {
 
 		return "map/category";
 	}
-
 }

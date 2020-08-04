@@ -25,4 +25,6 @@ public interface MapService {
 	public Coordinate getCenter(String[] x, String[] y);
 
 	public stationXY getRcm_station(String subName) throws Exception;
+	
+	public String getPathInfo(String[] startX, String[] startY, List<Place> placeList);
 }

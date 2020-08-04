@@ -58,9 +58,9 @@
 		<div class="tab-content">
 			<div class="tab-pane container active" id="home">
 			</div>
-		<input type="submit" value="전송">
-		</div>
 		
+		</div>
+		<input class="btn btn-block btn-info" type='submit' value='결정'>
 		</form>
 	</div>
 	<br>
@@ -69,48 +69,24 @@
 	<br>
 	<br>
 	<br>
-	<%-- <div class="container">
-		<!-- taglib prefix="fn"필요 -->
-		입력된 출발지의 개수 : ${fn:length(addr)}
-		<table class="table">
-			<caption>출발지 목록</caption>
-			<tr align='center'>
-				<td>번호</td>
-				<td>출발지</td>
-				<td>X 좌표</td>
-				<td>Y 좌표</td>
-			</tr>
-			<c:forEach var="addr" items="${addr}" varStatus="status">
-				<tr>
-					<td>${status.count}번</td>
-					<td>${addr}</td>
-					<td>X : ${x[status.index]}</td>
-					<td>Y : ${y[status.index]}</td>
-				</tr>
-			</c:forEach>
-		</table>
-		<br> <br> 중심 좌표 <br> x : ${center.x} <br> y :${center.y} <br>
-		
-		<table class="table">
-			<caption>지하철 역 -중심 좌표로 부터 거리 순</caption>
-			<tr align='center'>
-				<td>번호</td>
-				<td>이름</td>
-				<td>X 좌표</td>
-				<td>Y 좌표</td>
-			</tr>
-			<c:forEach var="station" items="${stationList}" varStatus="status">
-				<tr>
-					<td>${status.count}번</td>
-					<td>${station.name}</td>
-					<td>X : ${station.x}</td>
-					<td>Y : ${station.y}</td>
-				</tr>
-			</c:forEach>
-		</table>
-	</div> --%>
 	<script>
+		//각 장소에대한 친구들의 경로 정보  => 장소1까지 친구1읠 경로/장소1까지 친구2의 경로/...
+		var path_list = '${pathInfo}'.split('/');
+		//출발지 갯수
+		var x_num = parseInt('${x_num}');
+		//파싱된 경로가 저장될 배열
+		var paths = new Array();
+		//각 도착지에 대한 친구들의 정보 종합.
+		for(var i=0; i<path_list.length; i++){
+			var str = "";
+			for(var j=0; j<x_num; j++){
+				str += '<p>친구 '+(j+1)+' 경로 정보   : '+path_list[i*x_num+j]+'</p>';
+			}
+			paths.push(str);
+		}	
+		
 		// 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 시작 ===========================
+		// 밑으로 주석 코드 곧 추가하겠습니다. [김재성]  
 		var possible_list_name = new Array();
 		var posi_x = new Array();
 		var posi_y = new Array();
@@ -122,7 +98,7 @@
 		</c:forEach>
 		
 		var posi_li_active = '<h1>'+possible_list_name[0]+'</h1>'+
-					'평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'+
+					paths[0]+
 					'<span data-x="'+posi_x[0]+'" data-y="'+posi_y[0]+'"></span>'+
 					'<input type="button" onclick="choice(this)" value="선택">';
 		$('#home').append(posi_li_active);
@@ -131,8 +107,8 @@
 			
 			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
 							'<h1>'+possible_list_name[i]+'</h1>'+
-							'평균 소요 시간 :0000000<br>평균 거리 :00000000<br>'+
-							'<span data-x="'+posi_x[i]+'" data-y="'+posi_y[i]+'"></span>'+
+							paths[i]+
+							'</p><span data-x="'+posi_x[i]+'" data-y="'+posi_y[i]+'"></span>'+
 							'<input type="button" onclick="choice(this)" value="선택"></div>';
 							
 			var posi_li_nav ='<li class="nav-item">'+
@@ -210,6 +186,9 @@
 			// 마커 이미지 
 			});
 		}
+		
+		
+		
 		
 	</script>
 	

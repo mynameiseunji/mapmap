@@ -46,15 +46,15 @@
 			places.keywordSearch(keyword, callback, options);
 		});
 
-		// 전송 버튼 누를 경우 : 주소지 정보 2개 이상 입력 필수
-		$('#check_data').click(function() {
-			if ($('#table_part tr').length < 2) {
-				alert("주소지 정보를 2개 이상 입력해주세요");
-				return false;
-			}
-		});
+		
 	});
-
+	// 전송 버튼 누를 경우 : 주소지 정보 2개 이상 입력 필수
+	$('#check_data').click(function() {
+		if ($('#table_part tr').length < 2) {
+			alert("주소지 정보를 2개 이상 입력해주세요");
+			return false;
+		}
+	});
 	var callback = function(result, status) {
 		if (status === kakao.maps.services.Status.OK) {
 			console.log(search_type);
@@ -92,6 +92,8 @@
 	};
 
 	function down(btn) {
+		
+		//클릭한 input 태그의 부모 태그 중에 가장 가까운 <tr>태그를 선택
 		item = $(btn).closest('tr');
 
 		if ($('div.list input[name="x"]').length == 10) {
@@ -126,6 +128,7 @@
 			console.log("새로 진입");
 		}
 	}
+
 </script>
 </head>
 <body>
