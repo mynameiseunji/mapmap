@@ -1,0 +1,24 @@
+***********************	20/08/04 권은지	    ***************************
+
+<통합 변경 사항>
+- addressTest > wemeetnow 로 friend, member, map 패키지 통합
+- DB연동 설정 username, password 유의
+- pom.xml > name을 wemeetnow로 변경
+- servlet-context.xml 파일 view페이지 구동 기본 경로 jsp 추가
+  ("/WEB-INF/views/jsp/")
+- map.xml파일 resources/sql 폴더에 통합
+- SqlMapConfig.xml에 map부분 DTO 3개 typeAlias 추가
+- view페이지 member/map으로 구분하여 저장
+- homeController에 메소드 return 경로 변경
+  ("map/view페이지이름")
+- MapDAO, MapService 인터페이스 클래스 추가 및 메소드 정리
+  (Impl클래스 @override처리)
+- @Autowired된 service, dao 변수 타입을 인터페이스 타입으로 변경
+  (MapService ms, MapDAO md)
+- MapDaoImpl > MapDAOImpl 로 클래스명 변경 (회원관리와 통일성을 위해서)
+
+<앞으로 더 필요한 부분>
+- map 부분 DTO : stationXY > Place 통합
+- SUB_RCM DB 데이터 Place에 맞게 재구성
+- friend, member, map 각 서비스별로 MVC 패키지 정리 및 이름 재정의
+- map/home1.jsp 에서 js파일 분리
