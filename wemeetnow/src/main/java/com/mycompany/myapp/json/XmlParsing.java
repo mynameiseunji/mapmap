@@ -25,7 +25,7 @@ public class XmlParsing {
 	public String getRouteInfo(String publicDatas) {
 		StringBuilder sb =null;
 		try {
-			
+			System.out.println(publicDatas);
 			//xml 읽어들일 객체 생성
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -41,7 +41,8 @@ public class XmlParsing {
 			XPathExpression expr = xpath.compile("//itemList");
 			NodeList nodeList = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
 			sb = new StringBuilder();
-			//for(int i=0; i<nodeList.getLength(); i++) {
+				
+				// itemList의 자식 엘리먼트
 				NodeList child = nodeList.item(0).getChildNodes();
 				for(int j=0; j<child.getLength(); j++) {
 					Node node =child.item(j);

@@ -45,19 +45,30 @@
 			//option으로 검색량 조절하기.
 			places.keywordSearch(keyword, callback, options);
 		});
-
-		
+		$('#check_data').click(function() {
+			if ($('#table_part tr').length < 2) {
+				alert("주소지 정보를 2개 이상 입력해주세요");
+				return false;
+			}
+			// controller에서 객체 리스트로 매핑하기위한 코드.
+			// submit 버튼 눌렀을 때 작동하는 이벤트
+			// name을 places[0].x,  places[0].y .. 처럼 설정해주면
+			// controller에서 dto 리스트로 받을 수 있음
+			// 참고  http://noveloper.github.io/blog/spring/2015/02/16/how-mapping-to-model-arrayvalue.html
+			$("#form .place_values").each( function (index) {
+	        	$(this).find("input[name=x]").attr("name", "places[" + index + "].x");
+	        	$(this).find("input[name=y]").attr("name", "places[" + index + "].y");
+	        	$(this).find("input[name=name]").attr("name", "places[" + index + "].name");
+	        	$(this).find("input[name=address]").attr("name", "places[" + index + "].address");
+	    	})
+	    				
+		});
 	});
 	// 전송 버튼 누를 경우 : 주소지 정보 2개 이상 입력 필수
-	$('#check_data').click(function() {
-		if ($('#table_part tr').length < 2) {
-			alert("주소지 정보를 2개 이상 입력해주세요");
-			return false;
-		}
-	});
+	
 	var callback = function(result, status) {
 		if (status === kakao.maps.services.Status.OK) {
-			console.log(search_type);
+			//console.log(search_type);
 			$(".modal-body table").empty();
 			for ( var i in result) {
 
@@ -72,18 +83,18 @@
 						+ p_name
 						+ "<br>"
 						+ result[i].address_name
-						+ "<input type='hidden' name='name' value='" + p_name +
+						+ "<div class='place_values'><input type='hidden' name='name' value='" + p_name +
 						"'/><input type='hidden' name='x' value='" + result[i].x +
-						"'/><input type='hidden' name='addr_name' value='"+ result[i].address_name +
+						"'/><input type='hidden' name='address' value='"+ result[i].address_name +
 						"'/><input type='hidden' name='y' value='" + result[i].y 
-						+"'></td><td align='right'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></td></tr>";
+						+"'></div></td><td align='right'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></td></tr>";
 				$(".modal-body table").append(str);
 			}
-		} else if (search_type == 'keyword') {
+		} else if (search_type == 'keyword') {//keyword 검색 결과가 없을 때 진입
 			search_type = "geo";
 			var geocoder = new kakao.maps.services.Geocoder();
 			return geocoder.addressSearch(keyword, callback);
-		} else {
+		} else { // keyword 와 address 모두 검색 결과가 없을 때 진입
 			$(".modal-body").empty();
 			$(".modal-body").append("검색 결과가 없습니다.");
 		}
@@ -91,6 +102,7 @@
 		search_type = "keyword";
 	};
 
+	//출발지 선택 팝업에서 선택 버튼을 누를 때 실행
 	function down(btn) {
 		
 		//클릭한 input 태그의 부모 태그 중에 가장 가까운 <tr>태그를 선택
@@ -108,11 +120,10 @@
 			$('button.close').click();
 		}
 	}
-
+	
+	// 선택된 출발지에서 삭제 버튼 누를 때 실행
 	function remove_addr(it) {
 		$(it).closest('tr').remove();
-		//var sel="div#sel"+num;
-		//$(sel).empty();
 	}
 	// 	places.keywordSearch('판교 치킨', callback);
 
@@ -128,7 +139,6 @@
 			console.log("새로 진입");
 		}
 	}
-
 </script>
 </head>
 <body>
@@ -164,7 +174,7 @@
 
 					<!-- Modal body -->
 					<div class="modal-body">
-						<table id="table_part" class="table"></table>
+						<table class="table"></table>
 					</div>
 
 					<!-- Modal footer -->
@@ -180,21 +190,22 @@
 	<hr>
 	<br>
 	<div class="container" align="center">
-		<form method='post' action="sendAddr.do">
+		<form method='post' id="form" action="sendAddr.do">
 			<div class="list">
-				<table class="table">
-					<!-- 세션 처리 위한 코드 07.24 김재성 -->
-					<c:if test="${sessionScope._name != null}">
-						<c:forEach var="name" items="${sessionScope._name}"
+				<table id="table_part" class="table">
+					<!-- 세션 처리 위한 코드 07.24 김재성 08.05수정-->
+					<c:if test="${sessionScope.startPlaceList != null}">
+						<c:forEach var="startPlace" items="${sessionScope.startPlaceList}"
 							varStatus="status">
 							<tr>
-								<td width="75%">${name}<br>
-									${sessionScope._addr[status.index]} <input type='hidden'
-									name='name' value='${name}' /> <input type='hidden'
-									name='addr_name' value='${sessionScope._addr[status.index]}' />
-									<input type='hidden' name='x'
-									value='${sessionScope._x[status.index]}' /> <input
-									type='hidden' name='y' value='${sessionScope._y[status.index]}' /></td>
+								<td width="75%">${startPlace.name}<br>
+									${startPlace.address} 
+									<div class='place_values'>
+									<input type='hidden' name='name' value='${startPlace.name}' /> 
+									<input type='hidden' name='address' value='${startPlace.address}' />
+									<input type='hidden' name='x' value='${startPlace.x}' /> 
+									<input type='hidden' name='y' value='${startPlace.y}' />
+									</div></td>
 								<td width="20%" align="right"><input type='button'
 									class='btn btn-outline-danger btn-sm'
 									onclick='remove_addr(this)' value='삭제'></td>

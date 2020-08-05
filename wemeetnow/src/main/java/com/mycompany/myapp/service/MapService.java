@@ -22,9 +22,9 @@ public interface MapService {
 
 	public List<Place> getStationCoord(String url_, String options);
 
-	public Coordinate getCenter(String[] x, String[] y);
+	public Coordinate getCenter(List<Place> placeList);
 
 	public stationXY getRcm_station(String subName) throws Exception;
 	
-	public String getPathInfo(String[] startX, String[] startY, List<Place> placeList);
+	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList);
 }

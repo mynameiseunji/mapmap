@@ -80,40 +80,45 @@
 		for(var i=0; i<path_list.length; i++){
 			var str = "";
 			for(var j=0; j<x_num; j++){
-				str += '<p>친구 '+(j+1)+' 경로 정보   : '+path_list[i*x_num+j]+'</p>';
+				if(path_list[i*x_num+j]==""){
+					str +='<p>친구 '+(j+1)+' 경로 정보 : 이용 가능한 대중 교통이 없습니다.(도보 이용)</p>';
+				}else{
+					str += '<p>친구 '+(j+1)+' 경로 정보   : '+path_list[i*x_num+j]+'</p>';	
+				}
 			}
 			paths.push(str);
 		}	
 		
 		// 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 시작 ===========================
-		// 밑으로 주석 코드 곧 추가하겠습니다. [김재성]  
-		var possible_list_name = new Array();
-		var posi_x = new Array();
-		var posi_y = new Array();
+		// 컨트롤러에서 후보지 정보 받아와서 배열생성
+		// name#x#y#name#x#y...형식
+		var endPlaceList = '${endPlaceList}'.split("#");
+		// endPlace갯수
+		var epl_num = parseInt('${epl_num}');
+		endPlaceList.pop();
 		
-		<c:forEach items="${stationList}" var="station" varStatus="status">
-			possible_list_name.push('${station.name}');
-			posi_x.push('${station.x}');
-			posi_y.push('${station.y}');
-		</c:forEach>
-		
-		var posi_li_active = '<h1>'+possible_list_name[0]+'</h1>'+
+		//맨처음 보일 endplace를 html형식으로 append.
+		// .tab-content 자손태그로 추가
+		var posi_li_active = '<h1>'+endPlaceList[0]+'</h1>'+
 					paths[0]+
-					'<span data-x="'+posi_x[0]+'" data-y="'+posi_y[0]+'"></span>'+
+					'<span data-x="'+endPlaceList[1]+'" data-y="'+endPlaceList[2]+'"></span>'+
 					'<input type="button" onclick="choice(this)" value="선택">';
+		//append.
 		$('#home').append(posi_li_active);
+		$('.nav-link.active').text(endPlaceList[0]); // location1 => 장소명으로 변경
 		
-		for(var i=1; i<possible_list_name.length; i++){
+		// .tab-content 자손태그로 추가(반복)
+		for(var i=1; i<epl_num; i++){
 			
 			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
-							'<h1>'+possible_list_name[i]+'</h1>'+
+							'<h1>'+endPlaceList[i*3+0]+'</h1>'+
 							paths[i]+
-							'</p><span data-x="'+posi_x[i]+'" data-y="'+posi_y[i]+'"></span>'+
+							'</p><span data-x="'+endPlaceList[i*3+1]+'" data-y="'+endPlaceList[i*3+2]+'"></span>'+
 							'<input type="button" onclick="choice(this)" value="선택"></div>';
 							
 			var posi_li_nav ='<li class="nav-item">'+
 							'<a class="nav-link" data-toggle="tab" href="#menu'+i+'">'+
-							possible_list_name[i]+'</a></li>';
+							endPlaceList[i*3+0]+'</a></li>';
 			
 			
 			$('.tab-content').append(posi_li_fade);
@@ -147,12 +152,12 @@
 		var titles = new Array();
 		
 		var bounds = new kakao.maps.LatLngBounds();
-		<c:forEach items="${sessionScope._x}" var="item" varStatus="sts">
-			var xx = parseFloat('${item}');
-			var yy = parseFloat('${sessionScope._y[sts.index]}');
+		<c:forEach items="${sessionScope.startPlaceList}" var="item" varStatus="sts">
+			var xx = parseFloat('${item.x}');
+			var yy = parseFloat('${item.y}');
 			arr_x.push(xx);
 			arr_y.push(yy);
-			titles.push('${sessionScope._name[sts.index]}');
+			titles.push('${item.name}');
 			bounds.extend(new kakao.maps.LatLng(yy, xx));
 		</c:forEach>
 		//모든 마커 보이게 지도 영역 설정
@@ -192,7 +197,7 @@
 		
 	</script>
 	
-	<!-- 08/03 권은지 : 추천 지하철 역 테스트용 코드 -->
+	<%-- <!-- 08/03 권은지 : 추천 지하철 역 테스트용 코드 -->
 	<table border="1">
 		<thead>
 			<th>역이름</th>
@@ -208,7 +213,7 @@
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>
+	</table> --%>
 </body>
 
 </html>

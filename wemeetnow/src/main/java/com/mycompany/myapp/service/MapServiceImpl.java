@@ -156,14 +156,14 @@ public class MapServiceImpl implements MapService {
 	// �߽� ��ǥ ���ϱ�.
 	// ����� ��ǥ ���� ���.
 	@Override
-	public Coordinate getCenter(String[] x, String[] y) {
+	public Coordinate getCenter(List<Place> placeList) {
 		Coordinate coor = new Coordinate();
-		float n = (float) x.length;
+		float n = placeList.size();
 		float sumX = 0;
 		float sumY = 0;
-		for (int i = 0; i < x.length; i++) {
-			sumX += Float.parseFloat(x[i]);
-			sumY += Float.parseFloat(y[i]);
+		for (int i = 0; i < n; i++) {
+			sumX += Float.parseFloat(placeList.get(i).getX());
+			sumY += Float.parseFloat(placeList.get(i).getY());
 		}
 		coor.setX(Float.toString(sumX / n));
 		coor.setY(Float.toString(sumY / n));
@@ -179,12 +179,17 @@ public class MapServiceImpl implements MapService {
 	//리턴 형식은 '/'와 '#' 를 구분자로하는 문자열 타입
 	//각 경로는 '/'로 구분
 	//하나의 경로에서 시간 거리 출발지 도착지 등 정보는 '#'로 구분
-	public String getPathInfo(String[] startX, String[] startY, List<Place> placeList) {
+	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList) {
 		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<placeList.size(); i++) {
+		for(int i=0; i<endPlaceList.size(); i++) {
 			PublicDataService pds = new PublicDataService();
-			for(int j=0; j<startX.length; j++) {
-				sb.append(pds.getPath(startX[j], startY[j], placeList.get(i).getX(), placeList.get(i).getY())).append("/");
+			for(int j=0; j<startPlaceList.size(); j++) {
+				
+				sb.append(pds.getPath(
+						startPlaceList.get(j).getX(),
+						startPlaceList.get(j).getY(),
+						endPlaceList.get(i).getX(),
+						endPlaceList.get(i).getY())).append("/");
 			}
 		}
 		return sb.toString();
