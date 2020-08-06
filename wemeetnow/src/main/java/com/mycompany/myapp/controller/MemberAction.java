@@ -1,5 +1,7 @@
 package com.mycompany.myapp.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mycompany.myapp.model.FriendBean;
 import com.mycompany.myapp.model.MemberBean;
+import com.mycompany.myapp.service.FriendServiceImpl;
 import com.mycompany.myapp.service.Memberservice;
 
 
@@ -22,6 +26,8 @@ public class MemberAction {
 
 	@Autowired
 	private Memberservice memberService;
+	@Autowired
+	private FriendServiceImpl friendService;
 
 	//email duplicate check ajax
 	@RequestMapping(value = "/member_emailcheck.do", method = RequestMethod.POST)
@@ -30,84 +36,25 @@ public class MemberAction {
 		int result = memberService.checkMemberEmail(email);
 		model.addAttribute("result", result);
 
-		return "jsp/member/emailcheckResult";
+		return "member/emailcheckResult";
 	}
 	
 	//sign in form
 	@RequestMapping(value = "/member_login.do")
 	public String member_login() {
-		return "jsp/member/member_login";
+		return "member/member_login";
 	}
-
-//	//password forget
-//	@RequestMapping(value = "/pwd_find.lm")
-//	public String pwd_find() {
-//		return "member/pwd_find";
-//	}
 
 	//sign up form
 	@RequestMapping(value = "/member_join.do")
 	public String member_join() {
-		return "jsp/member/member_join";
+		return "member/member_join";
 	}
-	
-//	//password find
-//	@RequestMapping(value = "/pwd_find_ok.lm", method = RequestMethod.POST)
-//	public String pwd_find_ok(@ModelAttribute MemberBean mem, HttpServletResponse response, Model model)
-//			throws Exception {
-//		response.setContentType("text/html;charset=UTF-8");
-//		PrintWriter out = response.getWriter();
-//
-//		MemberBean member = memberService.findpwd(mem);
-//
-//		if (member == null) {
-//			return "member/pwdResult";
-//		} else {
-//
-//			//mail server
-//			String charSet = "utf-8";
-//			String hostSMTP = "smtp.naver.com";
-//			String hostSMTPid = "rkfeen@naver.com";
-//			String hostSMTPpwd = "!1Elephant";
-//
-//			//sender
-//			String fromEmail = "rkfeen@naver.com";
-//			String fromName = "admin";
-//			String subject = "password";
-//
-//			//reciever
-//			String mail = member.getJoin_email();
-//
-//			try {
-//				HtmlEmail email = new HtmlEmail();
-//				email.setDebug(true);
-//				email.setCharset(charSet);
-//				email.setSSL(true);
-//				email.setHostName(hostSMTP);
-//				email.setSmtpPort(587);
-//
-//				email.setAuthentication(hostSMTPid, hostSMTPpwd);
-//				email.setTLS(true);
-//				email.addTo(mail, charSet);
-//				email.setFrom(fromEmail, fromName, charSet);
-//				email.setSubject(subject);
-//				email.setHtmlMsg("<p align = 'center'>password</p><br>" + "<div align='center'> 비밀번호 : "
-//						+ member.getJoin_pwd() + "</div>");
-//				email.send();
-//			} catch (Exception e) {
-//				System.out.println(e);
-//			}
-//
-//			model.addAttribute("pwdok", "전자우편으로 비밀번호 전송");
-//			return "member/pwd_find";
-//		}
-//	}
-
 
 	//member information save
 	@RequestMapping(value = "/member_join_ok.do", method = RequestMethod.POST)
 	public String member_join_ok(@ModelAttribute MemberBean member) throws Exception {
-	
+		System.out.println(member.toString());
 		memberService.insertMember(member);
 
 		return "redirect:member_login.do";
@@ -127,23 +74,36 @@ public class MemberAction {
 			result = 1;
 			model.addAttribute("result", result);
 			
-			return "jsp/member/loginResult";
+			return "member/loginResult";
 			
 		} else {			//member exists
 			if (m.getPwd().equals(pwd)) {	//correct password
 				session.setAttribute("email", email);
 
-				String nickname = m.getNickname();
-
-				model.addAttribute("nickname", nickname);
-
-				return "jsp/member/main";
+	            String nickname = m.getNickname();
+	            /*
+	             * db에서 친구 리스트 가져오기*/
+	            List<FriendBean> list = friendService.list(email);
+	            StringBuffer sb = new StringBuffer();
+	            for(FriendBean fb : list) {
+	               sb.append(fb.getEmail2()).append("#");
+	            }
+	            model.addAttribute("nickname", nickname);
+	            model.addAttribute("friend_List", sb.toString());
+	            
+	            //home1.jsp에서 사용
+	            session.setAttribute("friend_List", sb.toString());
+	            
+	            return "member/main";
+	            
+	            // 프론트엔드 새로 합칠때 사용.
+	            //return "map/home1.jsp"
 				
 			} else {		//incorrect password
 				result = 2;
 				model.addAttribute("result", result);
 				
-				return "jsp/member/loginResult";				
+				return "member/loginResult";				
 			}
 		}
 	}
@@ -158,7 +118,7 @@ public class MemberAction {
 				
 		model.addAttribute("editm", editm);
 		
-		return "jsp/member/member_edit";
+		return "member/member_edit";
 	}
 	
 	//member information update
@@ -185,7 +145,7 @@ public class MemberAction {
 	public String logout(HttpSession session) {
 		session.invalidate();
 
-		return "jsp/member/member_logout";
+		return "member/member_logout";
 	}
 	
 	//member deletion form
@@ -197,7 +157,7 @@ public class MemberAction {
 		dm.addAttribute("d_email", email);
 		dm.addAttribute("d_nname", deleteM.getNickname());
 
-		return "jsp/member/member_del";
+		return "member/member_del";
 	}
 
 	//member deletion completed
@@ -210,7 +170,7 @@ public class MemberAction {
 
 		if (!member.getPwd().equals(pass)) {
 
-			return "jsp/member/deleteResult";
+			return "member/deleteResult";
 			
 		} else {	//correct password
 			

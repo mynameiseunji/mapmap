@@ -114,7 +114,7 @@
 </script>
 </head>
 <body>
-
+<%=request.getContextPath()%>
  <div >
   <h3>회원가입</h3>
   <form name="f" method="post" action="member_join_ok.do" onsubmit="return check()">
@@ -164,9 +164,9 @@
 	</td>
 
 	<td>
-		<input name="addr" id="addr" class="input_box" readonly />
-		<input name="lon" id="lon" class="input_box"  />
-		<input name="lat" id="lat" class="input_box"  />
+		<input name="addr1" id="addr" class="input_box" readonly />
+		<input name="x_" id="lon" class="input_box"  readonly/>
+		<input name="y_" id="lat" class="input_box"  readonly/>
 			
      </td>
     </tr>

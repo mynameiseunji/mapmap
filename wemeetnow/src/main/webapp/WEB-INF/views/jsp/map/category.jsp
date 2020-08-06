@@ -272,33 +272,25 @@ function changeCategoryClass(el) {
 <td>y : ${place.y}</td>
 </tr>
 </table>
-<br>
-<table border=1>
-<tr>
-<td colspan="2">카테고리별 최종 장소 후보 리스트</td>
-</tr>
-<tr>
-<td>1번</td>
-<td>우리식당</td>
-</tr>
-<tr>
-<td>2번</td>
-<td>기사식당</td>
-</tr>
-<tr>
-<td>3번</td>
-<td>중화반점</td>
-</tr>
-<tr>
-<td>4번</td>
-<td>유앤피</td>
-</tr>
-<tr>
-<td>5번</td>
-<td>또보겠지</td>
-</tr>
+ <br>
+문화시설<br>
+<c:forEach var="item" items="${ct1placeList}">
+	${item.name} - ${item.address}<br>
+</c:forEach>
 
-</tr>
-</table>
+<br>음식점<br>
+<c:forEach var="item" items="${fd6placeList}">
+	${item.name} - ${item.address}<br>
+</c:forEach>
+
+<br>카페<br>
+<c:forEach var="item" items="${ce7placeList}">
+	${item.name} - ${item.address}<br>
+</c:forEach>
+
+<br>관광명소<br>
+<c:forEach var="item" items="${at4placeList}">
+	${item.name} - ${item.address}<br>
+</c:forEach>
 </body>
 </html>

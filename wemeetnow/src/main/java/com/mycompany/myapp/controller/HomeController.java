@@ -127,14 +127,33 @@ public class HomeController {
 	}
 
 	@RequestMapping("category.do")
-	public String categorySelect(Place endPlace, Model model) {
+	public String categorySelect(Place place, Model model) {
 
-		System.out.println(endPlace.getX());
-		System.out.println(endPlace.getY());
-		System.out.println(endPlace.getName());
+		System.out.println(place.getX());
+		System.out.println(place.getY());
+		System.out.println(place.getName());
 
-		model.addAttribute("place", endPlace);
+		model.addAttribute("place", place);
 
+		//-------------------- 카테고리별 추천 장소 5개 ----- 08/05 김가을  --------------------
+		String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/size/5/radius/2000";
+		
+		// CT1 문화시설
+		List<Place> ct1placeList = ms.categorySearch("CT1", option);
+		for(Place p : ct1placeList)
+			System.out.println(p.toString());
+		model.addAttribute("ct1placeList", ct1placeList);
+		// FD6 음식점
+		List<Place> fd6placeList = ms.categorySearch("FD6", option);
+		model.addAttribute("fd6placeList", fd6placeList);
+		// CE7 카페
+		List<Place> ce7placeList = ms.categorySearch("CE7", option);
+		model.addAttribute("ce7placeList", ce7placeList);
+		// AT4 관광명소
+		List<Place> at4placeList = ms.categorySearch("AT4", option);
+		model.addAttribute("at4placeList", at4placeList);
+		//------------------------------------------------------------
+		
 		return "map/category";
 	}
 }

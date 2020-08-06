@@ -4,28 +4,19 @@
 <mapper namespace="friendns">
 		
 	
-	<!-- member information save -->
-	<insert id="member_join" parameterType="member">
-		insert into member (email, pwd, nickname, addr_name, x, y) 
-			values(#{email}, #{pwd}, #{nickname}, #{addr_name}, 
-					#{x}, #{y})
+	<!-- add friend -->
+	<insert id="add_friend" parameterType="Map">
+		insert into friendship	values(friend_seq.NEXTVAL,#{email1}, #{email2})
 	</insert>
 	
-	<!-- member verification -->
-	<select id="login_check" parameterType="String" resultType="member">
-		select * from member where email=#{email}
+	<!-- friend list  -->
+	<select id="list" parameterType="int" resultType="friend">
+		select * from friendship where email1=#{email1}
 	</select>
-    
-	<!-- member information update -->
-	<update id="member_edit" parameterType="member">
-		update member set pwd=#{pwd},nickname=#{nickname},
-			addr_name=#{addr_name}, x=#{x}, y=#{y}
-		where email=#{email}
-	</update>
 	
-	<!-- member deletion -->
-	<delete id="member_delete" parameterType="member">
-		delete from member where email=#{email}
+	<!-- delete friend -->
+	<delete id="del_friend" parameterType="Map">
+		delete from friendship where email1=#{email1} and email2=#{email2}
 	</delete>
 	
 </mapper>

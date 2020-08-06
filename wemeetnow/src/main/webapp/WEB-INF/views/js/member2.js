@@ -27,9 +27,10 @@
 		 $("#nickname").val("").focus();
 		 return false;
 	 }
-	 if($.trim($("#addr1").val())==""){
+	 if($.trim($("#addr").attr("value"))==""){
+		 console.log($("#addr1").attr);
 		 alert("주소 입력");
-		 $("#addr1").val("").focus();
+		 $("#addr").val("").focus();
 		 return false;
 	 } 	 
  }

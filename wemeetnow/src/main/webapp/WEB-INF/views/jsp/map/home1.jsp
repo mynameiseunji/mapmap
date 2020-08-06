@@ -20,6 +20,34 @@
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
 <script>
+	/*
+	로그인 세션 처리 
+	로그인 세션 있으면(컨트롤러에서 친구목록, 로그인 세션 넘어옴)
+		1.버튼 value '로그인' => '회원 정보'로 변경
+		2.친구 목록 리스트 보여주기. (main.jsp의 var fl 변수 참조)
+	*/
+	//친구목록 세션에 있을때
+	var fl = '${friend_List}'.split("#");
+	console.log(fl);
+	fl.pop();
+	$(document).ready(function(){
+		console.log('${sessionScope.email}'+"있습니다.");
+		if('${sessionScope.email}'!=""){
+			$("#login").append("친구 목록 있음/ 로그인 됨<br>");			
+			var tag =""; //20라인에서 append될 태그 변수
+			for(var i=0; i<fl.length; i++){
+				//태그 쌓기
+				tag +=fl[i]+'<br>';
+			}
+			$("#login").append(tag);
+		}else{
+			$("#login").append("친구 목록 없음/ 로그인 안됨");			
+			
+		}
+	});
+	
+	
+	
 	var keyword = "";
 	var places = new kakao.maps.services.Places();
 	var search_type = "keyword";
@@ -145,7 +173,7 @@
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
 		<a class="navbar-brand" href="#">Logo</a>
 		<ul class="navbar-nav">
-			<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+			<li class="nav-item"><a class="nav-link" href="member_login.do">로그인</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
 		</ul>
 	</nav>
@@ -217,6 +245,10 @@
 			<br> <input id="check_data" class="btn btn-block btn-info"
 				type='submit' value='전송'>
 		</form>
+	</div>
+	<br><br>
+	<div id="login">
+		
 	</div>
 </body>
 </html>

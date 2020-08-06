@@ -27,7 +27,7 @@
 		 $("#nickname").val("").focus();
 		 return false;
 	 }
-	 if($.trim($("#addr").val())==""){
+	 if($.trim($("#addr").val())==""){		 
 		 alert("주소 입력");
 		 $("#addr").val("").focus();
 		 return false;

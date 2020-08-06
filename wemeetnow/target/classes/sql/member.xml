@@ -10,9 +10,9 @@
 	
 	<!-- member information save -->
 	<insert id="member_join" parameterType="member">
-		insert into member (email, pwd, nickname,  addr, lon, lat) 
-			values(#{email}, #{pwd}, #{nickname}, #{addr}, 
-					#{lon}, #{lat})
+		insert into member (email, pwd, nickname,  addr1,addr2,addr3, x_, y_) 
+			values(#{email}, #{pwd}, #{nickname}, #{addr1}, #{addr2, jdbcType=VARCHAR}, #{addr3, jdbcType=VARCHAR}, 
+					#{x_}, #{y_})
 	</insert>
 	
 	<!-- member verification -->

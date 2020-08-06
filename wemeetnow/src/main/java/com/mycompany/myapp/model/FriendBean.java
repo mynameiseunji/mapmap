@@ -1,7 +1,13 @@
 package com.mycompany.myapp.model;
 
 public class FriendBean {
-	
+	private int fno;
+	public int getFno() {
+		return fno;
+	}
+	public void setFno(int fno) {
+		this.fno = fno;
+	}
 	private String email1;
 	private String email2;
 	
