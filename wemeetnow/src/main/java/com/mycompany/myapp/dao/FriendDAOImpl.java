@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import com.mycompany.myapp.model.FriendBean;
 
+
+
+
+
 @Repository
 public class FriendDAOImpl {
 	
@@ -26,7 +30,9 @@ public class FriendDAOImpl {
 		return sqlSession.selectList("friendns.list", email) ;
 	}
 	
-	public int delFriend(Map m) throws Exception {
-		return sqlSession.delete("friendns.del_friend", m);
+	public int delFriend(FriendBean bean) throws Exception {
+		return sqlSession.delete("friendns.del_friend", bean);
 	}
+
+
 }

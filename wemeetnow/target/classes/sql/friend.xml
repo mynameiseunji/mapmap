@@ -10,13 +10,13 @@
 	</insert>
 	
 	<!-- friend list  -->
-	<select id="list" parameterType="int" resultType="friend">
+	<select id="list" parameterType="String" resultType="friend">
 		select * from friendship where email1=#{email1}
 	</select>
 	
 	<!-- delete friend -->
-	<delete id="del_friend" parameterType="Map">
-		delete from friendship where email1=#{email1} and email2=#{email2}
+	<delete id="del_friend" parameterType="friend">
+		delete from friendship where fno=#{fno} and email1=#{email1}
 	</delete>
 	
 </mapper>
