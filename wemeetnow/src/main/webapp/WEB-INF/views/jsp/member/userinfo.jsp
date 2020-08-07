@@ -65,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
 		<br>
 		<div class="w3-row">
 			<div class="w3-col s3 w3-center">
-				<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href='friend.jsp'">친구 정보</button>
+				<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href='friendlist.do'">친구 정보</button>
 			</div>
 			<div class="w3-col s3 w3-center">
 				<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href='member_edit.do'">정보 수정</button>
@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
 				<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href='member_del.do'">회원 탈퇴</button>
 			</div>
 			<div class="w3-col s3 w3-center">
-				<button type="button" class="btn btn-outline-dark btn-lg">로그 아웃</button>
+				<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href='member_logout.do'">로그 아웃</button>
 			</div>
 		</div>
 	</div>

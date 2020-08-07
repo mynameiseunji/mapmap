@@ -160,7 +160,7 @@ public class MemberAction {
 	//member deletion form
 	@RequestMapping(value = "/member_del.do")
 	public String member_del(HttpSession session, Model model) throws Exception {
-
+		
 		String email = (String) session.getAttribute("email");
 		MemberBean user = memberService.userCheck(email);
 		model.addAttribute("user", user);

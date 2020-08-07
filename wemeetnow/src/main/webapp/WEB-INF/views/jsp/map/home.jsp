@@ -43,14 +43,10 @@ h1, h2, h3, h4, h5, h6 {
 	 */
 	//친구목록 세션에 있을때
 	//alert('${fr_email}');
-	var fr_email = '${fr_email}'.split("#");
-	fr_email.pop();
-	var fr_nick = '${fr_nick}'.split("#");
-	fr_nick.pop();
-	var fr_x = '${fr_x}'.split("#");
-	fr_x.pop();
-	var fr_y = '${fr_y}'.split("#");
-	fr_y.pop();
+	var fr_email = '${fr_email}'.split("#");	fr_email.pop();
+	var fr_nick = '${fr_nick}'.split("#");	fr_nick.pop();
+	var fr_x = '${fr_x}'.split("#");	fr_x.pop();
+	var fr_y = '${fr_y}'.split("#");	fr_y.pop();
 
 	$(document).ready(function() {
 		//console.log('${sessionScope.email}'+"있습니다.");
@@ -88,11 +84,13 @@ h1, h2, h3, h4, h5, h6 {
 			<a href="index.jsp" class="w3-bar-item w3-button">우리 지금 만나</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
+				<!-- 로그인 세션 있으면 회원정보로-->
 				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
 					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<a href="login.jsp" class="w3-bar-item w3-button"> <i
+				<!-- 로그인 세션 있으면 회원정보로 -->
+				<a href="member_login.do" class="w3-bar-item w3-button"> <i
 					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
 			</div>
 		</div>
