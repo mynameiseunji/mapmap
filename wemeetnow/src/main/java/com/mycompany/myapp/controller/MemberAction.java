@@ -18,9 +18,6 @@ import com.mycompany.myapp.model.MemberBean;
 import com.mycompany.myapp.service.FriendServiceImpl;
 import com.mycompany.myapp.service.Memberservice;
 
-
-
-
 @Controller
 public class MemberAction {
 
@@ -192,7 +189,7 @@ public class MemberAction {
 			return "redirect:member_login.do";
 		}
 	}
-	
+
 		//	member information
 		@RequestMapping(value = "/member_info.do")
 		public String member_info(HttpSession session, MemberBean member, Model model) throws Exception {

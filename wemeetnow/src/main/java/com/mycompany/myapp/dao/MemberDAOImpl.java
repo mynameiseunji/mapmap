@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mycompany.myapp.model.MemberBean;
 
-
-
 @Repository
 public class MemberDAOImpl {
 	

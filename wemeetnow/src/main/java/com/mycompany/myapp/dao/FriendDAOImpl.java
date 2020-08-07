@@ -30,8 +30,8 @@ public class FriendDAOImpl {
 		return sqlSession.selectList("friendns.list", email) ;
 	}
 	
-	public int delFriend(Map m) throws Exception {
-		return sqlSession.insert("friendns.del_friend", m);
+	public int delFriend(FriendBean bean) throws Exception {
+		return sqlSession.delete("friendns.del_friend", bean);
 	}
 
 

@@ -1,7 +1,7 @@
 package com.mycompany.myapp.model;
 
 public class stationXY {
-	// 08/03 ±ÇÀºÁö : address »èÁ¦(Å×½ºÆ® Çü½Ä°ú ¸ÂÁö ¾Ê¾Æ¼­)
+	// 08/03 ê¶Œì€ì§€ : address ì‚­ì œ(í…ŒìŠ¤íŠ¸ í˜•ì‹ê³¼ ë§ì§€ ì•Šì•„ì„œ)
 	private String subname;
 	private String xs;
 	private String ys;
@@ -23,7 +23,4 @@ public class stationXY {
 	public void setYs(String ys) {
 		this.ys = ys;
 	}
-	
-
-	
 }

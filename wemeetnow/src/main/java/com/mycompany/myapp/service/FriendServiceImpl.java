@@ -28,9 +28,9 @@ public class FriendServiceImpl {
 		return friendDao.list(email);
 	}
 
-	public int delFriend(Map m) throws Exception{
+	public int delFriend(FriendBean bean) throws Exception{
 		
-		return friendDao.delFriend(m);
+		return friendDao.delFriend(bean);
 	}
 	public int checkMemberEmail(String email) throws Exception{
 		return memberDao.checkMemberEmail(email);
