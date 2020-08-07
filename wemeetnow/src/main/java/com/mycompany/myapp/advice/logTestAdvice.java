@@ -9,18 +9,18 @@ public class logTestAdvice {
 		System.out.println("=======================================");
 		System.out.println("=======================================");
 		System.out.println("=======================================");		
-		System.out.println("¹«»çÈ÷ °´Ã¼ »ı¼º");
+		System.out.println("ë¬´ì‚¬íˆ ê°ì²´ ìƒì„±");
 	}
 	public void printLog() {
 		System.out.println("=======================================");
 		System.out.println("aop test");
-		System.out.println("servlet-context.xml¿¡ <aop:config> È¯°æ ¼³Á¤");
+		System.out.println("servlet-context.xmlì— <aop:config> í™˜ê²½ ì„¤ì •");
 		System.out.println();
 		System.out.println("adressSearch(..)");
 		System.out.println("keywordSearch(..)");
 		System.out.println("categorySearch(..)");
-		System.out.println("¸Ş¼Òµå°¡ »ç¿ëµÉ¶§");
-		System.out.println("ÄÜ¼Ö¿¡ log Ãâ·Â");
+		System.out.println("ë©”ì†Œë“œê°€ ì‚¬ìš©ë ë•Œ");
+		System.out.println("ì½˜ì†”ì— log ì¶œë ¥");
 		System.out.println("aop test");
 		System.out.println("aop test");
 		System.out.println("aop test");

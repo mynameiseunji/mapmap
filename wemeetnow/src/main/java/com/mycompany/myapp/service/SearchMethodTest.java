@@ -4,8 +4,6 @@ public class SearchMethodTest {
 
 	public static void main(String[] args) {
 		MapServiceImpl ms = new MapServiceImpl();
-		System.out.println(ms.addressSearch("°øÇ×´ë·Î 58°¡±æ16").toString());
-
+		System.out.println(ms.addressSearch("ê³µí•­ëŒ€ë¡œ 58ê°€ê¸¸16").toString());
 	}
-
 }

@@ -19,9 +19,6 @@ import com.mycompany.myapp.model.MemberBean;
 import com.mycompany.myapp.service.FriendServiceImpl;
 import com.mycompany.myapp.service.MemberServiceImpl;
 
-
-
-
 @Controller
 public class FriendAction {
 

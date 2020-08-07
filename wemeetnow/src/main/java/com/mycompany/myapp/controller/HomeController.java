@@ -67,6 +67,7 @@ public class HomeController {
 		//--------------------------------------------------------------------------------
 		
 		
+		
 		//---------------------------08/03 권은지 : 추천역 DB로부터 가져오기 ------------------------------------	
 		// 중점좌표 기준 모든 station 데이터를 API에 요청 (radius:2000 동일)
 //		String rcm_option = "x/" + center_coor.getX() + "/y/" + center_coor.getY() + "/radius/2000";
@@ -89,11 +90,8 @@ public class HomeController {
 //				}
 //			}
 //		}
-		
 		//--------------------------------------------------------------------------
-		
-		
-		
+			
 		
 		
 		// 중심좌표 return
@@ -137,6 +135,7 @@ public class HomeController {
 
 		//-------------------- 카테고리별 추천 장소 5개 ----- 08/05 김가을  --------------------
 		String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/size/5/radius/2000";
+		//String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/radius/2000";
 		
 		// CT1 문화시설
 		List<Place> ct1placeList = ms.categorySearch("CT1", option);

@@ -18,9 +18,6 @@ import com.mycompany.myapp.model.MemberBean;
 import com.mycompany.myapp.service.FriendServiceImpl;
 import com.mycompany.myapp.service.Memberservice;
 
-
-
-
 @Controller
 public class MemberAction {
 
@@ -185,5 +182,4 @@ public class MemberAction {
 			return "redirect:member_login.do";
 		}
 	}
-
 }

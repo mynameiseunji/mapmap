@@ -10,7 +10,6 @@ import com.mycompany.myapp.dao.FriendDAOImpl;
 import com.mycompany.myapp.dao.MemberDAOImpl;
 import com.mycompany.myapp.model.FriendBean;
 
-
 @Service
 public class FriendServiceImpl {
 	
@@ -32,6 +31,7 @@ public class FriendServiceImpl {
 		
 		return friendDao.delFriend(m);
 	}
+	
 	public int checkMemberEmail(String email) throws Exception{
 		return memberDao.checkMemberEmail(email);
 	}

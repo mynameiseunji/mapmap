@@ -9,10 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mycompany.myapp.model.FriendBean;
 
-
-
-
-
 @Repository
 public class FriendDAOImpl {
 	
@@ -31,8 +27,6 @@ public class FriendDAOImpl {
 	}
 	
 	public int delFriend(Map m) throws Exception {
-		return sqlSession.insert("friendns.del_friend", m);
+		return sqlSession.delete("friendns.del_friend", m);
 	}
-
-
 }

@@ -21,6 +21,7 @@ create table friendship (
 	constraint friendship_pk primary key(fno)
 );
 insert into member values('2@1.qq','123','123','123','123','123','123','123')
+delete from member;
 delete FRIENDSHIP where email2 ='2@1.qq';
 delete FRIENDSHIP where email2 ='1@1.qq';
 create sequence friend_seq increment by 1 start with 1 nocache;
