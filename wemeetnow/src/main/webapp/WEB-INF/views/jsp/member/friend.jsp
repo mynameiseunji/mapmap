@@ -60,21 +60,26 @@ function email_check(){
         data: {"email":email},
         dataType:'text', 
         success: function (data) {
-        	//alert("return success="+data); 
         	console.log(data)
-        	var obj = JSON.parse(data);	
-        	var str = '<li class="list-group-item"><div class="w3-low"><div class="w3-col s10">Email : '
-        			+ obj.email +'<br>Nickname : '+ obj.nickname + '</div><div class="w3-col s2 add">'
-        			+ '</div></div></li>';
-        	$("#resultList").show();
-        	$("#resultList").empty();
-        	$("#resultList").append(str);
+        	if(data == ""){
+        		alert("그런 아이디 없어요~")
+       		}else{
+       			
+               	var obj = JSON.parse(data);	
+               	var str = '<li class="list-group-item"><div class="w3-low"><div class="w3-col s10">Email : '
+               			+ obj.email +'<br>Nickname : '+ obj.nickname + '</div><div class="w3-col s2 add">'
+               			+ '</div></div></li>';
+               	$("#resultList").show();
+               	$("#resultList").empty();
+               	$("#resultList").append(str);
+               	
+               	
+               	var btn = '<span id="add_btn" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">+</span>';
+               	$(".add").append(btn);
+               	
+               	$("#add_btn").attr('onclick', 'add("'+obj.email+'")');
+       		}
         	
-        	
-        	var btn = '<span id="add_btn" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">+</span>';
-        	$(".add").append(btn);
-        	
-        	$("#add_btn").attr('onclick', 'add("'+obj.email+'")');
         }
         ,
     	  error:function(e){
