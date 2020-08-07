@@ -55,8 +55,16 @@ public class MemberDAOImpl {
 
 	//member deletion
 //	@Transactional
-	public void deleteMember(MemberBean delm) throws Exception {
+	public void deleteMember(String email) throws Exception {
 //		getSession();
-		sqlSession.delete("memberns.member_delete", delm);
+		
+		//member 테이블에서 계정 삭제하려면
+		// friendship 테이블에서 forienkey 없어야함
+		// 전부 찾아서 삭제해주기
+		sqlSession.delete("memberns.member_delete_friend", email);
+		
+		// member 테이블에서 삭제
+		sqlSession.delete("memberns.member_delete", email);
+		
 	}
 }

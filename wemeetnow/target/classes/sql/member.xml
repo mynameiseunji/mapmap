@@ -23,13 +23,15 @@
 	<!-- member information update -->
 	<update id="member_edit" parameterType="member">
 		update member set pwd=#{pwd},nickname=#{nickname},
-			addr=#{addr}, lon=#{lon}, lat=#{lat}
+			addr1=#{addr1}, x_=#{x_}, y_=#{y_}
 		where email=#{email}
 	</update>
 	
 	<!-- member deletion -->
-	<delete id="member_delete" parameterType="member">
+	<delete id="member_delete" parameterType="String">
 		delete from member where email=#{email}
 	</delete>
-	
+	<delete id="member_delete_friend" parameterType="String">
+		delete from friendship where email1=#{email} or email2=#{email}
+	</delete>
 </mapper>

@@ -35,12 +35,14 @@ public class FriendAction {
 	@RequestMapping(value = "/friend_search.do", method = RequestMethod.POST)
 	@ResponseBody
 	public MemberBean member_friendSearch(@RequestParam("email") String email, Model model) throws Exception {
-		System.out.println("도착");
+		System.out.println();
 		MemberBean m = memberService.userCheck(email);
+		if(m==null)
+			return m;
 		System.out.println("m:"+m);
 		System.out.println("email:"+m.getEmail());
 		System.out.println("nickname:"+m.getNickname());;
-
+		
 		return m;
 	}
 			

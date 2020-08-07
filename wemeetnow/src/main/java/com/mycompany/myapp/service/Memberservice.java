@@ -12,6 +12,6 @@ public interface Memberservice {
 
 	void updateMember(MemberBean member) throws Exception;
 
-	void deleteMember(MemberBean member) throws Exception;
+	void deleteMember(String email) throws Exception;
 
 }

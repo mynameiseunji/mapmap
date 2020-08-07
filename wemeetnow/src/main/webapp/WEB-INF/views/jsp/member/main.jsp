@@ -61,7 +61,7 @@ function up(btn){
         	},
         dataType:'text', 
         success: function (data) {
-        	//alert("return success="+data);         	
+        	//alert("return success="+data);       	
         }
         ,
     	  error:function(e){
@@ -80,6 +80,7 @@ function delf(btn2){
         dataType:'text',
         success: function (data) {
         	/* alert("return success="+data); */
+        	
         	item = $(btn2).closest('tr');
         	item.remove();
         }
@@ -121,34 +122,20 @@ function email_check(){
         dataType:'text', 
         success: function (data) {
         	//alert("return success="+data); 
-        	
-        	var obj = JSON.parse(data);	
-        	
-        	$("#searchResult").empty()
-        	$("#searchResult").append(
-        			"<tr><td>전자우편</td>	<td>별명</td></tr>" + 
-        			"<tr>" + "<td>" 
-        			+ obj.email + "</td>" + "<td>" 
-        			+ obj.nickname + "</td>" + "<td>" 
-        			+ "<input type='button' data-email='"+obj.email+"' value='선택' onclick='up(this)'/>" 
-        			+ "</td>" + "</tr>"); 
-        	
-
-      	 /*  if(data==1){	//id exists
-      		var newtext='친구 정보 불러오기';
-      			$("#searchResult").text('');
-        		$("#searchResult").show();
-        		$("#searchResult").append(newtext);
-          		$("#email").val('').focus();
-          		return false;
-	     
-      	  }else{		//id not exists
-      		var newtext='검색 결과 없음';
-      		$("#searchResult").text('');
-      		$("#searchResult").show();
-      		$("#searchResult").append(newtext);
-      		$("#email").focus();
-      	  }  	    	   */
+        	if(data==""){
+        		alert("그런 사람 없어요");
+        	}else{
+        		var obj = JSON.parse(data);	
+            	
+            	$("#searchResult").empty()
+            	$("#searchResult").append(
+            			"<tr><td>전자우편</td>	<td>별명</td></tr>" + 
+            			"<tr>" + "<td>" 
+            			+ obj.email + "</td>" + "<td>" 
+            			+ obj.nickname + "</td>" + "<td>" 
+            			+ "<input type='button' data-email='"+obj.email+"' value='선택' onclick='up(this)'/>" 
+            			+ "</td>" + "</tr>"); 
+        	}
         }
         ,
     	  error:function(e){

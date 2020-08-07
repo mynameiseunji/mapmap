@@ -28,12 +28,12 @@ public class HomeController {
 
 	@RequestMapping("test.do")
 	public String home() {
-		return "map/home1";
+		return "map/home";
 	}
 
 	@RequestMapping("sendAddr.do")
 	public String sendAddr(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
-		System.out.println("진입");
+		
 		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
 		
 		/*
@@ -48,9 +48,9 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		session.setAttribute("startPlaceList", startPlaceList);
 		
-		for(Place p : startPlaceList ) {
-			System.out.println(p.toString());
-		}
+//		for(Place p : startPlaceList ) {
+//			System.out.println(p.toString());
+//		}
 		
 		//---------------------------------중점 좌표 get--------------------------------
 		Coordinate center_coor = ms.getCenter(startPlaceList);
@@ -119,7 +119,7 @@ public class HomeController {
 		// 공공데이터포털에서 경로 찾아오기
 		// 필요한 정보 : 친구들 출발지 정보, 도착 후보지 정보
 		String pathInfo = ms.getPathInfo(startPlaceList, endplaceList);
-		System.out.println(pathInfo);
+		//System.out.println(pathInfo);
 		model.addAttribute("pathInfo",pathInfo);
 		model.addAttribute("x_num",startPlaceList.size());
 		
@@ -140,8 +140,8 @@ public class HomeController {
 		
 		// CT1 문화시설
 		List<Place> ct1placeList = ms.categorySearch("CT1", option);
-		for(Place p : ct1placeList)
-			System.out.println(p.toString());
+//		for(Place p : ct1placeList)
+//			System.out.println(p.toString());
 		model.addAttribute("ct1placeList", ct1placeList);
 		// FD6 음식점
 		List<Place> fd6placeList = ms.categorySearch("FD6", option);
