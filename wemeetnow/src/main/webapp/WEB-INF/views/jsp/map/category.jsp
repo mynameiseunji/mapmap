@@ -25,6 +25,11 @@ h1, h2, h3, h4, h5, h6 {
 	letter-spacing: 5px;
 }
 
+#cafelist {}
+#foodlist {}
+#culturelist {}
+#travellist {}
+
 .col {
 	padding: 10px;
 }
@@ -40,47 +45,61 @@ h1, h2, h3, h4, h5, h6 {
 <!-- ------------------------------  -->
 <script>
 
-$(document).ready(function(){
+function cafeClick(){
 	
-	$("#cafelist").show();
-	$("#foodlist").hide();
-	$("#culturelist").hide();
-	$("#travellist").hide();
+	var cafe = document.getElementById("cafelist");
+	var food = document.getElementById("foodlist");
+	var culture = document.getElementById("culturelist");
+	var travel = document.getElementById("travellist");
 	
-	$("#cafe").click(function(){
-		$("#cafelist").show();
-		$("#foodlist").hide();
-		$("#culturelist").hide();
-		$("#travellist").hide();
-	});
+	cafe.style.display = "";
+	food.style.display = "none";
+	culture.style.display = "none";
+	travel.style.display = "none";
+}
 
-	$("#food").click(function(){
-		$("#cafelist").hide();
-		$("#foodlist").show();
-		$("#culturelist").hide();
-		$("#travellist").hide();
-	});
+function foodClick(){
+	
+	var cafe = document.getElementById("cafelist");
+	var food = document.getElementById("foodlist");
+	var culture = document.getElementById("culturelist");
+	var travel = document.getElementById("travellist");
+	
+	cafe.style.display = "none";
+	food.style.display = "";
+	culture.style.display = "none";
+	travel.style.display = "none";
+}
 
-	$("#culture").click(function(){
-		$("#cafelist").hide();
-		$("#foodlist").hide();
-		$("#culturelist").show();
-		$("#travellist").hide();
-	});
+function cultureClick(){
+	
+	var cafe = document.getElementById("cafelist");
+	var food = document.getElementById("foodlist");
+	var culture = document.getElementById("culturelist");
+	var travel = document.getElementById("travellist");
+		
+	cafe.style.display = "none";
+	food.style.display = "none";
+	culture.style.display = "";
+	travel.style.display = "none";
+}
 
-	$("#travel").click(function(){
-		$("#cafelist").hide();
-		$("#foodlist").hide();
-		$("#culturelist").hide();
-		$("#travellist").show();
-	});
-
-});
-
+function travelClick(){
+	
+	var cafe = document.getElementById("cafelist");
+	var food = document.getElementById("foodlist");
+	var culture = document.getElementById("culturelist");
+	var travel = document.getElementById("travellist");
+	
+	cafe.style.display = "none";
+	food.style.display = "none";
+	culture.style.display = "none";
+	travel.style.display = "";
+}
 
 </script>
 
-<body>
+<body onload="cafeClick()">
 
 	<!-- Navbar (sit on top) -->
 	<div class="w3-top w3-light-blue">
@@ -89,26 +108,13 @@ $(document).ready(function(){
 			<a href="test.do" class="w3-bar-item w3-button">Woori Jigum Manna</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
-				<!-- 로그인 세션 있으면 회원정보로-->
-				<c:if test="${empty email}">
-				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
-					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
-				</c:if>
-				<c:if test="${not empty email}">
-				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a> <a
-					href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
-				</c:if>
+				<a href="member_login.do" class="w3-bar-item w3-button">Sign In</a> <a
+					href="member_join.do" class="w3-bar-item w3-button">Sign Up</a>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<!-- 로그인 세션 있으면 회원정보로 -->
-				<c:if test="${empty email}">
-				<a href="member_login.do" class="w3-bar-item w3-button"> <i
-					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
-				</c:if>
-				<c:if test="${not empty email}">
-				<a href="member_info.do" class="w3-bar-item w3-button"> <i
-					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
-				</c:if>
+				<a href="/member_login.do" class="w3-bar-item w3-button">
+				<i class="fa fa-user-circle fa-lg" aria-hidden="true">
+				</i></a>
 			</div>
 		</div>
 	</div>
@@ -121,19 +127,19 @@ $(document).ready(function(){
 		<br>
 		<div class="row">
 			<div class="col">
-				<i id="cafe" class="fa fa-coffee fa-3x"></i>
+				<i class="fa fa-coffee fa-3x" onclick="cafeClick()"></i>
 				<h5>Cafe</h5>
 			</div>
 			<div class="col">
-				<i id="food" class="fas fa-utensils fa-3x"></i>
+				<i class="fas fa-utensils fa-3x" onclick="foodClick()"></i>
 				<h5>Food</h5>
 			</div>
 			<div class="col">
-				<i id="culture" class="fa fa-film fa-3x"></i>
+				<i class="fa fa-film fa-3x" onclick="cultureClick()"></i>
 				<h5>Culture</h5>
 			</div>
 			<div class="col">
-				<i id="travel" class="fas fa-archway fa-3x"></i>
+				<i class="fas fa-archway fa-3x" onclick="travelClick()"></i>
 				<h5>Travel</h5>
 			</div>
 		</div>
