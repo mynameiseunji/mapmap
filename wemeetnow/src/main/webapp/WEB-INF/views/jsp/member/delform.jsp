@@ -42,16 +42,17 @@ h1, h2, h3, h4, h5, h6 {
 			<a href="index.jsp" class="w3-bar-item w3-button">우리 지금 만나</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
+							
 				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a> <a
 					href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+				
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
 				
-				<!-- login.jsp  여기 어디?-->
-				
-				<a href="login.jsp" class="w3-bar-item w3-button">
-				<i class="fa fa-user-circle fa-lg" aria-hidden="true">
-				</i></a>
+				<c:if test="${not empty email}">
+				<a href="member_info.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
 			</div>
 		</div>
 	</div>

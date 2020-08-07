@@ -164,7 +164,8 @@
 			console.log("뒤로가기로 들어왔습니다.");
 			location.reload();
 		} else {
-			console.log("새로 진입");
+			console.log("새로 진입123");
+			location.reload();
 		}
 	}
 </script>

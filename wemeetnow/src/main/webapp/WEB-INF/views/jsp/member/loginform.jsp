@@ -52,8 +52,7 @@ function check(){
 			<a href="index.jsp" class="w3-bar-item w3-button">우리 지금 만나</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
-				<a href="loginform.jsp" class="w3-bar-item w3-button">로그인</a> <a
-					href="joinform.jsp" class="w3-bar-item w3-button">회원 가입</a>
+				<a href="joinform.jsp" class="w3-bar-item w3-button">회원 가입</a>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
 				<a href="login.jsp" class="w3-bar-item w3-button"> <!-- ?????? 어디로 가는 코드? -->

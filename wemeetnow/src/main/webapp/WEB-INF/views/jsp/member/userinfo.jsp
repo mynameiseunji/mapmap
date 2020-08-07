@@ -36,14 +36,19 @@ h1, h2, h3, h4, h5, h6 {
 		<div class="w3-bar w3-white w3-padding w3-card"
 			style="letter-spacing: 4px;">
 			<a href="index.jsp" class="w3-bar-item w3-button">우리 지금 만나</a>
-			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
-				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
-					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
+				<!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${not empty email}">
+				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
+				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<a class="w3-bar-item w3-button"> <i class="fa fa-user-circle"
-					aria-hidden="true"> </i></a>
+				<!-- 로그인 세션 있으면 회원정보로 -->
+				
+				
+				<a href="member_info.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				
 			</div>
 		</div>
 	</div>

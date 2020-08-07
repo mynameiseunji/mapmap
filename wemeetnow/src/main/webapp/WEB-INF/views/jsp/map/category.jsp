@@ -39,6 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 
 <!-- ------------------------------  -->
 <script>
+
 $(document).ready(function(){
 	
 	$("#cafelist").show();
@@ -88,13 +89,26 @@ $(document).ready(function(){
 			<a href="test.do" class="w3-bar-item w3-button">Woori Jigum Manna</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
-				<a href="member_login.do" class="w3-bar-item w3-button">Sign In</a> <a
-					href="member_join.do" class="w3-bar-item w3-button">Sign Up</a>
+				<!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${empty email}">
+				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
+					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
+				</c:if>
+				<c:if test="${not empty email}">
+				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a> <a
+					href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<a href="/member_login.do" class="w3-bar-item w3-button">
-				<i class="fa fa-user-circle fa-lg" aria-hidden="true">
-				</i></a>
+				<!-- 로그인 세션 있으면 회원정보로 -->
+				<c:if test="${empty email}">
+				<a href="member_login.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
+				<c:if test="${not empty email}">
+				<a href="member_info.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
 			</div>
 		</div>
 	</div>

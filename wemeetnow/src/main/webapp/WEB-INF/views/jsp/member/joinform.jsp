@@ -49,11 +49,9 @@ h1, h2, h3, h4, h5, h6 {
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
 				
-				<!-- login.jsp  여기 어디?-->
+				<a href="member_login.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
 				
-				<a href="login.jsp" class="w3-bar-item w3-button">
-				<i class="fa fa-user-circle fa-lg" aria-hidden="true">
-				</i></a>
 			</div>
 		</div>
 	</div>
@@ -68,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="form-group">
 				<label for="email">이메일 주소 : </label> <input type="email"
 					class="form-control" placeholder="이메일" name="email" id="email" required>
-					<input type="button" value="이메일 중복확인" class="input_button" onclick="email_check()" />
+					<input type="button" value="이메일 중복확인" class="w3-button w3-white" onclick="email_check()" />
 					<div id="emailcheck"></div>
 			</div>
 			<div class="form-group">

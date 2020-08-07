@@ -36,21 +36,11 @@ public class HomeController {
 		
 		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
 		
-		/*
-		 * // home1.jsp로부터 넘어온 출발지 정보 저장 String[] name =
-		 * request.getParameterValues("name"); //System.out.println(name.length);
-		 * String[] addr = request.getParameterValues("address"); String[] arr_x =
-		 * request.getParameterValues("x"); String[] arr_y =
-		 * request.getParameterValues("y");
-		 */
 
 		// 세션
 		HttpSession session = request.getSession();
 		session.setAttribute("startPlaceList", startPlaceList);
 		
-//		for(Place p : startPlaceList ) {
-//			System.out.println(p.toString());
-//		}
 		
 		//---------------------------------중점 좌표 get--------------------------------
 		Coordinate center_coor = ms.getCenter(startPlaceList);
@@ -115,9 +105,9 @@ public class HomeController {
 		
 		// 각 후보지에 대해서 소요시간 보여주기.		
 		// 공공데이터포털에서 경로 찾아오기
-		// 필요한 정보 : 친구들 출발지 정보, 도착 후보지 정보
+		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
 		String pathInfo = ms.getPathInfo(startPlaceList, endplaceList);
-		//System.out.println(pathInfo);
+		
 		model.addAttribute("pathInfo",pathInfo);
 		model.addAttribute("x_num",startPlaceList.size());
 		

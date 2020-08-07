@@ -69,9 +69,9 @@ h1, h2, h3, h4, h5, h6 {
 				|| (window.performance && window.performance.navigation.type == 2)) {
 			// Back Forward Cache로 브라우저가 로딩될 경우 혹은 브라우저 뒤로가기 했을 경우
 			console.log("뒤로가기로 들어왔습니다.");
-			//location.reload();
+			location.reload();
 		} else {
-			console.log("새로 진입");
+			console.log("새로 진입123");
 		}
 	}
 </script>
@@ -85,13 +85,25 @@ h1, h2, h3, h4, h5, h6 {
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
 				<!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${empty email}">
 				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
 					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
+				</c:if>
+				<c:if test="${not empty email}">
+				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a> <a
+					href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<!-- 로그인 세션 있으면 회원정보로 -->
+				<!-- 로그인 세션 있으면 회원정보로 --><!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${empty email}">
 				<a href="member_login.do" class="w3-bar-item w3-button"> <i
 					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
+				<c:if test="${not empty email}">
+				<a href="member_info.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -110,6 +122,12 @@ h1, h2, h3, h4, h5, h6 {
 
 		</div>
 
+	<div align="center">
+	우리의 중간은 어디일까?<br>
+	공평한 약속 장소를 찾을 수 있드록 도와드립니다.<br>
+	참석자들의 출발지를 입력하시면 장소를 추천해드려요.<br>
+	최대 10인.
+	</div>
 		<!-- The Modal -->
 		<div class="modal" id="myModal">
 			<div class="modal-dialog">
