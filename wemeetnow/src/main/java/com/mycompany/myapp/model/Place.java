@@ -8,11 +8,25 @@ public class Place implements Serializable{
 	private String x;
 	private String y;
 	private String address;
+	private String phone;
+	private String place_url;
 	
 	//출발지 주소 받아올때 controller에서 
 	//리스트로 매핑받기 위해 필요함
 	private List<Place> places;
 	
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getPlace_url() {
+		return place_url;
+	}
+	public void setPlace_url(String place_url) {
+		this.place_url = place_url;
+	}
 	public List<Place> getPlaces() {
 		return places;
 	}
@@ -47,7 +61,4 @@ public class Place implements Serializable{
 	public String toString() {
 		return "Place [name=" + name + ", x=" + x + ", y=" + y + ", address=" + address + "]";
 	}
-	
-	
-	
 }

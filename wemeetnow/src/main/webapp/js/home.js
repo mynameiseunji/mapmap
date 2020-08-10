@@ -173,7 +173,7 @@ function down(btn) {
 
 	$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
 
-	$('button.close').click();
+	$('button.close').click(); 
 	$("#table_part tbody").empty();
 }
 // ==========================================================================

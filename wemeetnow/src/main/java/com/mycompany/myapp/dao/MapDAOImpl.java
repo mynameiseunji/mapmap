@@ -16,13 +16,12 @@ public class MapDAOImpl implements MapDAO{
 	
 	@Override
 	public stationXY getRcm_station(String subname) throws Exception {
-		// °ª Àü´Þ µð¹ö±ë¿ë ÄÚµå
-//		System.out.println("dao È£Ãâ ¿Ï·á : "+subname);
+		// ê°’ ì „ë‹¬ ë””ë²„ê¹…ìš© ì½”ë“œ
+//		System.out.println("dao í˜¸ì¶œ ì™„ë£Œ : "+subname);
 //		stationXY xy = sqlSession.selectOne("mapns.selectStation", subname);
 //		System.out.println("dao_xy:"+xy);
 //		System.out.println("xy_list:"+xy_list);
 //		return xy;
 		return sqlSession.selectOne("mapns.selectStation", subname);
-	}
-	
+	}	
 }

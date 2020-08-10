@@ -6,8 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.mycompany.myapp.model.MemberBean;
 
-
-
 @Repository
 public class MemberDAOImpl {
 	
@@ -21,7 +19,7 @@ public class MemberDAOImpl {
 		int re = -1;	//id not exists
 		MemberBean mb = (MemberBean) sqlSession.selectOne("memberns.login_check", email);
 		if (mb != null)
-			re = 1; 	//id exists
+			re = 1;		//id exists
 		return re;
 	}	
 
@@ -55,8 +53,16 @@ public class MemberDAOImpl {
 
 	//member deletion
 //	@Transactional
-	public void deleteMember(MemberBean delm) throws Exception {
+	public void deleteMember(String email) throws Exception {
 //		getSession();
-		sqlSession.delete("memberns.member_delete", delm);
+		
+		//member 테이블에서 계정 삭제하려면
+		// friendship 테이블에서 forienkey 없어야함
+		// 전부 찾아서 삭제해주기
+		sqlSession.delete("memberns.member_delete_friend", email);
+		
+		// member 테이블에서 삭제
+		sqlSession.delete("memberns.member_delete", email);
+		
 	}
 }

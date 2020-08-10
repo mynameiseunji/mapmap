@@ -18,7 +18,7 @@ public class SessionCheckInter extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession();
 		String email = (String)session.getAttribute("email");
 		if (email == null || email.equals(""))  {		
-			response.sendRedirect("member_login.do");
+			response.sendRedirect("member_session.do");
 			return false;
 		}
 		return true;

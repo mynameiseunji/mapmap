@@ -1,6 +1,7 @@
 package com.mycompany.myapp.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,61 +36,72 @@ public class FriendAction {
 	@RequestMapping(value = "/friend_search.do", method = RequestMethod.POST)
 	@ResponseBody
 	public MemberBean member_friendSearch(@RequestParam("email") String email, Model model) throws Exception {
-		System.out.println("도착");
+		System.out.println();
 		MemberBean m = memberService.userCheck(email);
+		if(m==null)
+			return m;
 		System.out.println("m:"+m);
 		System.out.println("email:"+m.getEmail());
 		System.out.println("nickname:"+m.getNickname());;
-
+		
 		return m;
 	}
-			
+	
 	//add friend
-	@RequestMapping(value = "/friend_add.do")
-	public String add_friend(FriendBean friend, Model model) throws Exception {
-
+	@RequestMapping(value = "/friend_add.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int add_friend(@RequestParam("email") String email, HttpSession session ,Model model) throws Exception {
+		String myEmail = (String)session.getAttribute("email");
+				
 		Map<String, String> m = new HashMap<String, String>();
-		m.put("email1", friend.getEmail1());
-		m.put("email2", friend.getEmail2());
+		m.put("email1", myEmail);
+		m.put("email2", email);
 		
-		int result = friendService.addFriend(m);
-		System.out.println("result: " + result);
+		int resultc = friendService.checkFriend(m);		
+		if(resultc == 1) {
+			
+			return resultc;
+			
+		} else {
 		
-		return "member/main";
+			int result = friendService.addFriend(m);
+			
+			System.out.println("result: " + result);			
+			System.out.println("add friend");
+		
+			return result;
+		}
 	}
 	
 	//친구 삭제 --------------------------------------------------
 		//delete friend
 		@RequestMapping(value = "/friend_del.do")
-		public String delete_friend(FriendBean friend, HttpServletRequest request, String email,
-									HttpSession session, Model model) throws Exception {
-			System.out.println();
-			System.out.println("email: " +email);
+		public String delete_friend(HttpServletRequest request, HttpSession session) throws Exception {
 			
-			String email1 = (String) session.getAttribute("email");
-			//---------------------------------------------
-			MemberBean mem = memberService.userCheck(email1);
-			String nickname = mem.getNickname();
-			model.addAttribute("nickname", nickname);
-			//---------------------------------------------
-				
-			System.out.println("email1: " +email1);
-				
-			Map m = new HashMap();
-			m.put("email1", email1);
-			m.put("email2", email);
+			String email=(String)session.getAttribute("email");
+			int fno = Integer.parseInt(request.getParameter("fno"));
 			
-			int result = friendService.delFriend(m);
-			System.out.println("result: " + result);
+			FriendBean bean = new FriendBean();
+			bean.setFno(fno);
+			bean.setEmail1(email);
 			
-//			String email2 = friend.getEmail2();
-//			model.addAttribute("email2", email2);
-//			
-//			friendService.addFriend(friend);
+			int result = friendService.delFriend(bean);
+			
+			System.out.println("result: " + result);			
 			
 			System.out.println("del friend");
 				
-			return "member/main";
+			return "redirect:friendlist.do";
 		}
-		//친구 삭제 --------------------------------------------------
+		
+		//친구 리스트 --------------------------------------------------
+		@RequestMapping(value = "/friendlist.do")
+		public String friendList(HttpSession session, Model model) {
+			String email = (String)session.getAttribute("email");
+//			String email = "1@1.qq";
+			List<FriendBean> list = friendService.list(email);
+			System.out.println(list);
+			model.addAttribute("list", list);
+			return "member/friend";
+		}
 }

@@ -17,6 +17,7 @@ public class JsonParsing {
 	
 	public List<Place> getPlaceInfo(String jsonData) {
 		List<Place> stationList = new ArrayList<Place>();
+		
 		try {
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonOb = (JSONObject) jsonParser.parse(jsonData);
@@ -30,6 +31,8 @@ public class JsonParsing {
 				stcoor.setX((String) docOb.get("x"));
 				stcoor.setY((String) docOb.get("y"));
 				stcoor.setAddress((String) docOb.get("address_name"));
+				stcoor.setPhone((String) docOb.get("phone"));
+				stcoor.setPlace_url((String) docOb.get("place_url"));
 				stationList.add(stcoor);
 			}
 		} catch (Exception e) {

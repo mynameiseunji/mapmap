@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import com.mycompany.myapp.dao.MemberDAOImpl;
 import com.mycompany.myapp.model.MemberBean;
 
-
-
 @Service
 public class MemberServiceImpl implements Memberservice {
 	
@@ -40,7 +38,7 @@ public class MemberServiceImpl implements Memberservice {
 	}
 	
 	@Override
-	public void deleteMember(MemberBean member) throws Exception{
-		memberDao.deleteMember(member);
+	public void deleteMember(String email) throws Exception{
+		memberDao.deleteMember(email);
 	}
 }

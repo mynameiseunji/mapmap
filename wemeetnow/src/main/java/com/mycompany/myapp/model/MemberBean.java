@@ -68,7 +68,4 @@ public class MemberBean {
 		return "MemberBean [email=" + email + ", nickname=" + nickname + ", pwd=" + pwd + ", addr1=" + addr1
 				+ ", addr2=" + addr2 + ", addr3=" + addr3 + ", x_=" + x_ + ", y_=" + y_ + "]";
 	}
-	
-	
-	
 }

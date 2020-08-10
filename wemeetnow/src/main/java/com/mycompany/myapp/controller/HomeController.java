@@ -28,29 +28,19 @@ public class HomeController {
 
 	@RequestMapping("test.do")
 	public String home() {
-		return "map/home1";
+		return "map/home";
 	}
 
 	@RequestMapping("sendAddr.do")
 	public String sendAddr(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
-		System.out.println("진입");
+		
 		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
 		
-		/*
-		 * // home1.jsp로부터 넘어온 출발지 정보 저장 String[] name =
-		 * request.getParameterValues("name"); //System.out.println(name.length);
-		 * String[] addr = request.getParameterValues("address"); String[] arr_x =
-		 * request.getParameterValues("x"); String[] arr_y =
-		 * request.getParameterValues("y");
-		 */
 
 		// 세션
 		HttpSession session = request.getSession();
 		session.setAttribute("startPlaceList", startPlaceList);
 		
-		for(Place p : startPlaceList ) {
-			System.out.println(p.toString());
-		}
 		
 		//---------------------------------중점 좌표 get--------------------------------
 		Coordinate center_coor = ms.getCenter(startPlaceList);
@@ -65,6 +55,7 @@ public class HomeController {
 		List<Place> endplaceList = ms.categorySearch("SW8", option);
 
 		//--------------------------------------------------------------------------------
+		
 		
 		
 		//---------------------------08/03 권은지 : 추천역 DB로부터 가져오기 ------------------------------------	
@@ -89,11 +80,8 @@ public class HomeController {
 //				}
 //			}
 //		}
-		
 		//--------------------------------------------------------------------------
-		
-		
-		
+			
 		
 		
 		// 중심좌표 return
@@ -117,9 +105,9 @@ public class HomeController {
 		
 		// 각 후보지에 대해서 소요시간 보여주기.		
 		// 공공데이터포털에서 경로 찾아오기
-		// 필요한 정보 : 친구들 출발지 정보, 도착 후보지 정보
+		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
 		String pathInfo = ms.getPathInfo(startPlaceList, endplaceList);
-		System.out.println(pathInfo);
+		
 		model.addAttribute("pathInfo",pathInfo);
 		model.addAttribute("x_num",startPlaceList.size());
 		
@@ -137,11 +125,12 @@ public class HomeController {
 
 		//-------------------- 카테고리별 추천 장소 5개 ----- 08/05 김가을  --------------------
 		String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/size/5/radius/2000";
+		//String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/radius/2000";
 		
 		// CT1 문화시설
 		List<Place> ct1placeList = ms.categorySearch("CT1", option);
-		for(Place p : ct1placeList)
-			System.out.println(p.toString());
+//		for(Place p : ct1placeList)
+//			System.out.println(p.toString());
 		model.addAttribute("ct1placeList", ct1placeList);
 		// FD6 음식점
 		List<Place> fd6placeList = ms.categorySearch("FD6", option);

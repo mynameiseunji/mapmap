@@ -16,3 +16,10 @@
 		history.go(-1);
 	</script>
 </c:if>  
+
+<c:if test="${result == 3}">
+	<script>
+		alert("세션 없음");
+		location.href="member_login.do";
+	</script>
+</c:if> 

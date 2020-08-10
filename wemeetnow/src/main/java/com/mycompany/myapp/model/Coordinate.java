@@ -1,6 +1,5 @@
 package com.mycompany.myapp.model;
 
-
 public class Coordinate {
 	private String x;
 	private String y;
@@ -16,6 +15,5 @@ public class Coordinate {
 	}
 	public void setY(String y) {
 		this.y = y;
-	}
-	
+	}	
 }
