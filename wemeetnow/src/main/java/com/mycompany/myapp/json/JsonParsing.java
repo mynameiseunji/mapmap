@@ -17,6 +17,7 @@ public class JsonParsing {
 	
 	public List<Place> getPlaceInfo(String jsonData) {
 		List<Place> stationList = new ArrayList<Place>();
+		
 		try {
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonOb = (JSONObject) jsonParser.parse(jsonData);

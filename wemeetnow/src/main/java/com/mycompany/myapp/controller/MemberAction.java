@@ -51,7 +51,7 @@ public class MemberAction {
 	//member information save
 	@RequestMapping(value = "/member_join_ok.do", method = RequestMethod.POST)
 	public String member_join_ok(@ModelAttribute MemberBean member) throws Exception {
-		System.out.println(member.toString());
+		//System.out.println(member.toString());
 		memberService.insertMember(member);
 
 		return "redirect:member_login.do";
@@ -77,28 +77,20 @@ public class MemberAction {
 				session.setAttribute("email", email);
 
 	            String nickname = m.getNickname();
+	            session.setAttribute("nickname", nickname);
 	            /*
 	             * db에서 친구 리스트 가져오기
 	             * javascript에서 처리하기 편하게
 	             * 각 친구의 메일, 닉, x,y 좌표 각각 스트링으로 넘기기
 	             * */
 	            List<FriendBean> list = friendService.list(email);
-	            StringBuffer fr_email = new StringBuffer();
-	            StringBuffer fr_nick = new StringBuffer();
-	            StringBuffer fr_x = new StringBuffer();
-	            StringBuffer fr_y = new StringBuffer();
-	            for(FriendBean fb : list) {
-	            	MemberBean f = memberService.userCheck(fb.getEmail2());
-	               fr_email.append(f.getEmail()).append("#");
-		           fr_nick.append(f.getNickname()).append("#");
-		           fr_x.append(f.getX_()).append("#");
-		           fr_y.append(f.getY_()).append("#");
-	            }
-	            session.setAttribute("nickname", nickname);
-	            session.setAttribute("fr_email",fr_email);
-	            session.setAttribute("fr_nick",fr_nick);
-	            session.setAttribute("fr_y",fr_y);
-	            session.setAttribute("fr_x",fr_x);
+	            
+	            String[] fr_array = friendService.frListSession(list);
+	            
+	            session.setAttribute("fr_email",fr_array[0]);
+	            session.setAttribute("fr_nick",fr_array[1]);
+	            session.setAttribute("fr_y",fr_array[2]);
+	            session.setAttribute("fr_x",fr_array[3]);
 	            
 	            //친구 정보 넘기기 끝
 	            //============================================
@@ -208,6 +200,13 @@ public class MemberAction {
 			
 			
 			return "member/userinfo";
+		}
+		
+		//member information update form
+		@RequestMapping(value = "/member_session.do")
+		public String member_session(HttpSession session, Model model) throws Exception {
+			
+			return "member/sessionResult";
 		}
 
 }

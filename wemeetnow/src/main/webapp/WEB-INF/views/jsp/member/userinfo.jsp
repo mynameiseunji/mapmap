@@ -38,14 +38,12 @@ h1, h2, h3, h4, h5, h6 {
 			<a href="index.jsp" class="w3-bar-item w3-button">우리 지금 만나</a>
 			<div class="w3-right w3-hide-small">
 				<!-- 로그인 세션 있으면 회원정보로-->
-				<c:if test="${not empty email}">
+				
 				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
-				</c:if>
+				
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
 				<!-- 로그인 세션 있으면 회원정보로 -->
-				
-				
 				<a href="member_info.do" class="w3-bar-item w3-button"> <i
 					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
 				

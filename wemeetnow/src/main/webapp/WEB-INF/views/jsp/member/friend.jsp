@@ -134,11 +134,11 @@ $(document).ready(function(){
 				Manna</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
-				<a href="loginform.jsp" class="w3-bar-item w3-button">Sign In</a> <a
-					href="joinform.jsp" class="w3-bar-item w3-button">Sign Up</a>
+				<a href="member_logout.do" class="w3-bar-item w3-button">로그 아웃</a> <a
+					href="member_info.do" class="w3-bar-item w3-button">회원 정보</a>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<a class="w3-bar-item w3-button"> <i class="fa fa-user-circle"
+				<a href="member_info.do" class="w3-bar-item w3-button"> <i class="fa fa-user-circle"
 					aria-hidden="true"> </i></a>
 			</div>
 		</div>

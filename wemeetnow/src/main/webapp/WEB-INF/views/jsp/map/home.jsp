@@ -49,7 +49,8 @@ h1, h2, h3, h4, h5, h6 {
 	var fr_y = '${fr_y}'.split("#");	fr_y.pop();
 
 	$(document).ready(function() {
-		//console.log('${sessionScope.email}'+"있습니다.");
+		
+		//로그인 세션 있음
 		if ('${sessionScope.email}' != "") {
 			$("#fl-list").append("친구 목록 있음/ 로그인 됨<br>");
 			var tag = ""; //append될 태그 변수
@@ -58,6 +59,8 @@ h1, h2, h3, h4, h5, h6 {
 				tag += fr_email[i] + '<br>';
 			}
 			$("#fl-list").append(tag);
+			
+		//로그인 세션 없음
 		} else {
 			$("#fl-list").append("친구 목록 없음/ 로그인 안됨");
 

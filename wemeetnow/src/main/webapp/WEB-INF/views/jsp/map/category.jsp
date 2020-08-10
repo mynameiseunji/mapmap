@@ -44,7 +44,19 @@ h1, h2, h3, h4, h5, h6 {
 
 <!-- ------------------------------  -->
 <script>
-
+ $(document).ready(function(){
+	 $(".categorylist").css("display","none");
+	 $("#cafelist").css("display","");
+	 
+	$('.col').click(function(){
+		
+		//보여줄 태그 선택
+		var target = $(this).find("h5").text().toLowerCase()+"list";		
+		$(".categorylist").css("display","none"); // 전부 안보이게
+		$("#"+target).css("display","");		// 보여줄 것만 display 설정
+	});
+}); 
+/* 
 function cafeClick(){
 	
 	var cafe = document.getElementById("cafelist");
@@ -95,12 +107,11 @@ function travelClick(){
 	food.style.display = "none";
 	culture.style.display = "none";
 	travel.style.display = "";
-}
+} */
 
 </script>
 
-<body onload="cafeClick()">
-
+<body >
 	<!-- Navbar (sit on top) -->
 	<div class="w3-top w3-light-blue">
 		<div class="w3-bar w3-white w3-padding w3-card"
@@ -108,13 +119,26 @@ function travelClick(){
 			<a href="test.do" class="w3-bar-item w3-button">Woori Jigum Manna</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
-				<a href="member_login.do" class="w3-bar-item w3-button">Sign In</a> <a
-					href="member_join.do" class="w3-bar-item w3-button">Sign Up</a>
+				<!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${empty email}">
+				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
+					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
+				</c:if>
+				<c:if test="${not empty email}">
+				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a> <a
+					href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<a href="/member_login.do" class="w3-bar-item w3-button">
-				<i class="fa fa-user-circle fa-lg" aria-hidden="true">
-				</i></a>
+				<!-- 로그인 세션 있으면 회원정보로 --><!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${empty email}">
+				<a href="member_login.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
+				<c:if test="${not empty email}">
+				<a href="member_info.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -126,25 +150,25 @@ function travelClick(){
 		 -->
 		<br>
 		<div class="row">
-			<div class="col">
-				<i class="fa fa-coffee fa-3x" onclick="cafeClick()"></i>
+			<div class="col" >
+				<i class="fa fa-coffee fa-3x" ></i>
 				<h5>Cafe</h5>
 			</div>
-			<div class="col">
-				<i class="fas fa-utensils fa-3x" onclick="foodClick()"></i>
+			<div class="col" >
+				<i class="fas fa-utensils fa-3x"  ></i>
 				<h5>Food</h5>
 			</div>
-			<div class="col">
-				<i class="fa fa-film fa-3x" onclick="cultureClick()"></i>
+			<div class="col" >
+				<i class="fa fa-film fa-3x"  ></i>
 				<h5>Culture</h5>
 			</div>
-			<div class="col">
-				<i class="fas fa-archway fa-3x" onclick="travelClick()"></i>
+			<div class="col" >
+				<i class="fas fa-archway fa-3x" ></i>
 				<h5>Travel</h5>
 			</div>
 		</div>
 		<br>
-		<div id="cafelist">
+		<div id="cafelist" class="categorylist" >
 		<ul class="list-group">
 			<c:forEach var="item" items="${ce7placeList}">
 			<li class="list-group-item">
@@ -154,7 +178,7 @@ function travelClick(){
 			</c:forEach>
 		</ul>
 		</div>
-		<div id="foodlist">
+		<div id="foodlist" class="categorylist">
 		<ul class="list-group">
 			<c:forEach var="item" items="${fd6placeList}">
 			<li class="list-group-item">
@@ -164,7 +188,7 @@ function travelClick(){
 			</c:forEach>
 		</ul>
 		</div>
-		<div id="culturelist">
+		<div id="culturelist" class="categorylist">
 		<ul class="list-group">
 			<c:forEach var="item" items="${ct1placeList}">
 			<li class="list-group-item">
@@ -174,7 +198,7 @@ function travelClick(){
 			</c:forEach>
 		</ul>
 		</div>
-		<div id="travellist">
+		<div id="travellist" class="categorylist">
 		<ul class="list-group">
 			<c:forEach var="item" items="${at4placeList}">
 			<li class="list-group-item">

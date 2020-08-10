@@ -48,11 +48,8 @@ h1, h2, h3, h4, h5, h6 {
 				
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				
-				<c:if test="${not empty email}">
 				<a href="member_info.do" class="w3-bar-item w3-button"> <i
 					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
-				</c:if>
 			</div>
 		</div>
 	</div>
