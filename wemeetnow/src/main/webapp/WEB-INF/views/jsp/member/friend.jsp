@@ -97,7 +97,30 @@ function deleteCheck(num){
 		location.href="<%=request.getContextPath()%>/friend_del.do?fno="+num;
 	}
 }
-
+//친구 삭제 --------------------------------------------------
+function delf(btn2){
+   var friendEmail = $(btn2).data('x');
+   var check = confirm("삭제하시겠습니까?")
+   if(check){
+	   $.ajax({
+	        type:"POST",
+	        url:"friend_del.do",
+	        data: {"email": friendEmail},
+	        dataType:'text',
+	        success: function (data) {
+	           /* alert("return success="+data); */
+	           item = $(btn2).closest('li');
+	           item.remove();
+	        }
+	        ,
+	         error:function(e){
+	            alert("data error"+e);
+	         }
+	      });
+   }
+  
+}
+//친구 삭제 --------------------------------------------------
 function add(email){
 	console.log(email);
 	var check = confirm('add Confirm');
@@ -112,7 +135,10 @@ function add(email){
 	        	if(data==-1){		
 	        		alert("이미 등록된 친구")
 	        		return false;
-	        	} else {
+	        	} else if(data==-2){
+	        		alert("이미 요청을 보낸 친구입니다.")
+	        	}else{
+	        		alert("친구 요청을 보냈습니다.")
 		      		location.href="<%=request.getContextPath()%>/friendlist.do";
 	        	}  		
 	        }	    	
@@ -156,10 +182,11 @@ $(document).ready(function(){
 				<li class="list-group-item">
 					<div class="w3-low">
 						<div class="w3-col s10">
-							Email : ${friend.email2 }<br>addr : address..............
+				
+							Email : ${friend.email }<br>addr : ${friend.addr1}
 						</div>
 						<div class="w3-col s2">
-							<span onclick="deleteCheck(${friend.fno})"
+							<span data-x="${friend.email}" onclick="delf(this)"
 								class="w3-bar-item w3-button w3-white w3-xlarge w3-right">x</span>
 						</div>
 					</div>
@@ -172,7 +199,7 @@ $(document).ready(function(){
 				<form>
 					<input type="text" id="email">
 					<button type="button" class="btn btn-outline-dark"
-						onclick="email_check()">Search Friend</button>
+						onclick="email_check()">친구 찾기</button>
 				</form>
 			</div>
 		</div>
@@ -189,6 +216,17 @@ $(document).ready(function(){
 				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
 		</p>
 	</footer>
+	친구 추가 요청을 보낸 사람 목록:<br>
+	<c:forEach var="invi" items="${invite}" varStatus="status">
+				${invi.invitee}<br>
+			</c:forEach>
+			<br>
+			<br>
+			</footer>
+	추천 친구 리스트:<br>
+	<c:forEach var="reco" items="${fr_recommend}" varStatus="status">
+				${reco.email1}<br>
+	</c:forEach>
 </body>
 </html>
 

@@ -1,9 +1,11 @@
 package com.mycompany.myapp.model;
 
+import java.io.Serializable;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MemberBean {
+public class MemberBean implements Serializable{
 
 	private String email;
 	private String nickname;

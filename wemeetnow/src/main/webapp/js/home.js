@@ -244,6 +244,29 @@ function fr_down(btn) {
 	}
 
 };
+
+function frpush(inviter, status){	
+	var check = true;
+	if(status=="1"){
+		check=confirm("수락하시겠습니까?");
+	}else{
+		check=confirm("거절하시겠습니까?");
+	}
+	if(check){
+		$.ajax({
+			type:"POST",
+	        url:"friend_accept.do",
+	        data: {"inviter":inviter,
+	        	"status":status
+	        },
+	        dataType:'text', 
+	        success: function (data){
+	        	alert($('.fr_push_list').html());
+	        }
+		});
+	}
+	
+};
 // ==============================================================================
 // modal에서 주소 선택했을 때 클릭 이벤트(home.jsp)======================================
 // function down(btn) {

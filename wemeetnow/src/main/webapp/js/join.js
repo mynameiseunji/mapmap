@@ -9,7 +9,8 @@
 	};
 $(document).ready(function() {	
 	$('.btn.btn-dark').click(function() {
-		var keyword = $("#addr1").val();		
+		var keyword = $("#addr1").val();
+		console.log(keyword)
 		if(keyword.trim() == ""){
 			alert("검색어를 입력해주세요.");
 			return false;
@@ -54,6 +55,7 @@ var callback = function(result, status) {
 		$("#table_part tbody").empty();
 		$("#table_part tbody").append("검색 결과가 없습니다.");
 	}
+	search_type ="keyword";
 };
 // ============================================================================
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.myapp.model.FriendBean;
+import com.mycompany.myapp.model.FriendConfirm;
 import com.mycompany.myapp.model.MemberBean;
 import com.mycompany.myapp.service.FriendServiceImpl;
 import com.mycompany.myapp.service.Memberservice;
@@ -90,6 +91,12 @@ public class MemberAction {
 	               friendList.add(memberService.userCheck(fb.getEmail2()));
 	            }
 	            session.setAttribute("fr_list",friendList);
+	            
+	            //받은 친구 요청 리스트
+	            List<FriendConfirm> invitedList = friendService.invited(email);
+	            session.setAttribute("fr_push",invitedList);
+	            
+	            
 	            return "map/home";
 			} else {		//incorrect password
 				result = 2;

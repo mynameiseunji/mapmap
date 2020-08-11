@@ -161,14 +161,15 @@ h1, h2, h3, h4, h5, h6 {
 													data-addr="${item.addr1}" data-x_="${item.x_}"
 													data-y_="${item.y_}" class="btn btn-success"
 													onclick="fr_down(this)">주소 1</button>
-												<button data-nickname="${item.nickname}"
+													<!-- c:if -->
+												<%-- <button data-nickname="${item.nickname}"
 													data-addr="${item.addr2}" data-x_="${item.x_}"
 													data-y_="${item.y_}" type="button" class="btn btn-success"
 													onclick="fr_down(this)">주소 2</button>
 												<button data-nickname="${item.nickname}"
 													data-addr="${item.addr3}" data-x_="${item.x_}"
 													data-y_="${item.y_}" type="button" class="btn btn-success"
-													onclick="fr_down(this)">주소 3</button>
+													onclick="fr_down(this)">주소 3</button> --%>
 											</div></td>
 									</tr>
 								</c:forEach>
@@ -222,4 +223,11 @@ h1, h2, h3, h4, h5, h6 {
 	</footer>
 	<div id="fl-list"></div>
 </body>
+<c:forEach var="fr_push" items="${fr_push}">
+	<div class="fr_push_list">
+	${fr_push.inviter}님이 친구요청했습니다.
+	<button class="w3-bar-item w3-button" onclick="frpush('${fr_push.inviter}','1')">수락</button>
+	<button class="w3-bar-item w3-button" onclick="frpush('${fr_push.inviter}','2')">거절</button>
+	</div>
+</c:forEach>
 </html>
