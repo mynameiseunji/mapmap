@@ -30,7 +30,27 @@ public class HomeController {
 	public String home() {
 		return "map/home";
 	}
-
+	
+	@RequestMapping("session_del.do")
+	public String testtest(HttpServletRequest request, Place place, Model model) {
+		if(place.getName()==null)return "map/home";
+		System.out.println(place.toString());
+		ArrayList<Place> startPlaceList = new ArrayList<Place>();
+		int n = place.getName().split(",").length;
+		System.out.println(n);
+		for(int i=0; i<n; i++) {
+			Place p = new Place();
+			p.setAddress(place.getAddress().split(",")[i]);
+			p.setName(place.getName().split(",")[i]);
+			p.setX(place.getX().split(",")[i]);
+			p.setY(place.getY().split(",")[i]);
+			startPlaceList.add(p);
+		}
+		int listSize = startPlaceList.size();
+		request.getSession().setAttribute("startPlaceList", startPlaceList);
+		
+		return "map/home";
+	}
 	@RequestMapping("sendAddr.do")
 	public String sendAddr(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
 		
@@ -40,6 +60,7 @@ public class HomeController {
 		// 세션
 		HttpSession session = request.getSession();
 		session.setAttribute("startPlaceList", startPlaceList);
+		//resquest.setAttribute("startPlaceList", startPlaceList);
 		
 		
 		//---------------------------------중점 좌표 get--------------------------------

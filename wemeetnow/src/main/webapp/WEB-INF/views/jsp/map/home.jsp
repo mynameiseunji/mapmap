@@ -40,16 +40,20 @@ h1, h2, h3, h4, h5, h6 {
 	로그인 세션 있으면(컨트롤러에서 친구목록, 로그인 세션 넘어옴)
 		1.버튼 value '로그인' => '회원 정보'로 변경
 		2.친구 목록 리스트 보여주기. (main.jsp의 var fl 변수 참조)
-	 */
+	 
 	//친구목록 세션에 있을때
 	//alert('${fr_email}');
-	var fr_email = '${fr_email}'.split("#");	fr_email.pop();
-	var fr_nick = '${fr_nick}'.split("#");	fr_nick.pop();
-	var fr_x = '${fr_x}'.split("#");	fr_x.pop();
-	var fr_y = '${fr_y}'.split("#");	fr_y.pop();
+	var fr_email = '${fr_email}'.split("#");
+	fr_email.pop();
+	var fr_nick = '${fr_nick}'.split("#");
+	fr_nick.pop();
+	var fr_x = '${fr_x}'.split("#");
+	fr_x.pop();
+	var fr_y = '${fr_y}'.split("#");
+	fr_y.pop();
 
 	$(document).ready(function() {
-		
+
 		//로그인 세션 있음
 		if ('${sessionScope.email}' != "") {
 			$("#fl-list").append("친구 목록 있음/ 로그인 됨<br>");
@@ -59,13 +63,13 @@ h1, h2, h3, h4, h5, h6 {
 				tag += fr_email[i] + '<br>';
 			}
 			$("#fl-list").append(tag);
-			
-		//로그인 세션 없음
+
+			//로그인 세션 없음
 		} else {
 			$("#fl-list").append("친구 목록 없음/ 로그인 안됨");
 
 		}
-	});
+	}); */
 
 	window.onpageshow = function(event) {
 		if (event.persisted
@@ -77,6 +81,8 @@ h1, h2, h3, h4, h5, h6 {
 			console.log("새로 진입123");
 		}
 	}
+	
+	
 </script>
 <body>
 
@@ -89,23 +95,25 @@ h1, h2, h3, h4, h5, h6 {
 			<div class="w3-right w3-hide-small">
 				<!-- 로그인 세션 있으면 회원정보로-->
 				<c:if test="${empty email}">
-				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
-					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
+					<a href="member_login.do" class="w3-bar-item w3-button">로그인</a>
+					<a href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
 				</c:if>
 				<c:if test="${not empty email}">
-				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a> <a
-					href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+					${nickname}님 환영합니다!
+					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
+					<a href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
 				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<!-- 로그인 세션 있으면 회원정보로 --><!-- 로그인 세션 있으면 회원정보로-->
+				<!-- 로그인 세션 있으면 회원정보로 -->
+				<!-- 로그인 세션 있으면 회원정보로-->
 				<c:if test="${empty email}">
-				<a href="member_login.do" class="w3-bar-item w3-button"> <i
-					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+					<a href="member_login.do" class="w3-bar-item w3-button"> <i
+						class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
 				</c:if>
 				<c:if test="${not empty email}">
-				<a href="member_info.do" class="w3-bar-item w3-button"> <i
-					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+					<a href="member_info.do" class="w3-bar-item w3-button"> <i
+						class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
 				</c:if>
 			</div>
 		</div>
@@ -124,13 +132,16 @@ h1, h2, h3, h4, h5, h6 {
 			</div>
 
 		</div>
-
-	<div align="center">
-	우리의 중간은 어디일까?<br>
-	공평한 약속 장소를 찾을 수 있드록 도와드립니다.<br>
-	참석자들의 출발지를 입력하시면 장소를 추천해드려요.<br>
-	최대 10인.
-	</div>
+		<c:if test="${not empty email}">
+			<div align="left">
+				<button type="button" id="friend-list" class="btn btn-dark"
+					data-toggle="modal" data-target="#friend-Modal">친구 목록</button>
+			</div>
+		</c:if>
+		<div align="center">
+			우리의 중간은 어디일까?<br> 공평한 약속 장소를 찾을 수 있드록 도와드립니다.<br> 참석자들의
+			출발지를 입력하시면 장소를 추천해드려요.<br> 최대 10인.
+		</div>
 		<!-- The Modal -->
 		<div class="modal" id="myModal">
 			<div class="modal-dialog">
@@ -157,6 +168,54 @@ h1, h2, h3, h4, h5, h6 {
 				</div>
 			</div>
 		</div>
+
+		<!-- The Friend-Modal -->
+		<div class="modal" id="friend-Modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title">
+							<b>&nbsp;&nbsp; 친구 목록</b>
+						</h4>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+
+					<!-- Modal body -->
+					<div class="modal-body" style='font-size: 18px'>
+						<table id="fr-table_part"
+							class="w3-table w3-bordered w3-hoverable">
+							<tbody wdith="100%">
+								<c:forEach var="item" items="${fr_list}">
+									<tr>
+										<td><div align="center">${item.nickname}
+												<span class=w3-opacity style='font-size: 12px'>${item.email}</span>
+											</div>
+											<div align="center">
+												<button type="button" data-nickname="${item.nickname}"
+													data-addr="${item.addr1}" data-x_="${item.x_}"
+													data-y_="${item.y_}" class="btn btn-success"
+													onclick="fr_down(this)">주소 1</button>
+												<button data-nickname="${item.nickname}"
+													data-addr="${item.addr2}" data-x_="${item.x_}"
+													data-y_="${item.y_}" type="button" class="btn btn-success"
+													onclick="fr_down(this)">주소 2</button>
+												<button data-nickname="${item.nickname}"
+													data-addr="${item.addr3}" data-x_="${item.x_}"
+													data-y_="${item.y_}" type="button" class="btn btn-success"
+													onclick="fr_down(this)">주소 3</button>
+											</div></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
 	</div>
 	<br>
 	<hr>
@@ -166,12 +225,12 @@ h1, h2, h3, h4, h5, h6 {
 
 			<ul class="w3-ul w3-card-4">
 				<c:forEach items="${startPlaceList}" var="item">
-					<li class="w3-bar">
-					<span onclick="remove(this)" data-x='${item.x}'
+					<li class="w3-bar"><span onclick="remove(this)"
+						data-x='${item.x}'
 						class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>
 						<div class="w3-bar-item">
-							<span class="w3-large">${item.name} </span><br>
-							<span class="w3-addr"> ${item.address}</span>
+							<span class="w3-large">${item.name} </span><br> <span
+								class="w3-addr"> ${item.address}</span>
 						</div></li>
 
 				</c:forEach>
@@ -179,13 +238,15 @@ h1, h2, h3, h4, h5, h6 {
 			<div align="center">
 				<button id="check_data" type="submit" class="btn btn-dark">전송</button>
 			</div>
+
 		</div>
 		<c:forEach items="${startPlaceList}" var="item">
-		<div class='place_values'>
-			<input type='hidden' name='name' value='${item.name}'/>
-			<input type='hidden' name='x' value='${item.x}'/>
-			<input type='hidden' name='address' value='${item.address}'/>
-			<input type='hidden' name='y' value='${item.y}'></div>
+			<div class='place_values'>
+				<input type='hidden' name='name' value='${item.name}' /> <input
+					type='hidden' name='x' value='${item.x}' /> <input type='hidden'
+					name='address' value='${item.address}' /> <input type='hidden'
+					name='y' value='${item.y}'>
+			</div>
 		</c:forEach>
 	</form>
 	<br>
@@ -198,4 +259,7 @@ h1, h2, h3, h4, h5, h6 {
 	</footer>
 	<div id="fl-list"></div>
 </body>
+
+
+
 </html>

@@ -42,7 +42,7 @@ $(document).ready(
 					});
 
 			$('#search').click(function() {
-				console.log("우와우와우");
+				
 				check = /[a-zA-Z0-9가-힣]/; // 검색 형식 검사(숫자, 영어 대소문자, 한글(자음따로
 											// 모음따로는 검색 x))
 				keyword = $("#search_bar").val().trim();
@@ -81,6 +81,10 @@ $(document).ready(
 
 				// option으로 검색량 조절하기.
 				places.keywordSearch(keyword, callback, options);
+			});
+			
+			$('#friend-list').click(function(){
+				
 			});
 		});
 var search_type = "keyword";
@@ -145,36 +149,41 @@ var callback = function(result, status) {
 		$("#table_part tbody").empty();
 		$("#table_part tbody").append("검색 결과가 없습니다.");
 	}
+	search_type="keyword";
 };
 // ============================================================================
 
 // modal에서 주소 선택했을 때 클릭 이벤트(home.jsp)======================================
 function down(btn) {
-	var name = $(btn).data("name");
-	var x = $(btn).data("x");
-	var y = $(btn).data("y");
-	var addr_name = $(btn).data("addr");
-
-	var tag = '<li class="w3-bar"><span onclick="remove(this)" '
-			+ ' data-x="'
-			+ x
-			+ '" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'
-			+ '<div class="w3-bar-item"><span class="w3-large">' + name
-			+ '</span><br> <span class="w3-addr">' + addr_name
-			+ '</span></div></li>';
-
-	var str = "<div class='place_values'>"
-			+ "<input type='hidden' name='name' value='" + name
-			+ "'/><input type='hidden' name='x' value='" + x
-			+ "'/><input type='hidden' name='address' value='" + addr_name
-			+ "'/><input type='hidden' name='y' value='" + y + "'></div>";
-
-	$('.w3-ul.w3-card-4').append(tag); // 메인 화면에서 사용자에게 선택한 장소 보여주기.
-
-	$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
-
-	$('button.close').click();
-	$("#table_part tbody").empty();
+	if ($('li.w3-bar').length == 10) {
+		alert("최대10개");
+	} else {
+		var name = $(btn).data("name");
+		var x = $(btn).data("x");
+		var y = $(btn).data("y");
+		var addr_name = $(btn).data("addr");
+	
+		var tag = '<li class="w3-bar"><span onclick="remove(this)" '
+				+ ' data-x="'
+				+ x
+				+ '" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'
+				+ '<div class="w3-bar-item"><span class="w3-large">' + name
+				+ '</span><br> <span class="w3-addr">' + addr_name
+				+ '</span></div></li>';
+	
+		var str = "<div class='place_values'>"
+				+ "<input type='hidden' name='name' value='" + name
+				+ "'/><input type='hidden' name='x' value='" + x
+				+ "'/><input type='hidden' name='address' value='" + addr_name
+				+ "'/><input type='hidden' name='y' value='" + y + "'></div>";
+	
+		$('.w3-ul.w3-card-4').append(tag); // 메인 화면에서 사용자에게 선택한 장소 보여주기.
+	
+		$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
+	
+		$('button.close').click();
+		$("#table_part tbody").empty();
+	}
 }
 // ==========================================================================
 
@@ -183,5 +192,43 @@ function remove(it) {
 	var x = $(it).data("x");
 	var parent = $(it).closest("li").remove();
 	var target = $('input[value="' + x + '"]').closest('div').remove();
-	// 세션 낱개 삭제 가능???
+	
+	
+	// 세션 낱개 삭제
+	// serialize 함수를 사용하면  form 태그 내 input 태그에 입력된 값을 전부 연결하여 전달한다.
+	var frmData = $('#form').serialize(); //아이디값
+					  
+	$.post('session_del.do', frmData, function(data) {
+		alert("삭제됐습니다.");
+	});
+	
+};
+function fr_down(btn){
+	if ($('li.w3-bar').length == 10) {
+		alert("최대10개");
+	} else {
+		alert("추가됐습니다.")
+		var x_ = $(btn).data("x_");
+		var y_ = $(btn).data("y_");
+		var nick = $(btn).data("nickname");
+		var addr = $(btn).data("addr");
+		
+		var tag = '<li class="w3-bar"><span onclick="remove(this)" '
+			+ ' data-x="'
+			+ x_
+			+ '" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'
+			+ '<div class="w3-bar-item"><span class="w3-large">' + nick
+			+ '</span><br> <span class="w3-addr">' + addr
+			+ '</span></div></li>';
+	
+		var str = "<div class='place_values'>"
+				+ "<input type='hidden' name='name' value='" + nick
+				+ "'/><input type='hidden' name='x' value='" + x_
+				+ "'/><input type='hidden' name='address' value='" + addr
+				+ "'/><input type='hidden' name='y' value='" + y_ + "'></div>";
+		
+		$('.w3-ul.w3-card-4').append(tag); // 메인 화면에서 사용자에게 선택한 장소 보여주기.
+		
+		$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
+	}
 }

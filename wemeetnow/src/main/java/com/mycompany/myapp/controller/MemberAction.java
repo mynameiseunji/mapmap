@@ -1,5 +1,6 @@
 package com.mycompany.myapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,17 +81,13 @@ public class MemberAction {
 	            session.setAttribute("nickname", nickname);
 	            /*
 	             * db에서 친구 리스트 가져오기
-	             * javascript에서 처리하기 편하게
-	             * 각 친구의 메일, 닉, x,y 좌표 각각 스트링으로 넘기기
-	             * */
+	             */
 	            List<FriendBean> list = friendService.list(email);
-	            
-	            String[] fr_array = friendService.frListSession(list);
-	            
-	            session.setAttribute("fr_email",fr_array[0]);
-	            session.setAttribute("fr_nick",fr_array[1]);
-	            session.setAttribute("fr_y",fr_array[2]);
-	            session.setAttribute("fr_x",fr_array[3]);
+	            List<MemberBean> friendList = new ArrayList<MemberBean>();	            
+	            for(FriendBean fb : list) {
+	               friendList.add(memberService.userCheck(fb.getEmail2()));
+	            }
+	            session.setAttribute("fr_list",friendList);
 	            
 	            //친구 정보 넘기기 끝
 	            //============================================
