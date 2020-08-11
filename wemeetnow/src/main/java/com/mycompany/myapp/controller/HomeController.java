@@ -34,7 +34,7 @@ public class HomeController {
 	@RequestMapping("session_del.do")
 	public String testtest(HttpServletRequest request, Place place, Model model) {
 		if(place.getName()==null)return "map/home";
-		System.out.println(place.toString());
+		
 		ArrayList<Place> startPlaceList = new ArrayList<Place>();
 		int n = place.getName().split(",").length;
 		System.out.println(n);
@@ -138,10 +138,7 @@ public class HomeController {
 	@RequestMapping("category.do")
 	public String categorySelect(Place place, Model model) {
 
-		System.out.println(place.getX());
-		System.out.println(place.getY());
-		System.out.println(place.getName());
-
+		
 		model.addAttribute("place", place);
 
 		//-------------------- 카테고리별 추천 장소 5개 ----- 08/05 김가을  --------------------

@@ -14,7 +14,7 @@ $(document).ready(function() {
 			alert("검색어를 입력해주세요.");
 			return false;
 		}
-		//option으로 검색량 조절하기.
+		// option으로 검색량 조절하기.
 		places.keywordSearch(keyword, callback, options);
 	});
 });
@@ -22,7 +22,7 @@ var search_type ="keyword";
 // api 에서 데이터 받아오고 modal에 보여주기.
 var callback = function(result, status) {
 	if (status === kakao.maps.services.Status.OK) {
-		//console.log(search_type);
+		// console.log(search_type);
 		$("#table_part tbody").empty();
 		console.log(result);
 		for ( var i in result) {
@@ -30,24 +30,20 @@ var callback = function(result, status) {
 			var p_name = "";
 			if(search_type=='keyword'){
 				p_name=result[i].place_name;
-			}else{	//search_type='geo'
+			}else{	// search_type='geo'
 				p_name=result[i].address_name;
 			}		
 			
-			var str = "<tr><td>"+p_name+"<br>"+
-					"<p class=w3-opacity style='font-size: 12px'>"+
-					result[i].address_name+"</p>" +
-					"<input  type='button' class='btn btn-info'" +
-					"' data-name='"+p_name+
-					"' data-x='"+result[i].x+
-					"' data-y='" +result[i].y+
-					"' data-addr='" +result[i].address_name+
-					"' onclick='down(this)' value='선택'></td></tr>";
-					/*"<input type='hidden' name='name' value='" + p_name +
-					"'/><input type='hidden' name='x' value='" + result[i].x +
-					"'/><input type='hidden' name='addr_name' value='"+ result[i].address_name +
-					"'/><input type='hidden' name='y' value='" + result[i].y 
-					+"'></td><td align='right'><input type='button' class='btn btn-info' onclick='down(this)' value='선택'></td></tr>";*/
+			var str = "<tr><td class='btn'>" + p_name + "<br>"
+			+ "<p class=w3-opacity style='font-size: 12px'>"
+			+ result[i].address_name + "</p>"
+			+ "<input name='hh' type='hidden' "
+			+ "data-name='" + p_name + "' data-x='" + result[i].x
+			+ "' data-y='" + result[i].y + "' data-addr='"
+			+ result[i].address_name
+			+ "'></td></tr>";
+
+				
 			$("#table_part tbody").append(str);
 		}
 	}else if(search_type=='keyword'){
@@ -59,11 +55,11 @@ var callback = function(result, status) {
 		$("#table_part tbody").append("검색 결과가 없습니다.");
 	}
 };
-//============================================================================
+// ============================================================================
 
 
-//modal에서 주소 선택했을 때 클릭 이벤트(joinform.jsp)======================================
-function down(btn) {
+// modal에서 주소 선택했을 때 클릭 이벤트(joinform.jsp)======================================
+/*function down(btn) {
 	var name = $(btn).data("name");
 	var x = $(btn).data("x");
 	var y = $(btn).data("y");
@@ -80,8 +76,40 @@ function down(btn) {
 	$('input[name="x_"]').attr('value',x);
 	$('input[name="y_"]').attr('value',y);
 	$('button.close').click();
-}
-//==========================================================================
+}*/
+// ==========================================================================
+
+// 20/08/11 권은지 주소 선택 변경
+// =========================================================================
+// 20/08/10 권은지 추가 : modal에서 주소 선택했을 때 클릭
+// 이벤트=======================================================================
+// 동적으로 생성되는 modal-body 테이블에서 값을 읽어오기 위해 바뀐 함수
+$(document).on('click','td.btn', function(){
+	console.log(this);
+	var name = $(this).find("input[name=hh]").data('name');
+	var x = $(this).find("input[name=hh]").data('x');
+	var y = $(this).find("input[name=hh]").data('y');
+	var addr_name = $(this).find("input[name=hh]").data('addr');
+
+		
+	var tag ='<li class="w3-bar"><span onclick="this.parentElement.style.display=\'none\'"'+
+	'class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'+
+	'<div class="w3-bar-item"><span class="w3-large">'+name+
+	'</span><br> <span class="w3-addr">'+addr_name+
+	'</span></div></li>';
+	$('.w3-ul.w3-card-4').html(tag);
+
+	$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
+	$('input[name="addr1"]').attr('value',addr_name);
+	$('input[name="x_"]').attr('value',x);
+	$('input[name="y_"]').attr('value',y);
+	$('button.close').click();
+	
+});
+// ==============================================================================
+// =========================================================================
+
+
 
  function check(){
 	 if($.trim($("#email").val())==""){
@@ -118,29 +146,29 @@ function down(btn) {
 	 } 	 
  }
  
-//email duplicate check
+// email duplicate check
 function email_check(){
-	$("#emailcheck").hide();//span area
+	$("#emailcheck").hide();// span area
 	var email=$("#email").val();
-	//verification
+	// verification
 	if(!(validate_useremail(email))){
 		var newtext='<font color="red">이메일 형식 오류</font>';
 		$("#emailcheck").text('');	
-		$("#emailcheck").show();	//span id area
+		$("#emailcheck").show();	// span id area
 		$("#emailcheck").append(newtext);
 		$("#email").val("").focus();
 		return false;
 	};
 	
 
-	//email duplicate check
+	// email duplicate check
     $.ajax({
         type:"POST",
         url:"member_emailcheck.do",
         data: {"email":email},        
         success: function (data) { 
-        	/*alert("return success="+data);*/
-      	  if(data==1){	//id exists
+        	/* alert("return success="+data); */
+      	  if(data==1){	// id exists
       		var newtext='<font color="red">중복된 이메일입니다.</font>';
       			$("#emailcheck").text('');
         		$("#emailcheck").show();
@@ -148,7 +176,7 @@ function email_check(){
           		$("#email").val('').focus();
           		return false;
 	     
-      	  }else{		//id not exists
+      	  }else{		// id not exists
       		var newtext='<font color="blue">사용 가능 이메일입니다.</font>';
       		$("#emailcheck").text('');
       		$("#emailcheck").show();
@@ -160,7 +188,7 @@ function email_check(){
     	  error:function(e){
     		  alert("data error"+e);
     	  }
-      });//$.ajax	
+      });// $.ajax
 };
 
 
@@ -168,7 +196,7 @@ function validate_useremail(mail)
 {
   var pattern= new RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i);
     
-  //regular expression
+  // regular expression
   return pattern.test(mail);
 };
 
@@ -192,12 +220,9 @@ function edit_check(){
 	 }
 }
 
-/*// delform.jsp ==========================================================
-function del_check(){
-	 if($.trim($("#pwd").val())==""){
-		 alert("비밀번호 입력");
-		 $("#pwd").val("").focus();
-		 return false;
-	 }
-}*/
+/*
+ * // delform.jsp ==========================================================
+ * function del_check(){ if($.trim($("#pwd").val())==""){ alert("비밀번호 입력");
+ * $("#pwd").val("").focus(); return false; } }
+ */
  

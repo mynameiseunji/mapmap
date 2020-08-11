@@ -90,13 +90,7 @@ public class MemberAction {
 	               friendList.add(memberService.userCheck(fb.getEmail2()));
 	            }
 	            session.setAttribute("fr_list",friendList);
-
-
 	            return "map/home";
-	            
-	            // 프론트엔드 새로 합칠때 사용.
-	            //return "map/home1.jsp"
-				
 			} else {		//incorrect password
 				result = 2;
 				model.addAttribute("result", result);

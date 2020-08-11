@@ -199,18 +199,20 @@ $(document).on('click','td.btn',function() {
 
 // 선택된 출발지에서 삭제 버튼 누를 때 실행
 function remove(it) {
-	var x = $(it).data("x");
-	var parent = $(it).closest("li").remove();
-	var target = $('input[value="' + x + '"]').closest('div').remove();
+	var check = confirm('삭제하시겠습니까?');
+	if(check){
+		var x = $(it).data("x");
+		var parent = $(it).closest("li").remove();
+		var target = $('input[value="' + x + '"]').closest('div').remove();
 
-	// 세션 낱개 삭제
-	// serialize 함수를 사용하면 form 태그 내 input 태그에 입력된 값을 전부 연결하여 전달한다.
-	var frmData = $('#form').serialize(); // 아이디값
+		// 세션 낱개 삭제
+		// serialize 함수를 사용하면 form 태그 내 input 태그에 입력된 값을 전부 연결하여 전달한다.
+		var frmData = $('#form').serialize(); // 아이디값
 
-	$.post('session_del.do', frmData, function(data) {
-		alert("삭제됐습니다.");
-	});
-
+		$.post('session_del.do', frmData, function(data) {
+			alert("삭제됐습니다.");
+		});
+	}
 };
 function fr_down(btn) {
 	if ($('li.w3-bar').length == 10) {

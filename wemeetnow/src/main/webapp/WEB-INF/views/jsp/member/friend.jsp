@@ -108,11 +108,11 @@ function add(email){
 	        url:"friend_add.do",
 	        data: {"email":email},
 	        success: function (data) {
-	        	if(data==1){
+
+	        	if(data==-1){		
 	        		alert("이미 등록된 친구")
 	        		return false;
 	        	} else {
-	            	alert("return success="+data);
 		      		location.href="<%=request.getContextPath()%>/friendlist.do";
 	        	}  		
 	        }	    	
@@ -142,8 +142,8 @@ $(document).ready(function(){
 					href="member_info.do" class="w3-bar-item w3-button">회원 정보</a>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<a href="member_info.do" class="w3-bar-item w3-button"> <i class="fa fa-user-circle"
-					aria-hidden="true"> </i></a>
+				<a href="member_info.do" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle" aria-hidden="true"> </i></a>
 			</div>
 		</div>
 	</div>
@@ -177,9 +177,10 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</div>
-	<div id="searchResult" class="container-sm" style='max-width: 500px; margin-top: 20px'>
+	<div id="searchResult" class="container-sm"
+		style='max-width: 500px; margin-top: 20px'>
 		<ul id="resultList" class="list-group">
-			
+
 		</ul>
 	</div>
 	<footer class="w3-center w3-light-grey w3-padding-32">

@@ -56,11 +56,13 @@ public class FriendAction {
 		m.put("email2", email);
 
 		int resultc = friendService.checkFriend(m);
-		if (resultc == 1) {
+
+		if (resultc == -1) {
 
 			return resultc;
 
 		} else {
+
 			int result = friendService.addFriend(m);
 
 			System.out.println("result: " + result);
