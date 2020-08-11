@@ -119,16 +119,18 @@ var callback = function(result, status) {
 			if (p_region === '서울' || p_region === '인천' || p_region === '경기') {
 				// 출처: https://darusamu.tistory.com/23 [Workspace]
 				// --------------------------------------------------------------------------------------
-
-				var str = "<tr><td>" + p_name + "<br>"
+				
+				// 20/08/10 권은지 변경 : modal-body append 태그 변경=========================
+				var str = "<tr><td class='btn'>" + p_name + "<br>"
 						+ "<p class=w3-opacity style='font-size: 12px'>"
 						+ result[i].address_name + "</p>"
-						+ "<input  type='button' class='btn btn-info'"
-						+ "' data-name='" + p_name + "' data-x='" + result[i].x
+						+ "<input name='hh' type='hidden' "
+						+ "data-name='" + p_name + "' data-x='" + result[i].x
 						+ "' data-y='" + result[i].y + "' data-addr='"
 						+ result[i].address_name
-						+ "' onclick='down(this)' value='선택'></td></tr>";
-
+						+ "'></td></tr>";
+				// ===================================================================
+				
 				$("#table_part tbody").append(str);
 				// ------20/08/04 권은지 : 유효성 검사 추가3 / 수도권 지역(서울, 경기, 인천) 아닌 지역
 				// 검색결과에서 제외 -------
@@ -146,36 +148,70 @@ var callback = function(result, status) {
 		$("#table_part tbody").append("검색 결과가 없습니다.");
 	}
 };
-// ============================================================================
+// 20/08/10 권은지 추가 : modal에서 주소 선택했을 때 클릭 이벤트=======================================================================
+// 동적으로 생성되는 modal-body 테이블에서 값을 읽어오기 위해 바뀐 함수
+$(document).on('click','td.btn', function(){
+	console.log(this);
+	var name = $(this).find("input[name=hh]").data('name');
+	var x = $(this).find("input[name=hh]").data('x');
+	var y = $(this).find("input[name=hh]").data('y');
+	var addr_name = $(this).find("input[name=hh]").data('addr');
 
+	 if ($('li.w3-bar').length == 10) {
+	      alert("최대10개");
+	   } else {
+		   var tag = '<li class="w3-bar"><span onclick="remove(this)" '
+			   + ' data-x="'
+			   + x
+			   + '" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'
+			   + '<div class="w3-bar-item"><span class="w3-large">' + name
+			   + '</span><br> <span class="w3-addr">' + addr_name
+			   + '</span></div></li>';
+
+		   var str = "<div class='place_values'>"
+			   + "<input type='hidden' name='name' value='" + name
+			   + "'/><input type='hidden' name='x' value='" + x
+			   + "'/><input type='hidden' name='address' value='" + addr_name
+			   + "'/><input type='hidden' name='y' value='" + y + "'></div>";
+
+		   $('.w3-ul.w3-card-4').append(tag); // 메인 화면에서 사용자에게 선택한 장소 보여주기.
+
+		   $("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
+
+		   $('button.close').click();
+		   $("#table_part tbody").empty();
+	   }
+});
+//==============================================================================
 // modal에서 주소 선택했을 때 클릭 이벤트(home.jsp)======================================
-function down(btn) {
-	var name = $(btn).data("name");
-	var x = $(btn).data("x");
-	var y = $(btn).data("y");
-	var addr_name = $(btn).data("addr");
-
-	var tag = '<li class="w3-bar"><span onclick="remove(this)" '
-			+ ' data-x="'
-			+ x
-			+ '" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'
-			+ '<div class="w3-bar-item"><span class="w3-large">' + name
-			+ '</span><br> <span class="w3-addr">' + addr_name
-			+ '</span></div></li>';
-
-	var str = "<div class='place_values'>"
-			+ "<input type='hidden' name='name' value='" + name
-			+ "'/><input type='hidden' name='x' value='" + x
-			+ "'/><input type='hidden' name='address' value='" + addr_name
-			+ "'/><input type='hidden' name='y' value='" + y + "'></div>";
-
-	$('.w3-ul.w3-card-4').append(tag); // 메인 화면에서 사용자에게 선택한 장소 보여주기.
-
-	$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
-
-	$('button.close').click(); 
-	$("#table_part tbody").empty();
-}
+//function down(btn) {
+//	var name = $(btn).data("name");
+//	console.log(name);
+//	var x = $(btn).data("x");
+//	var y = $(btn).data("y");
+//	var addr_name = $(btn).data("addr");
+//
+//	var tag = '<li class="w3-bar"><span onclick="remove(this)" '
+//			+ ' data-x="'
+//			+ x
+//			+ '" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'
+//			+ '<div class="w3-bar-item"><span class="w3-large">' + name
+//			+ '</span><br> <span class="w3-addr">' + addr_name
+//			+ '</span></div></li>';
+//
+//	var str = "<div class='place_values'>"
+//			+ "<input type='hidden' name='name' value='" + name
+//			+ "'/><input type='hidden' name='x' value='" + x
+//			+ "'/><input type='hidden' name='address' value='" + addr_name
+//			+ "'/><input type='hidden' name='y' value='" + y + "'></div>";
+//
+//	$('.w3-ul.w3-card-4').append(tag); // 메인 화면에서 사용자에게 선택한 장소 보여주기.
+//
+//	$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
+//
+//	$('button.close').click();
+//	$("#table_part tbody").empty();
+//}
 // ==========================================================================
 
 // 선택된 출발지에서 삭제 버튼 누를 때 실행
