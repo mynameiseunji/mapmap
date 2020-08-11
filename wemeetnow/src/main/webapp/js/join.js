@@ -8,22 +8,53 @@
 			size : 5
 	};
 $(document).ready(function() {	
-	$('.btn.btn-dark').click(function() {
-		var keyword = $("#addr1").val();
-		console.log(keyword)
-		if(keyword.trim() == ""){
+	$('#search').click(function() {
+		//var check = /\b(?:one|two|three)\b/gi;
+		var check = /[a-zA-Z0-9가-힣]/; // 검색 형식 검사(숫자, 영어 대소문자, 한글(자음따로
+		// 모음따로는 검색 x))
+		keyword = $("#addr1").val().trim();
+		if (keyword == "") {
+
 			alert("검색어를 입력해주세요.");
 			return false;
 		}
-		// option으로 검색량 조절하기.
-		places.keywordSearch(keyword, callback, options);
+		if (!check.test(keyword)) { // 검색어 유효성 검사
+			alert("검색어가 유효하지 않습니다.");
+			return false;
+		}
+			// ---------------------20/08/04 권은지 : 유효성 검사 추가2 / SQL
+			// Injection 방지 필터링 처리 추가
+		function SQLFiltering(str) {
+				str = str.replace(/\s{1,}1\=(.*)+/, ""); // 공백이후 1=1이 있을
+				// 경우 제거
+				str = str.replace(/\s{1,}(or|and|null|where|limit)/i, " "); // 공백이후
+				// or,
+				// and
+				// 등이
+				// 있을
+				// 경우
+				// 제거
+				str = str.replace(/[\s\t\'\;\=]+/, "");
+				// 공백이나 탭 제거, 특수문자 제거
+				return str;
+			}
+			// SQL Injection 방지 > 검색할 keyword 올바르게 replace하는 코드 (sql 예약어
+			// 키워드로 API에 요청시 서버 멈춤)
+			keyword = SQLFiltering(keyword);
+
+			// keyword replace 디버깅 코드
+			// console.log(keyword);
+			// --------------------------------------------------------------
+
+			// option으로 검색량 조절하기.
+			places.keywordSearch(keyword, callback, options);
 	});
 });
 var search_type ="keyword";
 // api 에서 데이터 받아오고 modal에 보여주기.
 var callback = function(result, status) {
 	if (status === kakao.maps.services.Status.OK) {
-		// console.log(search_type);
+		console.log(search_type);
 		$("#table_part tbody").empty();
 		console.log(result);
 		for ( var i in result) {
@@ -33,20 +64,51 @@ var callback = function(result, status) {
 				p_name=result[i].place_name;
 			}else{	// search_type='geo'
 				p_name=result[i].address_name;
-			}		
-			
-			var str = "<tr><td class='btn'>" + p_name + "<br>"
-			+ "<p class=w3-opacity style='font-size: 12px'>"
-			+ result[i].address_name + "</p>"
-			+ "<input name='hh' type='hidden' "
-			+ "data-name='" + p_name + "' data-x='" + result[i].x
-			+ "' data-y='" + result[i].y + "' data-addr='"
-			+ result[i].address_name
-			+ "'></td></tr>";
+			}
+			// ------------------20/08/04 권은지 : 유효성 검사 추가3 / 수도권 지역(서울, 경기, 인천)
+			// 아닌 지역 검색결과에서 제외 -------
+			/** * 서브스트링 함수 * string.cut(length)로 사용 * */
+			String.prototype.cut = function(len) {
+				var str = this;
+				var l = 0;
+				for (var i = 0; i < str.length; i++) {
+					l += (str.charCodeAt(i) > 128) ? 2 : 1;
+					if (l > len)
+						return str.substring(0, i);
+				}
+				return str;
+			};
 
-				
-			$("#table_part tbody").append(str);
+			// p_region : 지역명 검사용 변수(앞 두 글자)
+			var p_region = result[i].address_name.cut(4);
+			// 디버깅 코드
+			// console.log("p_region : ", p_region);
+			if (p_region === '서울' || p_region === '인천' || p_region === '경기') {
+				// 출처: https://darusamu.tistory.com/23 [Workspace]
+				// --------------------------------------------------------------------------------------
+
+				// 20/08/10 권은지 변경 : modal-body append 태그
+				// 변경=========================
+				var str = "<tr><td class='btn'>" + p_name + "<br>"
+				+ "<p class=w3-opacity style='font-size: 12px'>"
+				+ result[i].address_name + "</p>"
+				+ "<input name='hh' type='hidden' "
+				+ "data-name='" + p_name + "' data-x='" + result[i].x
+				+ "' data-y='" + result[i].y + "' data-addr='"
+				+ result[i].address_name
+				+ "'></td></tr>";
+				$("#table_part tbody").append(str);
+				// ===================================================================
+
+				$("#table_part tbody").append(str);
+				// ------20/08/04 권은지 : 유효성 검사 추가3 / 수도권 지역(서울, 경기, 인천) 아닌 지역
+				// 검색결과에서 제외 -------
+			} else {
+				continue;
+			}
 		}
+			// --------------------------------------------------------------------------------------		
+		
 	}else if(search_type=='keyword'){
 		search_type="geo";
 		var geocoder = new kakao.maps.services.Geocoder();
