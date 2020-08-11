@@ -7,7 +7,7 @@
 			location : latlng,
 			size : 5
 	};
-$(document).ready(function() {	
+$(document).ready(function(){	
 	$('#search').click(function() {
 		//var check = /\b(?:one|two|three)\b/gi;
 		var check = /[a-zA-Z0-9가-힣]/; // 검색 형식 검사(숫자, 영어 대소문자, 한글(자음따로
