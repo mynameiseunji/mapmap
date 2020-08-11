@@ -87,7 +87,7 @@ h1, h2, h3, h4, h5, h6 {
 				<input type="text" id="addr1" class="form-control"
 					placeholder="검색할 주소를 입력하세요" >
 				<div class="input-group-append">
-					<button type="button" class="btn btn-dark" data-toggle="modal"
+					<button type="button" id="search" class="btn btn-dark" data-toggle="modal"
 						data-target="#myModal">검색</button>
 					<br>
 				</div>

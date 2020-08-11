@@ -83,7 +83,7 @@ h1, h2, h3, h4, h5, h6 {
 				<input type="text" id="addr1" class="form-control" value="${user.addr1}"
 					placeholder="검색할 주소를 입력하세요" >
 				<div class="input-group-append">
-					<button type="button" class="btn btn-dark" data-toggle="modal"
+					<button type="button" id="search" class="btn btn-dark" data-toggle="modal"
 						data-target="#myModal">검색</button>
 					<br>
 				</div>
@@ -107,11 +107,6 @@ h1, h2, h3, h4, h5, h6 {
 						<div class="modal-body" style='font-size: 18px'>
 							<table id="table_part" class="w3-table w3-bordered w3-hoverable">
 								<tbody wdith="100%">
-									<tr>
-										<td>대화역 4호선<br>
-											<p class=w3-opacity style='font-size: 12px'>경기 고양시 일산서구
-												대화동 2502</p></td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
