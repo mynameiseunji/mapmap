@@ -21,8 +21,11 @@ public class FriendServiceImpl {
 	private FriendDAOImpl friendDao;
 	
 	public int addFriend(Map m) throws Exception{
-		
 		return friendDao.addFriend(m);
+	}
+	
+	public int checkFriend(Map m) throws Exception{
+		return friendDao.checkFriend(m);
 	}
 	
 	public List<FriendBean> list(String email){
@@ -30,10 +33,11 @@ public class FriendServiceImpl {
 	}
 
 	public int delFriend(FriendBean bean) throws Exception{
-		
 		return friendDao.delFriend(bean);
 	}
+	
 	public int checkMemberEmail(String email) throws Exception{
 		return memberDao.checkMemberEmail(email);
 	}
+	
 }

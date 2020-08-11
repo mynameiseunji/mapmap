@@ -82,16 +82,16 @@ public class MemberAction {
 	            /*
 	             * db에서 친구 리스트 가져오기
 	             */
+
 	            List<FriendBean> list = friendService.list(email);
+
 	            List<MemberBean> friendList = new ArrayList<MemberBean>();	            
 	            for(FriendBean fb : list) {
 	               friendList.add(memberService.userCheck(fb.getEmail2()));
 	            }
 	            session.setAttribute("fr_list",friendList);
-	            
-	            //친구 정보 넘기기 끝
-	            //============================================
-	            
+
+
 	            return "map/home";
 	            
 	            // 프론트엔드 새로 합칠때 사용.
@@ -143,7 +143,7 @@ public class MemberAction {
 	public String logout(HttpSession session) {
 		session.invalidate();
 
-		return "member/member_logout";
+		return "map/home";
 	}
 	
 	//member deletion form

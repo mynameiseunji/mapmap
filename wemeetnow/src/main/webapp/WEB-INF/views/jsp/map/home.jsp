@@ -35,42 +35,6 @@ h1, h2, h3, h4, h5, h6 {
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0b6c81e5d496e486ca93f4d82d0a0027&libraries=services"></script>
 <script src="<%=request.getContextPath()%>/js/home.js"></script>
 <script>
-	/*
-	로그인 세션 처리 (친구 목록을 세션으로 처리하고 있음)
-	로그인 세션 있으면(컨트롤러에서 친구목록, 로그인 세션 넘어옴)
-		1.버튼 value '로그인' => '회원 정보'로 변경
-		2.친구 목록 리스트 보여주기. (main.jsp의 var fl 변수 참조)
-	 
-	//친구목록 세션에 있을때
-	//alert('${fr_email}');
-	var fr_email = '${fr_email}'.split("#");
-	fr_email.pop();
-	var fr_nick = '${fr_nick}'.split("#");
-	fr_nick.pop();
-	var fr_x = '${fr_x}'.split("#");
-	fr_x.pop();
-	var fr_y = '${fr_y}'.split("#");
-	fr_y.pop();
-
-	$(document).ready(function() {
-
-		//로그인 세션 있음
-		if ('${sessionScope.email}' != "") {
-			$("#fl-list").append("친구 목록 있음/ 로그인 됨<br>");
-			var tag = ""; //append될 태그 변수
-			for (var i = 0; i < fr_email.length; i++) {
-				//태그 쌓기
-				tag += fr_email[i] + '<br>';
-			}
-			$("#fl-list").append(tag);
-
-			//로그인 세션 없음
-		} else {
-			$("#fl-list").append("친구 목록 없음/ 로그인 안됨");
-
-		}
-	}); */
-
 	window.onpageshow = function(event) {
 		if (event.persisted
 				|| (window.performance && window.performance.navigation.type == 2)) {
@@ -212,7 +176,6 @@ h1, h2, h3, h4, h5, h6 {
 						</table>
 					</div>
 
-
 				</div>
 			</div>
 		</div>
@@ -247,7 +210,7 @@ h1, h2, h3, h4, h5, h6 {
 					name='address' value='${item.address}' /> <input type='hidden'
 					name='y' value='${item.y}'>
 			</div>
-		</c:forEach>
+			</c:forEach>
 	</form>
 	<br>
 	<br>
@@ -259,7 +222,4 @@ h1, h2, h3, h4, h5, h6 {
 	</footer>
 	<div id="fl-list"></div>
 </body>
-
-
-
 </html>

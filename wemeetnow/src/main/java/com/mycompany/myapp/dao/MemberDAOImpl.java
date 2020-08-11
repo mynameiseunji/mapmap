@@ -19,7 +19,7 @@ public class MemberDAOImpl {
 		int re = -1;	//id not exists
 		MemberBean mb = (MemberBean) sqlSession.selectOne("memberns.login_check", email);
 		if (mb != null)
-			re = 1; 	//id exists
+			re = 1;		//id exists
 		return re;
 	}	
 

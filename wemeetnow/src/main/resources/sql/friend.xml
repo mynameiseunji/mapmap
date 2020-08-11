@@ -6,8 +6,13 @@
 	
 	<!-- add friend -->
 	<insert id="add_friend" parameterType="Map">
-		insert into friendship	values(friend_seq.NEXTVAL,#{email1}, #{email2})
+		insert into friendship values(friend_seq.NEXTVAL,#{email1}, #{email2})
 	</insert>
+	
+	<!-- check friend -->
+	<select id="check_friend" parameterType="Map" resultType="friend">
+		select * from friendship where email1=#{email1} and email2=#{email2}
+	</select>
 	
 	<!-- friend list  -->
 	<select id="list" parameterType="String" resultType="friend">

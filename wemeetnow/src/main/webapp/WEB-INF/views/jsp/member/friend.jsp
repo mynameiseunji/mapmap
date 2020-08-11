@@ -108,16 +108,20 @@ function add(email){
 	        url:"friend_add.do",
 	        data: {"email":email},
 	        success: function (data) {
-	        	alert("return success="+data);	
-	        }
+	        	if(data==1){
+	        		alert("이미 등록된 친구")
+	        		return false;
+	        	} else {
+	            	alert("return success="+data);
+		      		location.href="<%=request.getContextPath()%>/friendlist.do";
+	        	}  		
+	        }	    	
 	        ,
 	    	error:function(e){
 	    		alert("data error"+e);
 	    	}
-	      });//$.ajax
-	      location.href="<%=request.getContextPath()%>/friendlist.do";
-	}
-	
+		});//$.ajax
+	}	
 }
 
 $(document).ready(function(){
