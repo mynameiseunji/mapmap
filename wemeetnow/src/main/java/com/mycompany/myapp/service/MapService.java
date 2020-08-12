@@ -7,7 +7,6 @@ import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.stationXY;
 
 public interface MapService {
-
 	public List<Place> categorySearch(String categoryCode);
 
 	public List<Place> categorySearch(String categoryCode, String option);

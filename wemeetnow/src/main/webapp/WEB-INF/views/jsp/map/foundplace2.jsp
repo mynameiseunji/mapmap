@@ -102,7 +102,7 @@ h1, h2, h3, h4, h5, h6 {
    <script>
    // 
    
-   console.log(posi_x);
+   console.log(endPlaceList_x);
       //각 장소에대한 친구들의 경로 정보  => 장소1까지 친구1읠 경로/장소1까지 친구2의 경로/...
       var path_list = '${pathInfo}'.split('/');
       //출발지 갯수
@@ -125,21 +125,15 @@ h1, h2, h3, h4, h5, h6 {
       // 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 시작 ===========================
       // 컨트롤러에서 후보지 정보 받아와서 배열생성
       // name#x#y#name#x#y...형식
-      var endPlaceList = '${endPlaceList}'.split("#");
-      // endPlace갯수
-      var epl_num = parseInt('${epl_num}');
-      endPlaceList.pop();
-      
+            
       // tmap에 사용할 도착지점 x,y 배열 생성
-      var posi_x = new Array();
-      var posi_y = new Array();
-      posi_x.push(parseFloat('${center.x}')); // 첫 화면 중심 좌표 배열[0]에 입력
-      posi_y.push(parseFloat('${center.y}'));
-
-      for(var i=0; i<endPlaceList.length; i++) { // 추천 지하철 좌표 [1]부터 입력
-      posi_x.push(endPlaceList[i*3+1]);
-      posi_y.push(endPlaceList[i*3+2]);
-      }
+      var endPlaceList_x = '${endPlaceList_x}'.split("#");
+      var endPlaceList_y = '${endPlaceList_y}'.split("#")
+      var endPlaceList_name = '${endPlaceList_name}'.split("#")
+      endPlaceList_x.pop();
+      endPlaceList_y.pop();
+      endPlaceList_name.pop();
+      var epl_num = endPlaceList_x.length;
       
       //맨처음 보일 endplace를 html형식으로 append.
       // .tab-content 자손태그로 추가
@@ -148,35 +142,37 @@ h1, h2, h3, h4, h5, h6 {
 //                '<span data-x="'+endPlaceList[1]+'" data-y="'+endPlaceList[2]+'"></span>';
       //append.
       var cen = 'center';
-      $('#selected_x').attr('value',posi_x[0]);
-      $('#selected_y').attr('value',posi_y[0]);
-      $('#selected_name').attr('value',cen);
+      $('#selected_x').attr('value',endPlaceList_x[0]);
+      $('#selected_y').attr('value',endPlaceList_y[0]);
+      $('#selected_name').attr('value',endPlaceList_name[0]);
       
 //       $('#home').append(posi_li_active);
 //       $('.nav-link.active').text(endPlaceList[0]); // location1 => 장소명으로 변경
       
       // .tab-content 자손태그로 추가(반복)
-      for(var i=0; i<epl_num; i++){
+      for(var i=1; i<epl_num; i++){
          
          var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
-                     '<h1>'+endPlaceList[i*3+0]+'</h1>'+
-                     paths[i]+
-                     '</p><span data-x="'+endPlaceList[i*3+1]+'" data-y="'+endPlaceList[i*3+2]+'"></span></div>';
+                     '<h1>'+endPlaceList_name[i]+'</h1>'+
+                     paths[i-1]+'</p><span data-x="'
+                     +endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span></div>';
                      
-         var posi_li_nav ='<li class="nav-item">'+
-      
-         '<span data-name="'+endPlaceList[i*3+0]+'" data-x="'+endPlaceList[i*3+1]+'" data-y="'+endPlaceList[i*3+2]+'"></span>' +
-                     '<a class="nav-link" data-toggle="tab" href="#menu'+i+'" onclick="drawmap('+(i+1)+'); choice(this);">'+
-                  
-                     endPlaceList[i*3+0]+'</a></li>';
+         var posi_li_nav ='<li class="nav-item">'+      
+					         '<span data-name="'+endPlaceList_name[i]+
+					         '" data-x="'+endPlaceList_x[i]+
+					         '" data-y="'+endPlaceList_y[i]+
+					         '"></span>' +
+					         '<a class="nav-link" data-toggle="tab" href="#menu'+i+
+					         '" onclick="drawmap('+(i+1)+'); choice(this);">'+
+					         endPlaceList_name[i]+'</a></li>';
          
          
          $('.tab-content').append(posi_li_fade);
          $('.nav.nav-tabs').append(posi_li_nav);
       }
       function centerf(btn){
-         $('#selected_x').attr('value',posi_x[0]);
-         $('#selected_y').attr('value',posi_y[0]);
+         $('#selected_x').attr('value',endPlaceList_x[0]);
+         $('#selected_y').attr('value',endPlaceList_y[0]);
          $('#selected_name').attr('value',cen);
       }
       
@@ -191,24 +187,15 @@ h1, h2, h3, h4, h5, h6 {
       };
       // 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 끝 ===========================
    
-
-      // 출발지 마커 좌표와 이름 
-      var arr_x = new Array(); // 이대 홍대 당산
-      var arr_y = new Array();
-      var titles = new Array();
+	
+      var startPlaceList_x = '${startPlaceList_x}'.split("#");
+      var startPlaceList_y = '${startPlaceList_y}'.split("#")
+      var startPlaceList_name = '${startPlaceList_name}'.split("#")
+      startPlaceList_x.pop();startPlaceList_y.pop();startPlaceList_name.pop();
+      var spl_num = startPlaceList_x.length;
       
-      <c:forEach items="${sessionScope.startPlaceList}" var="item" varStatus="sts">
-         var xx = parseFloat('${item.x}');
-         var yy = parseFloat('${item.y}');
-         arr_x.push(xx);
-         arr_y.push(yy);
-         titles.push('${item.name}');
-      </c:forEach>
-      //모든 마커 보이게 지도 영역 설정
-      /*
-      130~144 코드 와
-      157~176 코드 합칠 수 있음.
-      */
+      // 출발지 마커 좌표와 이름 
+     
       
       //마커 이미지의 이미지 주소입니다
       
@@ -218,8 +205,8 @@ h1, h2, h3, h4, h5, h6 {
       function drawmap(i){
          
          $("#map_div").empty();
-         var endX = posi_x[i];
-         var endY = posi_y[i];
+         var endX = endPlaceList_x[i];
+         var endY = endPlaceList_y[i];
          // 1. 지도 띄우기
          var map = new Tmapv2.Map("map_div", { //map2 로 만듬
          center : new Tmapv2.LatLng(endY, endX),
@@ -234,10 +221,10 @@ h1, h2, h3, h4, h5, h6 {
          // 2. 시작, 도착 심볼찍기
          // 시작
          
-         for(var i=0; i<arr_x.length; i++){
+         for(var i=0; i<startPlaceList_x.length; i++){
          marker_s = new Tmapv2.Marker(
                {
-                  position : new Tmapv2.LatLng(arr_y[i], arr_x[i]),
+                  position : new Tmapv2.LatLng(startPlaceList_y[i], startPlaceList_x[i]),
                   icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png",
                   iconSize : new Tmapv2.Size(24, 38),
                   map : map
@@ -255,7 +242,7 @@ h1, h2, h3, h4, h5, h6 {
 
          
          // 4. 경로탐색 API 사용요청
-         for (var t = 0; t < arr_x.length; t++) {
+         for (var t = 0; t < startPlaceList_x.length; t++) {
             for (var j = 0; j < 100000000; j++) {
             }
          $
@@ -265,8 +252,8 @@ h1, h2, h3, h4, h5, h6 {
                   async : false,
                   data : {
                      appKey : "l7xx45b1d9cc7eb14ee98cb9d6aca431df5e",
-                     startX : arr_x[t],
-                     startY : arr_y[t],
+                     startX : startPlaceList_x[t],
+                     startY : startPlaceList_y[t],
                      endX : endX,
                      endY : endY,
                      
@@ -388,8 +375,8 @@ h1, h2, h3, h4, h5, h6 {
          resultdrawArr.push(polyline_);
       }
       PTbounds = new Tmapv2.LatLngBounds();
-      for (var ii = 0; ii < arr_x.length; ii++) {
-         var linePt = new Tmapv2.LatLng(arr_y[ii],arr_x[ii]);
+      for (var ii = 0; ii < startPlaceList_x.length; ii++) {
+         var linePt = new Tmapv2.LatLng(startPlaceList_y[ii],startPlaceList_x[ii]);
 //          console.log(linePt);
          PTbounds.extend(linePt);
       }

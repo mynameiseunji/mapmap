@@ -37,7 +37,7 @@ public class HomeController {
 		
 		ArrayList<Place> startPlaceList = new ArrayList<Place>();
 		int n = place.getName().split(",").length;
-		System.out.println(n);
+		//System.out.println(n);
 		for(int i=0; i<n; i++) {
 			Place p = new Place();
 			p.setAddress(place.getAddress().split(",")[i]);
@@ -54,6 +54,7 @@ public class HomeController {
 	@RequestMapping("sendAddr.do")
 	public String sendAddr(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
 		
+		//왜 이걸 아무도 안물어볼까?
 		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
 		
 
@@ -108,21 +109,38 @@ public class HomeController {
 		// 중심좌표 return
 		model.addAttribute("center", center_coor);
 
-		// 가까운 역 순 5개 리스트 return
+		//endplacelist 정보 넘기기
 		//javascript에서 사용하기 편하게하기위해
-		//구분차 '#'를 사용해서 문자열로 형태 변환
-		StringBuilder sb = new StringBuilder();
+		//구분차 '#'를 사용해서 문자열로 형태 변환		
+		StringBuilder epl_x = new StringBuilder().append(center_coor.getX()).append("#");
+		StringBuilder epl_y = new StringBuilder().append(center_coor.getY()).append("#");;
+		StringBuilder epl_name = new StringBuilder().append(" ").append("#");;
 		for(Place p : endplaceList) {
-			sb.append(p.getName()).append("#").append(p.getX()).append("#").append(p.getY()).append("#");
+			epl_x.append(p.getX()).append("#");
+			epl_y.append(p.getY()).append("#");
+			epl_name.append(p.getName()).append("#");
 		}
 		
-		model.addAttribute("endPlaceList", sb.toString());
-		
-		int epl_num = endplaceList.size();
-		model.addAttribute("epl_num", epl_num);
+		model.addAttribute("endPlaceList_x", epl_x.toString());
+		model.addAttribute("endPlaceList_y", epl_y.toString());
+		model.addAttribute("endPlaceList_name", epl_name.toString());
 		// DB에서 검색결과 return
 //		model.addAttribute("rcm_stationList", rcm_stationList);
 //		System.out.println(rcm_stationList.size());
+		
+		//startplacelist 정보 넘기기
+		StringBuilder spl_x = new StringBuilder();
+		StringBuilder spl_y = new StringBuilder();
+		StringBuilder spl_name = new StringBuilder();
+		for(Place p : startPlaceList) {
+			spl_x.append(p.getX()).append("#");
+			spl_y.append(p.getY()).append("#");
+			spl_name.append(p.getName()).append("#");
+		}
+		
+		model.addAttribute("startPlaceList_x", spl_x.toString());
+		model.addAttribute("startPlaceList_y", spl_y.toString());
+		model.addAttribute("startPlaceList_name", spl_name.toString());
 		
 		// 각 후보지에 대해서 소요시간 보여주기.		
 		// 공공데이터포털에서 경로 찾아오기
@@ -161,6 +179,12 @@ public class HomeController {
 		model.addAttribute("at4placeList", at4placeList);
 		//------------------------------------------------------------
 		
-		return "map/category";
+		return "map/category0";
+	}
+	@RequestMapping("route.do")
+	public String route(HttpServletRequest request, Place place, Model model) {
+		//지하철,버스,
+		
+		return "map/route";
 	}
 }
