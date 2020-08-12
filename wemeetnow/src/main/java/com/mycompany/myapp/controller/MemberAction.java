@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mycompany.myapp.model.FriendBean;
 import com.mycompany.myapp.model.FriendConfirm;
 import com.mycompany.myapp.model.MemberBean;
-import com.mycompany.myapp.service.FriendServiceImpl;
+import com.mycompany.myapp.service.FriendService;
 import com.mycompany.myapp.service.Memberservice;
 
 @Controller
@@ -26,7 +26,7 @@ public class MemberAction {
 	@Autowired
 	private Memberservice memberService;
 	@Autowired
-	private FriendServiceImpl friendService;
+	private FriendService friendService;
 
 	//email duplicate check ajax
 	@RequestMapping(value = "/member_emailcheck.do", method = RequestMethod.POST)

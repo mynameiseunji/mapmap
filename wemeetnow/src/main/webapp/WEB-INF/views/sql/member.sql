@@ -1,5 +1,4 @@
-drop table friendship;
-drop table member;
+
 create table member (
 	email varchar2(50),
 	pwd	varchar2(20) not null,
@@ -29,7 +28,7 @@ create table friendship (
 	constraint friendship_fk2 foreign key(email2) references member(email),
 	constraint friendship_pk primary key(fno)
 );
-delete from FRIEND_CONFIRM
+
 insert into member values('3@1.qq','123','123','123','123','123','123','123');
 insert into member values('4@1.qq','123','123','123','123','123','123','123');
 insert into member values('5@1.qq','123','123','123','123','123','123','123');
@@ -38,8 +37,8 @@ insert into member values('7@1.qq','123','123','123','123','123','123','123');
 insert into member values('8@1.qq','123','123','123','123','123','123','123');
 
 insert into member values('2@1.qq','123','123','123','123','123','123','123')
-delete from member;
->>>>>>> branch 'inte' of https://github.com/mynameiseunji/mapmap.git
+
+
 delete FRIENDSHIP where email2 ='2@1.qq';
 delete FRIENDSHIP where email2 ='1@1.qq';
 create sequence friend_seq increment by 1 start with 1 nocache;
@@ -47,4 +46,5 @@ create sequence friend_seq increment by 1 start with 1 nocache;
 select * from member;
 select * from friendship;
 select * from tab;
+select * from route;
 

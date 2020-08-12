@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.myapp.dao.MapDAO;
 import com.mycompany.myapp.json.JsonParsing;
+import com.mycompany.myapp.json.XmlParsing;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
+import com.mycompany.myapp.model.Route;
 import com.mycompany.myapp.model.stationXY;
 
 @Service
@@ -149,7 +152,7 @@ public class MapServiceImpl implements MapService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		return par.getPlaceInfo(sb.toString());
 	}
 
@@ -182,7 +185,7 @@ public class MapServiceImpl implements MapService {
 	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList) {
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<endPlaceList.size(); i++) {
-			PublicDataService pds = new PublicDataService();
+			PublicDataService2 pds = new PublicDataService2();
 			for(int j=0; j<startPlaceList.size(); j++) {
 				
 				sb.append(pds.getPath(
@@ -193,5 +196,101 @@ public class MapServiceImpl implements MapService {
 			}
 		}
 		return sb.toString();
+	}
+	public String getFinalPathSub(List<Place> startPlaceList, Place endPlace) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<startPlaceList.size(); i++) {
+			PublicDataService2 pds = new PublicDataService2();				
+			sb.append(pds.getPath(
+					startPlaceList.get(i).getX(),
+					startPlaceList.get(i).getY(),
+					endPlace.getX(),
+					endPlace.getY())).append("/");
+		}
+		return sb.toString();
+	}
+	public String getFinalPathBus(List<Place> startPlaceList, Place endPlace) {
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<startPlaceList.size(); i++) {
+			PublicDataService2 pds = new PublicDataService2();				
+			sb.append(pds.getPath(
+					startPlaceList.get(i).getX(),
+					startPlaceList.get(i).getY(),
+					endPlace.getX(),
+					endPlace.getY())).append("/");
+		}
+		return sb.toString();
+	}
+	
+	//마지막 페이지에 필요한 정보(출발지, 경로1, 경로2, 시간1, 시간2)
+	@Override
+	public String finalDBSetting(List<Place> startPlaceList, Place endPlace){
+		/*ID
+		DEPARTURE
+		BUS_ROUTE
+		COMPLEX_ROUTE
+		BUS_TIME
+		COMPLEX_TIME*/
+		String id = createId(30);
+		String BUS = getFinalPathBus(startPlaceList, endPlace);
+		String BNS = getFinalPathSub(startPlaceList, endPlace);
+				
+		StringBuilder DEPARTURE = new StringBuilder();
+		StringBuilder COMPLEX_ROUTE = new StringBuilder();
+		StringBuilder BUS_ROUTE = new StringBuilder();
+		StringBuilder BUS_TIME = new StringBuilder();
+		StringBuilder COMPLEX_TIME = new StringBuilder();
+		
+		for(int i=0; i<startPlaceList.size(); i++) {
+			DEPARTURE.append(startPlaceList.get(i).getAddress()).append("/");
+		}
+		pathParse(COMPLEX_ROUTE,COMPLEX_TIME,BNS);
+		pathParse(BUS_ROUTE,BUS_TIME,BUS);
+		
+		//데이터 파싱
+		// 인서트
+		// 프라이머리키 만들기
+		Route route = new Route();
+		route.setId(id);
+		route.setBus_route(BUS_ROUTE.toString());
+		route.setBus_time(BUS_TIME.toString());
+		route.setComplex_route(COMPLEX_ROUTE.toString());
+		route.setComplex_time(COMPLEX_TIME.toString());
+		route.setDeparture(DEPARTURE.toString());
+		int result = md.insertData(route);
+		//프라이머리키 리턴
+		return id;
+	}
+	public String createId(int num) {
+		
+		//String[] parse = data.split("/");
+		StringBuffer sb = new StringBuffer();
+		Random rnd = new Random();
+		for(int i=0; i<num; i++)
+			sb.append(String.valueOf((char) ((int) (rnd.nextInt(26)) + 97)));
+		
+		return sb.toString();
+	}
+	public void pathParse(StringBuilder path, StringBuilder time, String route){
+		String[] piece = route.split("/");//3
+		
+		//출발지 개수
+		int len = piece.length;//2
+		
+		for(int i=0; i<len; i++) {
+			//경로와 시간
+			String[] part = piece[i].split("#");//5
+			
+			//공백 제거
+			int lenlen = part.length;//4
+			
+			//마지막 인덱스는 시간.
+			time.append(part[lenlen-1]).append("/");
+			
+			for(int j=0; j<lenlen-1;j++) {
+				path.append(part[j]).append("#");
+			}
+			path.append("/");
+		}
 	}
 }

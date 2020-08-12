@@ -75,7 +75,6 @@ public class HomeController {
 		// category_group_code:SW8(지하철), page:1, size:5(5개만 가져오기), radius:2000 으로 제한하여 요청
 		String option = "x/" + center_coor.getX() + "/y/" + center_coor.getY() + "/page/1/size/5/radius/2000";
 		List<Place> endplaceList = ms.categorySearch("SW8", option);
-
 		//--------------------------------------------------------------------------------
 		
 		
@@ -145,8 +144,7 @@ public class HomeController {
 		// 각 후보지에 대해서 소요시간 보여주기.		
 		// 공공데이터포털에서 경로 찾아오기
 		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
-		String pathInfo = ms.getPathInfo(startPlaceList, endplaceList);
-		
+		String pathInfo = ms.getPathInfo(startPlaceList, endplaceList);		
 		model.addAttribute("pathInfo",pathInfo);
 		model.addAttribute("x_num",startPlaceList.size());
 		
@@ -182,8 +180,29 @@ public class HomeController {
 		return "map/category0";
 	}
 	@RequestMapping("route.do")
-	public String route(HttpServletRequest request, Place place, Model model) {
+	public String route(@ModelAttribute("id")String id, HttpServletRequest request, Place place, Model model) {
 		//지하철,버스,
+		if(id.equals("")) {	
+			System.out.println("route도착");
+			
+			place.setAddress("주소주소");
+			place.setX("126.865572139231");
+			place.setY("37.5507280806214");
+			
+			Place endPlace = place;
+			List<Place> startPlaceList =(List<Place>) request.getSession().getAttribute("startPlaceList");			
+			
+			String primary = ms.finalDBSetting(startPlaceList,endPlace);
+			//최종 DB에 들어갈 칼럼 데이터 만들기
+			model.addAttribute("id", primary);
+			//insert 디비입력
+			//attribute
+			// 프라이머리키
+		}else {
+			
+			
+			
+		}
 		
 		return "map/route";
 	}

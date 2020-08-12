@@ -10,23 +10,17 @@ import java.net.URLEncoder;
 
 import com.mycompany.myapp.json.XmlParsing;
 
-public class PublicDataService {
-	//김재성
+public class PublicDataService2 {
 	private final String APPKEY ="ysUT4N0M2IspncGRIApzEMkgknQKgXN6UksZY3xYK0VasLokEtQDABvNPEHWOePddgtXtp4rwYI0pIWiR6H37A%3D%3D";
-	
-	//은지님
 	//private final String APPKEY ="WB4qNFdvNtXIjPgY3zrN%2BtsN%2ByX3Wxjp%2BJJP%2F04WrIrs1pe1sj3y3pC2N1FTEzBM9TJM%2FGusxGrIAnep%2F0y9gA%3D%3D";
-	
-	//가을님
 	//private final String APPKEY ="Npzb8zhSrUiFiJVKfHmnCmmTA7xSY80cx5vG4bAsQdpcA3q2txnx63ai5GhDihn4U5w07imTLxgkkOG6NKYrvA%3D%3D";
-	
 	public String getPath(String startX,String startY,String endX,String endY) {
 		HttpURLConnection conn = null;
 		StringBuilder sb = null;
 		try {
 			sb = new StringBuilder();
 			//request할 url 만들기
-			String basic = "http://ws.bus.go.kr/api/rest/pathinfo/getPathInfoByBusNSub?ServiceKey=";
+			String basic = "http://ws.bus.go.kr/api/rest/pathinfo/getPathInfoByBus?ServiceKey=";
 			String opts="&startX="+startX+"&startY="+startY+"&endX="+endX+"&endY="+endY;
 			String final_request_url = basic+APPKEY+opts;
 			
@@ -68,9 +62,9 @@ public class PublicDataService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		// 문자열 parsing 처리
 		String str = new XmlParsing().getRouteInfo(sb.toString());
+		
 		return str;
 	}
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mycompany.myapp.model.Route;
 import com.mycompany.myapp.model.stationXY;
 
 @Repository
@@ -23,5 +24,10 @@ public class MapDAOImpl implements MapDAO{
 //		System.out.println("xy_list:"+xy_list);
 //		return xy;
 		return sqlSession.selectOne("mapns.selectStation", subname);
+	}
+
+	@Override
+	public int insertData(Route route) {
+		return sqlSession.insert("insertData", route);
 	}	
 }

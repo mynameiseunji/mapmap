@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 10px;
 }
 </style>
-<script defer src="js/all.min.js"></script>
+<script defer src="<%=request.getContextPath()%>/all.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script

@@ -6,6 +6,9 @@
 		resultType="com.mycompany.myapp.model.stationXY">
 		SELECT * FROM SUB_RCM WHERE SUBNAME = #{subname}
 	</select>
+	<insert id="insertData" parameterType="route">
+		insert into route values (#{id},#{departure},#{bus_route},#{complex_route},#{bus_time},#{complex_time})
+	</insert>
 </mapper>
 
 

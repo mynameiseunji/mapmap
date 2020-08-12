@@ -10,6 +10,7 @@
 		<typeAlias alias="coor" type="com.mycompany.myapp.model.Coordinate"></typeAlias>
 		<typeAlias alias="place" type="com.mycompany.myapp.model.Place"></typeAlias>
 		<typeAlias alias="station" type="com.mycompany.myapp.model.stationXY"></typeAlias>
+		<typeAlias alias="route" type="com.mycompany.myapp.model.Route"></typeAlias>
 	</typeAliases>
 
 	<!-- <environments default="development">

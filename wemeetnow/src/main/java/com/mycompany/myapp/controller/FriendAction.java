@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mycompany.myapp.model.FriendBean;
 import com.mycompany.myapp.model.FriendConfirm;
 import com.mycompany.myapp.model.MemberBean;
-import com.mycompany.myapp.service.FriendServiceImpl;
+import com.mycompany.myapp.service.FriendService;
 import com.mycompany.myapp.service.MemberServiceImpl;
 
 @Controller
@@ -30,7 +30,7 @@ public class FriendAction {
 	@Autowired
 	private MemberServiceImpl memberService;
 	@Autowired
-	private FriendServiceImpl friendService;
+	private FriendService friendService;
 
 	// search friend
 

@@ -47,7 +47,7 @@ public class XmlParsing {
 				for(int j=0; j<child.getLength(); j++) {
 					Node node =child.item(j);
 					String nodeName = node.getNodeName();					
-					if(node.getChildNodes().getLength()>1) {
+					if(nodeName.equals("pathList")) {
 						NodeList nl = node.getChildNodes();
 						for(int i =0; i<nl.getLength(); i++) {
 							String nl_name = nl.item(i).getNodeName();
@@ -57,7 +57,7 @@ public class XmlParsing {
 										continue;
 							sb.append(nl.item(i).getTextContent()).append("#");
 						}
-					}else {
+					}else if(nodeName.equals("time")){
 						sb.append(node.getTextContent()).append("#");
 					}
 				}
