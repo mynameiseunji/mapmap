@@ -1,6 +1,6 @@
 <%@page import="org.springframework.ui.Model"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-   pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
@@ -8,8 +8,6 @@
 <head>
 <meta charset="UTF-8">
 <title>주소 받기 테스트</title>
-<<<<<<< HEAD
-=======
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -24,7 +22,6 @@
 body {
 	font-family: 'Nanum Gothic', sans-serif;
 }
-
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Nanum Gothic', sans-serif;
 	letter-spacing: 5px;
@@ -36,46 +33,10 @@ h1, h2, h3, h4, h5, h6 {
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
->>>>>>> branch 'inte' of https://github.com/mynameiseunji/mapmap.git
 
-<<<<<<< HEAD
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet"
-   href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-<link
-   href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
-   rel="stylesheet">
-<link rel="stylesheet"
-   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {
-   font-family: 'Nanum Gothic', sans-serif;
-}
-=======
 <!-- T맵 api -->
 <script
 	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx45b1d9cc7eb14ee98cb9d6aca431df5e"></script>
->>>>>>> branch 'inte' of https://github.com/mynameiseunji/mapmap.git
-
-<<<<<<< HEAD
-h1, h2, h3, h4, h5, h6 {
-   font-family: 'Nanum Gothic', sans-serif;
-   letter-spacing: 5px;
-}
-</style>
-<script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-   src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script
-   src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-<!-- 제이쿼리 -->
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script> 
-<!-- T맵 api -->
-<script
-   src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx45b1d9cc7eb14ee98cb9d6aca431df5e"></script>
 
 </head>
 <body>
@@ -139,25 +100,27 @@ h1, h2, h3, h4, h5, h6 {
       //각 장소에대한 친구들의 경로 정보  => 장소1까지 친구1읠 경로/장소1까지 친구2의 경로/...
       var path_list = '${pathInfo}'.split('/');
       
-      path_list.pop();console.log(path_list);	
+      path_list.pop();
       //출발지 갯수
       var x_num = parseInt('${x_num}');
-      console.log(x_num)//3
+      
       //파싱된 경로가 저장될 배열
       var times = new Array();
       //각 도착지에 대한 친구들의 정보 종합.
       for(var i=0; i<path_list.length/x_num; i++){
          var str = "";
          for(var j=0; j<x_num; j++){
-        	
-            if(path_list[j*x_num+j]==""){
-               str +='<p>출발지 '+(j+1)+'번 예상 이동시간(도보) : ? 분</p>';
+        	 console.log(path_list[i*x_num+j])
+            if(path_list[i*x_num+j]==""){
+               //str +='<p>출발지 '+(j+1)+'번 예상 이동시간(도보) : 분</p>';
+               str += '<p>출발지 '+(j+1)+'번 : 이용할 수 있는 대중 교통이 없습니다.';
             }else{
             	var path_arr = path_list[i*x_num+j].split('#');
-            	time = path_arr[path_arr.length-2];
+            	var time = path_arr[path_arr.length-2];
             	
                str += '<p>출발지'+(j+1)+'번 예상 이동시간(대중교통)  : '+time+'분</p>';   
             }
+            
          }
          times.push(str);
       }   
@@ -202,29 +165,33 @@ h1, h2, h3, h4, h5, h6 {
 					         '" data-x="'+endPlaceList_x[i]+
 					         '" data-y="'+endPlaceList_y[i]+
 					         '"></span>' +
-					         '<a class="nav-link" data-toggle="tab" href="#menu'+i+
-					         '" onclick="drawmap('+(i+1)+'); choice(this);">'+
+					         '<a id= "loc' + i + '" class="nav-link" '+
+					         'data-toggle="tab" href="#menu' + i + '" onclick="remarker(' + i + ')" >' +
 					         endPlaceList_name[i]+'</a></li>';
          
          
          $('.tab-content').append(posi_li_fade);
          $('.nav.nav-tabs').append(posi_li_nav);
       }
-      function centerf(btn){
-         $('#selected_x').attr('value',endPlaceList_x[0]);
-         $('#selected_y').attr('value',endPlaceList_y[0]);
-         $('#selected_name').attr('value',cen);
-      }
+      /*
+      for (var i = 1; i < epl_num; i++) {
+			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'
+					+ '<h1>'
+					+ endPlaceList_name[i]
+					+ '</h1>'
+					+ paths[i - 1]
+					+ '</p><span data-x="'+endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span></div>';
+			var posi_li_nav = '<li class="nav-item">'
+					+
+					'<span data-name="'+endPlaceList_name[i]+'" data-x="'+endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span>'
+					+ '<a id= "loc' + i + '" class="nav-link" data-toggle="tab" href="#menu' + i + '" onclick="remarker(' + i + ')" >' +
+					// 						'<a class="nav-link" data-toggle="tab" href="#menu'+i+'" onclick="choice(this)">'+
+					endPlaceList_name[i] + '</a></li>';
+			$('.tab-content').append(posi_li_fade);
+			$('.nav.nav-tabs').append(posi_li_nav);
+		}
+      */
       
-      function choice(btn){
-         //console.log($(btn).closest('div').children('span').data('x'));
-         var coor_x = $(btn).closest('li').children('span').data('x');
-         var coor_y = $(btn).closest('li').children('span').data('y');
-         var pname= $(btn).closest('li').children('span').data('name');
-         $('#selected_x').attr('value',coor_x);
-         $('#selected_y').attr('value',coor_y);
-         $('#selected_name').attr('value',pname);
-      };
 
 		// 출발지 마커 좌표와 이름 
 		var startPlaceList_x = '${startPlaceList_x}'.split("#");
@@ -238,7 +205,6 @@ h1, h2, h3, h4, h5, h6 {
 		// 1. 지도 띄우기
 		var map = new Tmapv2.Map("map_div", {
 			center : new Tmapv2.LatLng(endPlaceList_y[0], endPlaceList_x[0]),
-
 			width : "80%",
 			height : "50%"
 		});
@@ -249,7 +215,6 @@ h1, h2, h3, h4, h5, h6 {
 		var resultdrawArr = [];
 		// 2. 시작, 도착 심볼찍기
 		// 시작
-
 		for (var i = 0; i < startPlaceList_x.length; i++) {
 			marker_s = new Tmapv2.Marker(
 					{
@@ -261,7 +226,6 @@ h1, h2, h3, h4, h5, h6 {
 						map : map
 					});
 		}
-
 		// 중심 마크 그리기 marker_e[0]
 		marker_e[0] = new Tmapv2.Marker(
 				{
@@ -274,7 +238,6 @@ h1, h2, h3, h4, h5, h6 {
 				});
 		// 추천 지역들 찍기 marker_e[1]~[5]
 		for (var i = 1; i < epl_num; i++) {
-
 			marker_e[i] = new Tmapv2.Marker(
 					{
 						position : new Tmapv2.LatLng(endPlaceList_y[i],
@@ -282,13 +245,10 @@ h1, h2, h3, h4, h5, h6 {
 						icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_g_m_r.png",
 						title : endPlaceList_name[i],
 						map : map,
-
 					});
 		}
-
 		markerevent(0); // 마크 이벤트 실행
 		
-
 		//  경로탐색 API 사용요청
 		for (var t = 0; t < spl_num; t++) {
 			for (var j = 0; j < 100000000; j++) {
@@ -304,7 +264,6 @@ h1, h2, h3, h4, h5, h6 {
 							startY : startPlaceList_y[t],
 							endX : endPlaceList_x[0],
 							endY : endPlaceList_y[0],
-
 							reqCoordType : "WGS84GEO",
 							resCoordType : "EPSG3857",
 							startName : "출발지",
@@ -312,14 +271,11 @@ h1, h2, h3, h4, h5, h6 {
 						},
 						success : function(response) {
 							var resultData = response.features;
-
 							drawInfoArr = []; // 경로 좌표들 저장하는 배열
-
 							for ( var i in resultData) { //for문 [S]
 								var geometry = resultData[i].geometry;
 								var properties = resultData[i].properties;
 								var polyline_;
-
 								if (geometry.type == "LineString") {
 									for ( var j in geometry.coordinates) {
 										// 경로들의 결과값(구간)들을 포인트 객체로 변환 
@@ -340,7 +296,6 @@ h1, h2, h3, h4, h5, h6 {
 									var markerImg = "";
 									var pType = "";
 									var size;
-
 									if (properties.pointType == "S") { //출발지 마커
 										markerImg = "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png";
 										pType = "S";
@@ -352,16 +307,13 @@ h1, h2, h3, h4, h5, h6 {
 										pType = "E";
 										size = new Tmapv2.Size(24, 38);
 									}
-
 									// 경로들의 결과값들을 포인트 객체로 변환 
 									var latlon = new Tmapv2.Point(
 											geometry.coordinates[0],
 											geometry.coordinates[1]);
-
 									// 포인트 객체를 받아 좌표값으로 다시 변환
 									var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
 											latlon);
-
 								}
 							}//for문 [E]
 							drawLine(drawInfoArr); // 경로 그리기
@@ -373,7 +325,6 @@ h1, h2, h3, h4, h5, h6 {
 						}
 					});
 		}
-
 		// 지도 레벨 맞추기 (풀발 좌표를 받아서 지도 레벨을 맞춤)
 		PTbounds = new Tmapv2.LatLngBounds();
 		for (var ii = 0; ii < spl_num; ii++) {
@@ -385,7 +336,6 @@ h1, h2, h3, h4, h5, h6 {
 		
 		// 마크 클릭 함수
 		function markerevent(i) {
-
 			marker_e[1].addListener("click", function(evt) {
 				$("#loc1").click();
 			});
@@ -405,7 +355,6 @@ h1, h2, h3, h4, h5, h6 {
 		
 		// 마크 클릭 확대 및 넘어가는 값 저장
 		function remarker(i) {
-
 			for (var j = 1; j < epl_num; j++) {
 				marker_e[j].setMap(null);
 				marker_e[j] = new Tmapv2.Marker(
@@ -417,7 +366,6 @@ h1, h2, h3, h4, h5, h6 {
 							//        	                   iconSize : new Tmapv2.Size(20, 30),
 							map : map
 						});
-
 			}
 			marker_e[i].setMap(null);
 			marker_e[i] = new Tmapv2.Marker(
@@ -429,17 +377,14 @@ h1, h2, h3, h4, h5, h6 {
 						iconSize : new Tmapv2.Size(32, 50),
 						map : map
 					});
-
 			markerevent(0); //  새로 그려진 마크에 클릭함수 
 			$('#selected_x').attr('value', endPlaceList_x[i]);
 			$('#selected_y').attr('value', endPlaceList_y[i]);
 			$('#selected_name').attr('value', endPlaceList_name[i]);
 		}
-
 		// 경로 그리는 함수
 		function drawLine(arrPoint) {
 			var polyline_;
-
 			polyline_ = new Tmapv2.Polyline({ // 경로 그리기
 				path : arrPoint,
 				strokeColor : "#DD0000",

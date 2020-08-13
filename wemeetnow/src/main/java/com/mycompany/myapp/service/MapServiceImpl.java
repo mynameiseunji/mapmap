@@ -182,22 +182,23 @@ public class MapServiceImpl implements MapService {
 	//리턴 형식은 '/'와 '#' 를 구분자로하는 문자열 타입
 	//각 경로는 '/'로 구분
 	//하나의 경로에서 시간 거리 출발지 도착지 등 정보는 '#'로 구분
-	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList) {
+	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList,String transport) {
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<endPlaceList.size(); i++) {
-			PublicDataService2 pds = new PublicDataService2();
+			PublicDataService pds = new PublicDataService();
 			for(int j=0; j<startPlaceList.size(); j++) {
 				
 				sb.append(pds.getPath(
 						startPlaceList.get(j).getX(),
 						startPlaceList.get(j).getY(),
 						endPlaceList.get(i).getX(),
-						endPlaceList.get(i).getY())).append("/");
+						endPlaceList.get(i).getY(),
+						transport)).append("/");
 			}
 		}
 		return sb.toString();
 	}
-	public String getFinalPathComplex(List<Place> startPlaceList, Place endPlace) {
+	public String getFinalPath(List<Place> startPlaceList, Place endPlace, String transport) {
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<startPlaceList.size(); i++) {
 			PublicDataService pds = new PublicDataService();				
@@ -205,19 +206,8 @@ public class MapServiceImpl implements MapService {
 					startPlaceList.get(i).getX(),
 					startPlaceList.get(i).getY(),
 					endPlace.getX(),
-					endPlace.getY())).append("/");
-		}
-		return sb.toString();
-	}
-	public String getFinalPathBus(List<Place> startPlaceList, Place endPlace) {
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<startPlaceList.size(); i++) {
-			PublicDataService2 pds = new PublicDataService2();				
-			sb.append(pds.getPath(
-					startPlaceList.get(i).getX(),
-					startPlaceList.get(i).getY(),
-					endPlace.getX(),
-					endPlace.getY())).append("/");
+					endPlace.getY(),
+					transport)).append("/");
 		}
 		return sb.toString();
 	}
@@ -232,8 +222,8 @@ public class MapServiceImpl implements MapService {
 		BUS_TIME
 		COMPLEX_TIME*/
 		String id = createId(30);
-		String BUS = getFinalPathBus(startPlaceList, endPlace);
-		String BNS = getFinalPathComplex(startPlaceList, endPlace);
+		String BUS = getFinalPath(startPlaceList, endPlace,"Bus");
+		String BNS = getFinalPath(startPlaceList, endPlace,"BusNSub");
 				
 		StringBuilder DEPARTURE = new StringBuilder();
 //		StringBuilder COMPLEX_ROUTE = new StringBuilder();
@@ -254,14 +244,7 @@ public class MapServiceImpl implements MapService {
 		route.setId(id);
 		route.setBus_route(BUS);
 		route.setComplex_route(BNS);
-		route.setDeparture(DEPARTURE.toString());
-		
-//		route.setBus_route(BUS_ROUTE.toString());
-//		route.setBus_time(BUS_TIME.toString());
-//		route.setComplex_route(COMPLEX_ROUTE.toString());
-//		route.setComplex_time(COMPLEX_TIME.toString());
-//		route.setDeparture(DEPARTURE.toString());
-		
+		route.setDeparture(DEPARTURE.toString());		
 		int result = md.insertData(route);
 		//프라이머리키 리턴
 		return id;

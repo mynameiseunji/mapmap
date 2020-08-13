@@ -20,13 +20,13 @@ public class PublicDataService {
 	//가을님
 	//private final String APPKEY ="Npzb8zhSrUiFiJVKfHmnCmmTA7xSY80cx5vG4bAsQdpcA3q2txnx63ai5GhDihn4U5w07imTLxgkkOG6NKYrvA%3D%3D";
 	
-	public String getPath(String startX,String startY,String endX,String endY) {
+	public String getPath(String startX,String startY,String endX,String endY, String transport) {
 		HttpURLConnection conn = null;
 		StringBuilder sb = null;
 		try {
 			sb = new StringBuilder();
 			//request할 url 만들기
-			String basic = "http://ws.bus.go.kr/api/rest/pathinfo/getPathInfoByBusNSub?ServiceKey=";
+			String basic = "http://ws.bus.go.kr/api/rest/pathinfo/getPathInfoBy"+transport+"?ServiceKey=";
 			String opts="&startX="+startX+"&startY="+startY+"&endX="+endX+"&endY="+endY;
 			String final_request_url = basic+APPKEY+opts;
 			
