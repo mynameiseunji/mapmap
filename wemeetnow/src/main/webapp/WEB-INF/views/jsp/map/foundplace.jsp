@@ -8,68 +8,96 @@
 <head>
 <meta charset="UTF-8">
 <title>주소 받기 테스트</title>
-<meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+	font-family: 'Nanum Gothic', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Nanum Gothic', sans-serif;
+	letter-spacing: 5px;
+}
+</style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0b6c81e5d496e486ca93f4d82d0a0027&libraries=services"></script>
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
-<style>
-.left {
-	float: left;
-	width: 50%;
-}
+<!-- T맵 api -->
+<script
+	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx45b1d9cc7eb14ee98cb9d6aca431df5e"></script>
 
-.right {
-	float: right;
-	width: 50%;
-}
-</style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-		<a class="navbar-brand" href="#">Logo</a>
-		<ul class="navbar-nav">
-			<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-		</ul>
-	</nav>
-	<div id="map" class="container"
-		style="margin-top: 80px; width: 100%; height: 350px;"></div>
-	<div class="container" style="margin-top: 20px; margin-bottom: 20px">
-<!-- 07.29 재성 (삭제 가능)--><span id="selected_location"></span> 
-		<ul class="nav nav-tabs">
-			<li class="nav-item"><a class="nav-link active"
-				data-toggle="tab" href="#home">location1</a></li>
-			
-		</ul>
-		<form method="get" action="category.do" >
-		<input type="hidden" id="selected_x" name="x" value="">
-		<input type="hidden" id="selected_y" name="y" value="">
-		<input type="hidden" id="selected_name" name="name" value="">
-		<div class="tab-content">
-			<div class="tab-pane container active" id="home">
+	<!-- Navbar (sit on top) -->
+	<div class="w3-top w3-light-blue">
+		<div class="w3-bar w3-white w3-padding w3-card"
+			style="letter-spacing: 4px;">
+			<a href="index.jsp" class="w3-bar-item w3-button">Woori Jigum
+				Manna</a>
+			<!-- Right-sided navbar links. Hide them on small screens -->
+			<div class="w3-right w3-hide-small">
+				<a href="loginform.jsp" class="w3-bar-item w3-button">Sign In</a> <a
+					href="joinform.jsp" class="w3-bar-item w3-button">Sign Up</a>
 			</div>
-		
+			<div class="w3-right w3-hide-large w3-hide-medium">
+				<a href="login.jsp" class="w3-bar-item w3-button"> <i
+					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+			</div>
 		</div>
-		<input class="btn btn-block btn-info" type='submit' value='결정'>
-		</form>
+	</div>
+	<div class="container-sm " align="center" style="margin-top: 80px">
+		<div id="map_div" class="container"
+			style="margin-top: 80px; width: 100%; height: 350px;"></div>
+
+		<div class='container-sm'>
+
+
+			<div class="container" style="margin-top: 20px; margin-bottom: 20px">
+				<span id="selected_location"></span>
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<!--          <a class="nav-link active" --> <!--             data-toggle="tab" href="#home" onclick="drawmap(1)">location1</a> -->
+					</li>
+
+				</ul>
+			</div>
+			<form method="get" action="category.do">
+				<input type="hidden" id="selected_x" name="x" value=""> <input
+					type="hidden" id="selected_y" name="y" value=""> <input
+					type="hidden" id="selected_name" name="name" value="">
+				<div class="tab-content">
+					<div class="tab-pane container active" id="home"></div>
+
+				</div>
+
+				<input class="btn btn-dark" type='submit' value='결정'>
+			</form>
+		</div>
 	</div>
 	<br>
 	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+	<footer class="w3-center w3-light-grey w3-padding-32">
+		<p>
+			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
+				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
+		</p>
+	</footer>
 	<script>
+		// 
+		console.log(endPlaceList_x);
 		//각 장소에대한 친구들의 경로 정보  => 장소1까지 친구1읠 경로/장소1까지 친구2의 경로/...
 		var path_list = '${pathInfo}'.split('/');
 		//출발지 갯수
@@ -77,144 +105,298 @@
 		//파싱된 경로가 저장될 배열
 		var paths = new Array();
 		//각 도착지에 대한 친구들의 정보 종합.
-		for(var i=0; i<path_list.length; i++){
+		for (var i = 0; i < path_list.length; i++) {
 			var str = "";
-			for(var j=0; j<x_num; j++){
-				if(path_list[i*x_num+j]==""){
-					str +='<p>친구 '+(j+1)+' 경로 정보 : 이용 가능한 대중 교통이 없습니다.(도보 이용)</p>';
-				}else{
-					str += '<p>친구 '+(j+1)+' 경로 정보   : '+path_list[i*x_num+j]+'</p>';	
+			for (var j = 0; j < x_num; j++) {
+				if (path_list[i * x_num + j] == "") {
+					str += '<p>친구 ' + (j + 1)
+							+ ' 경로 정보 : 이용 가능한 대중 교통이 없습니다.(도보 이용)' + '<p id="result"></p>';
+				} else {
+					str += '<p>친구 ' + (j + 1) + ' 경로 정보   : '
+							+ path_list[i * x_num + j] + '</p>';
 				}
 			}
 			paths.push(str);
-		}	
-		
+		}
+
 		// 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 시작 ===========================
 		// 컨트롤러에서 후보지 정보 받아와서 배열생성
 		// name#x#y#name#x#y...형식
-		var endPlaceList = '${endPlaceList}'.split("#");
-		// endPlace갯수
-		var epl_num = parseInt('${epl_num}');
-		endPlaceList.pop();
+
+		// tmap에 사용할 도착지점 x,y 배열 생성
+		var endPlaceList_x = '${endPlaceList_x}'.split("#");
+		var endPlaceList_y = '${endPlaceList_y}'.split("#");
+		var endPlaceList_name = '${endPlaceList_name}'.split("#");
+		endPlaceList_x.pop();
+		endPlaceList_y.pop();
+		endPlaceList_name.pop();
+		var epl_num = endPlaceList_x.length;
 		
-		//맨처음 보일 endplace를 html형식으로 append.
-		// .tab-content 자손태그로 추가
-		var posi_li_active = '<h1>'+endPlaceList[0]+'</h1>'+
-					paths[0]+
-					'<span data-x="'+endPlaceList[1]+'" data-y="'+endPlaceList[2]+'"></span>'+
-					'<input type="button" onclick="choice(this)" value="선택">';
-		//append.
-		$('#home').append(posi_li_active);
-		$('.nav-link.active').text(endPlaceList[0]); // location1 => 장소명으로 변경
-		
+		// 처음에 중심 좌표 저장, 전송 클릭시 중심 좌표 내용 넘어감
+		      $('#selected_x').attr('value',endPlaceList_x[0]);
+		      $('#selected_y').attr('value',endPlaceList_y[0]);
+		      $('#selected_name').attr('value',endPlaceList_name[0]);
+
 		// .tab-content 자손태그로 추가(반복)
-		for(var i=1; i<epl_num; i++){
-			
-			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
-							'<h1>'+endPlaceList[i*3+0]+'</h1>'+
-							paths[i]+
-							'</p><span data-x="'+endPlaceList[i*3+1]+'" data-y="'+endPlaceList[i*3+2]+'"></span>'+
-							'<input type="button" onclick="choice(this)" value="선택"></div>';
-							
-			var posi_li_nav ='<li class="nav-item">'+
-							'<a class="nav-link" data-toggle="tab" href="#menu'+i+'">'+
-							endPlaceList[i*3+0]+'</a></li>';
-			
-			
+		for (var i = 1; i < epl_num; i++) {
+
+			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'
+					+ '<h1>'
+					+ endPlaceList_name[i]
+					+ '</h1>'
+					+ paths[i - 1]
+					+ '</p><span data-x="'+endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span></div>';
+
+			var posi_li_nav = '<li class="nav-item">'
+					+
+
+					'<span data-name="'+endPlaceList_name[i]+'" data-x="'+endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span>'
+					+ '<a id= "loc' + i + '" class="nav-link" data-toggle="tab" href="#menu' + i + '" onclick="remarker(' + i + ')" >' +
+
+					// 						'<a class="nav-link" data-toggle="tab" href="#menu'+i+'" onclick="choice(this)">'+
+
+					endPlaceList_name[i] + '</a></li>';
+
 			$('.tab-content').append(posi_li_fade);
 			$('.nav.nav-tabs').append(posi_li_nav);
 		}
-		
-		function choice(btn){
-			//console.log($(btn).closest('div').children('span').data('x'));
-			var coor_x = $(btn).closest('div').children('span').data('x');
-			var coor_y = $(btn).closest('div').children('span').data('y');
-			var pname= $(btn).closest('div').children('h1').text();
-			$('#selected_location').text('선택된 장소 : '+pname);
-			$('#selected_x').attr('value',coor_x);
-			$('#selected_y').attr('value',coor_y);
-			$('#selected_name').attr('value',pname);
-		};
-		// 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 끝 ===========================
-		
-		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
-		mapOption = {
-			center : new kakao.maps.LatLng(37.56498949199894, 126.94852219358815), // 지도의 중심좌표 현재는 '이대역'로 설정
-			level : 3
-		// 지도의 확대 레벨
-		};
 
-		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-		
+// 		function choice(btn) {
+// 			         //console.log($(btn).closest('div').children('span').data('x'));
+// 			         var coor_x = $(btn).closest('li').children('span').data('x');
+// 			         var coor_y = $(btn).closest('li').children('span').data('y');
+// 			         var pname= $(btn).closest('li').children('span').data('name');
+// 			         $('#selected_x').attr('value',coor_x);
+// 			         $('#selected_y').attr('value',coor_y);
+// 			         $('#selected_name').attr('value',pname);
+			
+// 		};
+
 		// 출발지 마커 좌표와 이름 
-		var arr_x = new Array(); // 이대 홍대 당산
-		var arr_y = new Array();
-		var titles = new Array();
+		var startPlaceList_x = '${startPlaceList_x}'.split("#");
+		var startPlaceList_y = '${startPlaceList_y}'.split("#")
+		var startPlaceList_name = '${startPlaceList_name}'.split("#")
+		startPlaceList_x.pop();
+		startPlaceList_y.pop();
+		startPlaceList_name.pop();
+		var spl_num = startPlaceList_x.length;
+
+		// 1. 지도 띄우기
+		var map = new Tmapv2.Map("map_div", {
+			center : new Tmapv2.LatLng(endPlaceList_y[0], endPlaceList_x[0]),
+
+			width : "80%",
+			height : "50%"
+		});
+		var marker_s;
+		var marker_e = [];
+		var totalMarkerArr = [];
+		var drawInfoArr = [];
+		var resultdrawArr = [];
+		// 2. 시작, 도착 심볼찍기
+		// 시작
+
+		for (var i = 0; i < startPlaceList_x.length; i++) {
+			marker_s = new Tmapv2.Marker(
+					{
+						position : new Tmapv2.LatLng(startPlaceList_y[i],
+								startPlaceList_x[i]),
+						icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_b_s.png",
+						title : startPlaceList_name[i],
+						iconSize : new Tmapv2.Size(32, 50),
+						map : map
+					});
+		}
+
+		// 중심 마크 그리기 marker_e[0]
+		marker_e[0] = new Tmapv2.Marker(
+				{
+					position : new Tmapv2.LatLng(endPlaceList_y[0],
+							endPlaceList_x[0]),
+					icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_w_m_c.png",
+					title : endPlaceList_name[0],
+					iconSize : new Tmapv2.Size(32, 50),
+					map : map
+				});
+		// 추천 지역들 찍기 marker_e[1]~[5]
+		for (var i = 1; i < epl_num; i++) {
+
+			marker_e[i] = new Tmapv2.Marker(
+					{
+						position : new Tmapv2.LatLng(endPlaceList_y[i],
+								endPlaceList_x[i]),
+						icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_g_m_r.png",
+						title : endPlaceList_name[i],
+						map : map,
+
+					});
+		}
+
+		markerevent(0); // 마크 이벤트 실행
 		
-		var bounds = new kakao.maps.LatLngBounds();
-		<c:forEach items="${sessionScope.startPlaceList}" var="item" varStatus="sts">
-			var xx = parseFloat('${item.x}');
-			var yy = parseFloat('${item.y}');
-			arr_x.push(xx);
-			arr_y.push(yy);
-			titles.push('${item.name}');
-			bounds.extend(new kakao.maps.LatLng(yy, xx));
-		</c:forEach>
-		//모든 마커 보이게 지도 영역 설정
-		map.setBounds(bounds);
+
+		//  경로탐색 API 사용요청
+		for (var t = 0; t < spl_num; t++) {
+			for (var j = 0; j < 100000000; j++) {
+			}
+			$
+					.ajax({
+						method : "POST",
+						url : "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json&callback=result",//
+						async : false,
+						data : {
+							appKey : "l7xx45b1d9cc7eb14ee98cb9d6aca431df5e",
+							startX : startPlaceList_x[t],
+							startY : startPlaceList_y[t],
+							endX : endPlaceList_x[0],
+							endY : endPlaceList_y[0],
+
+							reqCoordType : "WGS84GEO",
+							resCoordType : "EPSG3857",
+							startName : "출발지",
+							endName : "도착지"
+						},
+						success : function(response) {
+							var resultData = response.features;
+
+							drawInfoArr = []; // 경로 좌표들 저장하는 배열
+
+							for ( var i in resultData) { //for문 [S]
+								var geometry = resultData[i].geometry;
+								var properties = resultData[i].properties;
+								var polyline_;
+
+								if (geometry.type == "LineString") {
+									for ( var j in geometry.coordinates) {
+										// 경로들의 결과값(구간)들을 포인트 객체로 변환 
+										var latlng = new Tmapv2.Point(
+												geometry.coordinates[j][0],
+												geometry.coordinates[j][1]);
+										// 포인트 객체를 받아 좌표값으로 변환
+										var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+												latlng);
+										// 포인트객체의 정보로 좌표값 변환 객체로 저장
+										var convertChange = new Tmapv2.LatLng(
+												convertPoint._lat,
+												convertPoint._lng);
+										// 배열에 담기
+										drawInfoArr.push(convertChange);
+									}
+								} else {
+									var markerImg = "";
+									var pType = "";
+									var size;
+
+									if (properties.pointType == "S") { //출발지 마커
+										markerImg = "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png";
+										pType = "S";
+										size = new Tmapv2.Size(24, 38);
+									} else
+										(properties.pointType == "E")
+									{ //도착지 마커
+										markerImg = "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png";
+										pType = "E";
+										size = new Tmapv2.Size(24, 38);
+									}
+
+									// 경로들의 결과값들을 포인트 객체로 변환 
+									var latlon = new Tmapv2.Point(
+											geometry.coordinates[0],
+											geometry.coordinates[1]);
+
+									// 포인트 객체를 받아 좌표값으로 다시 변환
+									var convertPoint = new Tmapv2.Projection.convertEPSG3857ToWGS84GEO(
+											latlon);
+
+								}
+							}//for문 [E]
+							drawLine(drawInfoArr); // 경로 그리기
+						},
+						error : function(request, status, error) {
+							console.log("code:" + request.status + "\n"
+									+ "message:" + request.responseText + "\n"
+									+ "error:" + error);
+						}
+					});
+		}
+
+		// 지도 레벨 맞추기 (풀발 좌표를 받아서 지도 레벨을 맞춤)
+		PTbounds = new Tmapv2.LatLngBounds();
+		for (var ii = 0; ii < spl_num; ii++) {
+			var linePt = new Tmapv2.LatLng(startPlaceList_y[ii],
+					startPlaceList_x[ii]);
+			PTbounds.extend(linePt);
+		}
+		map.fitBounds(PTbounds);
 		
-		/*
-		130~144 코드 와
-		157~176 코드 합칠 수 있음.
-		*/
-		
-		//마커 이미지의 이미지 주소입니다
-		var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+		// 마크 클릭 함수
+		function markerevent(i) {
 
-		for (var i = 0; i < arr_x.length; i++) {
-
-			// 마커 이미지의 이미지 크기 입니다
-			var imageSize = new kakao.maps.Size(24, 35);
-
-			// 마커 이미지를 생성합니다    
-			var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-			// 마커를 생성합니다
-			var marker = new kakao.maps.Marker({
-				map : map, // 마커를 표시할 지도
-				
-				position : new kakao.maps.LatLng(arr_y[i],arr_x[i]), // 마커를 표시할 위치
-				
-				title :	titles[i], // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-				
-				image : markerImage
-			// 마커 이미지 
+			marker_e[1].addListener("click", function(evt) {
+				$("#loc1").click();
+			});
+			marker_e[2].addListener("click", function(evt) {
+				$("#loc2").click();
+			});
+			marker_e[3].addListener("click", function(evt) {
+				$("#loc3").click();
+			});
+			marker_e[4].addListener("click", function(evt) {
+				$("#loc4").click();
+			});
+			marker_e[5].addListener("click", function(evt) {
+				$("#loc5").click();
 			});
 		}
 		
-		
-		
-		
+		// 마크 클릭 확대 및 넘어가는 값 저장
+		function remarker(i) {
+
+			for (var j = 1; j < epl_num; j++) {
+				marker_e[j].setMap(null);
+				marker_e[j] = new Tmapv2.Marker(
+						{
+							position : new Tmapv2.LatLng(endPlaceList_y[j],
+									endPlaceList_x[j]),
+							icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_g_m_r.png",
+							title : endPlaceList_name[j],
+							//        	                   iconSize : new Tmapv2.Size(20, 30),
+							map : map
+						});
+
+			}
+			marker_e[i].setMap(null);
+			marker_e[i] = new Tmapv2.Marker(
+					{
+						position : new Tmapv2.LatLng(endPlaceList_y[i],
+								endPlaceList_x[i]),
+						icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_r.png",
+						title : endPlaceList_name[i],
+						iconSize : new Tmapv2.Size(32, 50),
+						map : map
+					});
+
+			markerevent(0); //  새로 그려진 마크에 클릭함수 
+			$('#selected_x').attr('value', endPlaceList_x[i]);
+			$('#selected_y').attr('value', endPlaceList_y[i]);
+			$('#selected_name').attr('value', endPlaceList_name[i]);
+		}
+
+		// 경로 그리는 함수
+		function drawLine(arrPoint) {
+			var polyline_;
+
+			polyline_ = new Tmapv2.Polyline({ // 경로 그리기
+				path : arrPoint,
+				strokeColor : "#DD0000",
+				strokeWeight : 6,
+				map : map
+			});
+			resultdrawArr.push(polyline_);
+		}
 	</script>
-	
-	<%-- <!-- 08/03 권은지 : 추천 지하철 역 테스트용 코드 -->
-	<table border="1">
-		<thead>
-			<th>역이름</th>
-			<th>xs</th>
-			<th>ys</th>
-		</thead>
-		<tbody>
-			<c:forEach items="${rcm_stationList}" var="rcm">
-				<tr>
-					<td>${rcm.subname}</td>
-					<td>${rcm.xs}</td>
-					<td>${rcm.ys}</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table> --%>
+
+
 </body>
 
 </html>
-

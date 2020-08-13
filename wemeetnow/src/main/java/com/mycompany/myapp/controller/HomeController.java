@@ -113,7 +113,7 @@ public class HomeController {
 		//구분차 '#'를 사용해서 문자열로 형태 변환		
 		StringBuilder epl_x = new StringBuilder().append(center_coor.getX()).append("#");
 		StringBuilder epl_y = new StringBuilder().append(center_coor.getY()).append("#");;
-		StringBuilder epl_name = new StringBuilder().append(" ").append("#");;
+		StringBuilder epl_name = new StringBuilder().append("중심").append("#");;
 		for(Place p : endplaceList) {
 			epl_x.append(p.getX()).append("#");
 			epl_y.append(p.getY()).append("#");
