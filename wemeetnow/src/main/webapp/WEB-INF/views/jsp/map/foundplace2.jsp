@@ -102,24 +102,30 @@ h1, h2, h3, h4, h5, h6 {
    <script>
    // 
    
-   console.log(endPlaceList_x);
       //각 장소에대한 친구들의 경로 정보  => 장소1까지 친구1읠 경로/장소1까지 친구2의 경로/...
       var path_list = '${pathInfo}'.split('/');
+      
+      path_list.pop();console.log(path_list);	
       //출발지 갯수
       var x_num = parseInt('${x_num}');
+      console.log(x_num)//3
       //파싱된 경로가 저장될 배열
-      var paths = new Array();
+      var times = new Array();
       //각 도착지에 대한 친구들의 정보 종합.
-      for(var i=0; i<path_list.length; i++){
+      for(var i=0; i<path_list.length/x_num; i++){
          var str = "";
          for(var j=0; j<x_num; j++){
-            if(path_list[i*x_num+j]==""){
-               str +='<p>친구 '+(j+1)+' 경로 정보 : 이용 가능한 대중 교통이 없습니다.(도보 이용)</p>';
+        	
+            if(path_list[j*x_num+j]==""){
+               str +='<p>출발지 '+(j+1)+'번 예상 이동시간(도보) : ? 분</p>';
             }else{
-               str += '<p>친구 '+(j+1)+' 경로 정보   : '+path_list[i*x_num+j]+'</p>';   
+            	var path_arr = path_list[i*x_num+j].split('#');
+            	time = path_arr[path_arr.length-2];
+            	
+               str += '<p>출발지'+(j+1)+'번 예상 이동시간(대중교통)  : '+time+'분</p>';   
             }
          }
-         paths.push(str);
+         times.push(str);
       }   
       
       // 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 시작 ===========================
@@ -154,7 +160,7 @@ h1, h2, h3, h4, h5, h6 {
          
          var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
                      '<h1>'+endPlaceList_name[i]+'</h1>'+
-                     paths[i-1]+'</p><span data-x="'
+                     times[i-1]+'</p><span data-x="'
                      +endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span></div>';
                      
          var posi_li_nav ='<li class="nav-item">'+      

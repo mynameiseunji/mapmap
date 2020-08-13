@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <title>title</title>
@@ -31,7 +32,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 10px;
 }
 </style>
-<script defer src="./all.min.js"></script>
+<script defer src="<%=request.getContextPath()%>/js/all.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -43,6 +44,10 @@ h1, h2, h3, h4, h5, h6 {
 		alert("세션이 없습니다.")
 		location.href="test.do"
 	} */
+	function temp(id){
+		var url = "http://우리서버아이피/test.do?id="+id;
+		alert("["+url+"]을 링크로 전송");		
+	}
 </script>
 <body>
 
@@ -69,7 +74,8 @@ h1, h2, h3, h4, h5, h6 {
 				<h1>Route</h1>
 			</div>
 			<div class="w3-col s6" align="right">
-				<button class="btn btn-outline-warning">공유공유</button>
+				<button class="btn btn-outline-warning"
+				onclick="temp('${id}')">공유공유</button>
 			</div>
 		</div>
 		<table class="table">
@@ -78,16 +84,13 @@ h1, h2, h3, h4, h5, h6 {
 				<th colspan=2>경로</th>
 				<th>시간</th>
 			</tr>
-			<tr>
+			<c:forEach var="item" items="${departure}" varStatus="status">
+				<tr>
 				<td style="vertical-align: middle; text-align: center"><i
 					class="fas fa-user-alt fa-2x"></i>
-					<p>Joon</p>
-					<p>(출발위치)</p></td>
+					<p>출발지${status.count}</p>
+					<p>${item}</p></td>
 				<td width="70px">
-
-					<p class="station">
-						<i class="fas fa-subway"></i>
-					</p>
 					<p class="station">
 						<i class="fas fa-bus"></i>
 					</p>
@@ -96,16 +99,17 @@ h1, h2, h3, h4, h5, h6 {
 					</p>
 				</td>
 				<td>
-					<p class="station">출발역-중간역-도착역</p>
-					<p class="station">출발역-중간역-도착역</p>
-					<p class="station">출발역-중간역-도착역</p>
+					<p class="station">${bus_route[status.index]}</p>
+					<p class="station">${complex_route[status.index]}</p>
 				</td>
 				<td align="center">
-					<p>10분</p>
-					<p>20분</p>
-					<p>15분</p>
+					<p>${bus_time[status.index]}</p>
+					<p>${complex_time[status.index]}</p>
 				</td>
 			</tr>
+			
+			</c:forEach>
+			
 		</table>
 	</div>
 	<br>

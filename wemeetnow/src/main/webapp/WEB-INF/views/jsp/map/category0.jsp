@@ -34,7 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 10px;
 }
 </style>
-<script defer src="<%=request.getContextPath()%>/all.min.js"></script>
+<script defer src="<%=request.getContextPath()%>/js/all.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
@@ -180,7 +180,14 @@ function travelClick(){
 			<li class="list-group-item">
 				${item.name} - ${item.address} - ${item.phone} -
 				<a href="${item.place_url}">${item.place_url}</a>-
-				<input type="button" value="!" data-img="http:ldfhkjsdhfd" data-url="${item.place_url}" onclick="sendLink(this)"/>
+				<input type="button" value="!" 
+				data-name="${item.name}"
+				data-x="${item.x}"
+				data-y="${item.y}"
+				data-address="${item.address}"
+				data-phone="${item.phone}"
+				data-url="${item.place_url}" 
+				onclick="sendLink(this)"/>
 			</li>
 			</c:forEach>
 		</ul>
@@ -190,7 +197,15 @@ function travelClick(){
 			<c:forEach var="item" items="${fd6placeList}">
 			<li class="list-group-item">
 				${item.name} - ${item.address} - ${item.phone} -
-				<a href="${item.place_url}">${item.place_url}</a>
+				<a href="${item.place_url}">${item.place_url}</a>-
+				<input type="button" value="!" 
+				data-name="${item.name}"
+				data-x="${item.x}"
+				data-y="${item.y}"
+				data-address="${item.address}"
+				data-phone="${item.phone}"
+				data-url="${item.place_url}" 
+				onclick="sendLink(this)"/>
 			</li>
 			</c:forEach>
 		</ul>
@@ -200,7 +215,15 @@ function travelClick(){
 			<c:forEach var="item" items="${ct1placeList}">
 			<li class="list-group-item">
 				${item.name} - ${item.address} - ${item.phone} - 
-				<a href="${item.place_url}">${item.place_url}</a>
+				<a href="${item.place_url}">${item.place_url}</a>-
+				<input type="button" value="!" 
+				data-name="${item.name}"
+				data-x="${item.x}"
+				data-y="${item.y}"
+				data-address="${item.address}"
+				data-phone="${item.phone}"
+				data-url="${item.place_url}" 
+				onclick="sendLink(this)"/>
 			</li>
 			</c:forEach>
 		</ul>
@@ -210,7 +233,15 @@ function travelClick(){
 			<c:forEach var="item" items="${at4placeList}">
 			<li class="list-group-item">
 				${item.name} - ${item.address} - ${item.phone} - 
-				<a href="${item.place_url}">${item.place_url}</a>
+				<a href="${item.place_url}">${item.place_url}</a>-
+				<input type="button" value="!" 
+				data-name="${item.name}"
+				data-x="${item.x}"
+				data-y="${item.y}"
+				data-address="${item.address}"
+				data-phone="${item.phone}"
+				data-url="${item.place_url}" 
+				onclick="sendLink(this)"/>
 			</li>
 			</c:forEach>
 		</ul>
@@ -233,31 +264,18 @@ function travelClick(){
 </c:forEach> */
 
   function sendLink(btn) {
-	var loc = $(btn).data("url");
-    Kakao.Link.sendDefault({
-      objectType: 'location',
-      address: '경기 성남시 분당구 판교역로 235 에이치스퀘어 N동 8층',
-      addressTitle: '카카오 판교오피스 카페톡',
-      content: {
-        title: '신메뉴 출시♥︎ 체리블라썸라떼',
-        description: '이번 주는 체리블라썸라떼 1+1',
-        imageUrl:
-          'http://k.kakaocdn.net/dn/bSbH9w/btqgegaEDfW/vD9KKV0hEintg6bZT4v4WK/kakaolink40_original.png',
-        link: {
-          mobileWebUrl: loc,
-          webUrl: loc,
-        },
-      },
-      buttons: [
-        {
-          title: '웹으로 보기',
-          link: {
-            mobileWebUrl: loc,
-            webUrl: loc,
-          },
-        },
-      ],
-    })
+	var url = $(btn).data("url");
+    var name = $(btn).data("name");
+    var x = $(btn).data("x");
+    var y = $(btn).data("y");
+    var address = $(btn).data("address");
+    var phone = $(btn).data("phone");
+    location.href="route.do?name="+name+
+    		"&x="+x+
+    		"&y="+y+
+    		"&address="+address+
+    		"&phone="+phone+
+    		"&place_url="+url;
   }
 </script>
 

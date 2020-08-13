@@ -26,7 +26,7 @@ public interface MapService {
 	public stationXY getRcm_station(String subName) throws Exception;
 	
 	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList);
-	public String getFinalPathSub(List<Place> startPlaceList, Place endPlace);
+	public String getFinalPathComplex(List<Place> startPlaceList, Place endPlace);
 	public String getFinalPathBus(List<Place> startPlaceList, Place endPlace);
 
 	public String finalDBSetting(List<Place> startPlaceList, Place endPlace);
