@@ -7,5 +7,7 @@ public interface MapDAO {
 	public stationXY getRcm_station(String subname) throws Exception;
 
 	public int insertData(Route route);
+	
+	public Route routeSearch(String id);
 
 }

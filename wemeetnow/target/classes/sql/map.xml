@@ -9,6 +9,9 @@
 	<insert id="insertData" parameterType="route">
 		insert into route values (#{id},#{departure},#{bus_route},#{complex_route},#{bus_time, jdbcType=VARCHAR},#{complex_time, jdbcType=VARCHAR})
 	</insert>
+	<select id="routeSearch" parameterType="String" resultType="com.mycompany.myapp.model.Route">
+		select * from route where id=#{id}
+	</select>
 </mapper>
 
 
