@@ -148,7 +148,7 @@ public class HomeController {
 		model.addAttribute("pathInfo",pathInfo);
 		model.addAttribute("x_num",startPlaceList.size());
 		
-		return "map/foundplace2";
+		return "map/foundplace";
 	}
 
 	@RequestMapping("category.do")
