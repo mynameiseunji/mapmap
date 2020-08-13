@@ -39,4 +39,7 @@
 	<select id="recommend" parameterType="String" resultType="friend">
 		select * from friendship where email2=#{email}
 	</select>
+	<delete id="pushDel" parameterType="friendconfirm">
+		delete from friend_confirm where inviter=#{inviter} and invitee=#{invitee}
+	</delete>
 </mapper>

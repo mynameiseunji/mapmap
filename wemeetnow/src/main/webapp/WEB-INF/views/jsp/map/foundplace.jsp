@@ -98,8 +98,7 @@ h1, h2, h3, h4, h5, h6 {
 	<script>
    
       //각 장소에대한 친구들의 경로 정보  => 장소1까지 친구1읠 경로/장소1까지 친구2의 경로/...
-      var path_list = '${pathInfo}'.split('/');
-      
+      var path_list = '${pathInfo}'.split('/');      
       path_list.pop();
       //출발지 갯수
       var x_num = parseInt('${x_num}');
@@ -137,20 +136,12 @@ h1, h2, h3, h4, h5, h6 {
       endPlaceList_y.pop();
       endPlaceList_name.pop();
       var epl_num = endPlaceList_x.length;
-      
-      //맨처음 보일 endplace를 html형식으로 append.
-      // .tab-content 자손태그로 추가
-//       var posi_li_active = '<h1>'+endPlaceList[0]+'</h1>'+
-//                paths[0]+
-//                '<span data-x="'+endPlaceList[1]+'" data-y="'+endPlaceList[2]+'"></span>';
+
       //append.
       var cen = 'center';
       $('#selected_x').attr('value',endPlaceList_x[0]);
       $('#selected_y').attr('value',endPlaceList_y[0]);
       $('#selected_name').attr('value',endPlaceList_name[0]);
-      
-//       $('#home').append(posi_li_active);
-//       $('.nav-link.active').text(endPlaceList[0]); // location1 => 장소명으로 변경
       
       // .tab-content 자손태그로 추가(반복)
       for(var i=1; i<epl_num; i++){
@@ -173,26 +164,7 @@ h1, h2, h3, h4, h5, h6 {
          $('.tab-content').append(posi_li_fade);
          $('.nav.nav-tabs').append(posi_li_nav);
       }
-      /*
-      for (var i = 1; i < epl_num; i++) {
-			var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'
-					+ '<h1>'
-					+ endPlaceList_name[i]
-					+ '</h1>'
-					+ paths[i - 1]
-					+ '</p><span data-x="'+endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span></div>';
-			var posi_li_nav = '<li class="nav-item">'
-					+
-					'<span data-name="'+endPlaceList_name[i]+'" data-x="'+endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span>'
-					+ '<a id= "loc' + i + '" class="nav-link" data-toggle="tab" href="#menu' + i + '" onclick="remarker(' + i + ')" >' +
-					// 						'<a class="nav-link" data-toggle="tab" href="#menu'+i+'" onclick="choice(this)">'+
-					endPlaceList_name[i] + '</a></li>';
-			$('.tab-content').append(posi_li_fade);
-			$('.nav.nav-tabs').append(posi_li_nav);
-		}
-      */
-      
-
+        
 		// 출발지 마커 좌표와 이름 
 		var startPlaceList_x = '${startPlaceList_x}'.split("#");
 		var startPlaceList_y = '${startPlaceList_y}'.split("#")

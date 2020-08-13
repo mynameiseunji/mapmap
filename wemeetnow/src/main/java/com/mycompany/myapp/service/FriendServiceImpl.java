@@ -69,4 +69,8 @@ public class FriendServiceImpl implements FriendService {
 	public List<FriendBean> recommend(String email) {
 		return friendDao.recommend(email);
 	}
+	@Override
+	public int reject(FriendConfirm fc) {
+		return friendDao.reject(fc);
+	}
 }

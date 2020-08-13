@@ -49,8 +49,11 @@ public class FriendAction {
 	@ResponseBody
 	public String member_friendAccept(HttpServletRequest request,FriendConfirm fc, Model model) throws Exception {
 		fc.setInvitee((String)request.getSession().getAttribute("email"));
-		
-		int result = friendService.accept(fc);
+		int result =0;
+		if(fc.getStatus()==1)
+			result = friendService.accept(fc);
+		else
+			result = friendService.reject(fc);
 		
 		return "결과";
 	}

@@ -54,7 +54,7 @@ public class HomeController {
 	@RequestMapping("sendAddr.do")
 	public String sendAddr(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
 		
-		//왜 이걸 아무도 안물어볼까?
+		
 		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
 		
 

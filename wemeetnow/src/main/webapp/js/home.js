@@ -26,8 +26,7 @@ $(document).ready(
 						// http://noveloper.github.io/blog/spring/2015/02/16/how-mapping-to-model-arrayvalue.html
 						$("#form .place_values").each(
 								function(index) {
-									$(this).find("input[name=x]").attr("name",
-											"places[" + index + "].x");
+									$(this).find("input[name=x]").attr("name","places[" + index + "].x");
 									$(this).find("input[name=y]").attr("name",
 											"places[" + index + "].y");
 									$(this).find("input[name=name]").attr(
@@ -261,7 +260,7 @@ function frpush(inviter, status){
 	        },
 	        dataType:'text', 
 	        success: function (data){
-	        	alert($('.fr_push_list').html());
+	        	$('.fr_push_list').remove();
 	        }
 		});
 	}

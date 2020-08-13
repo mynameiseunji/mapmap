@@ -28,4 +28,6 @@ public interface FriendService {
 
 	List<FriendBean> recommend(String email);
 
+	int reject(FriendConfirm fc);
+
 }

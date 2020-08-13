@@ -71,5 +71,9 @@ public class FriendDAOImpl {
 	public List<FriendBean> recommend(String email) {
 		return sqlSession.selectList("recommend",email);
 	}
+
+	public int reject(FriendConfirm fc) {
+		return sqlSession.delete("friendns.pushDel", fc);
+	}
 	
 }
