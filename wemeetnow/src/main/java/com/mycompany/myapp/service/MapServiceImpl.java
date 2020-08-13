@@ -288,4 +288,10 @@ public class MapServiceImpl implements MapService {
 		
 		return r;
 	}
+	@Override
+	public String[] parsingRoute(String bus_route) {
+		String[] pieces= bus_route.split("#");
+		return null;
+	}
 }
+

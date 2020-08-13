@@ -64,7 +64,7 @@ public class XmlParsing {
 
 		} catch (NullPointerException e) {
 			System.out.println("there is no route");
-			
+			sb.append("NONE");
 			//System.out.println(publicDatas);
 		} catch(Exception e) {
 			e.printStackTrace();

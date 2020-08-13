@@ -51,7 +51,7 @@ function sendLink(btn) {
 	var name = $(btn).data("name");
 	var address = $(btn).data("address");
 	var url = $(btn).data("url");
-	  
+	var lastPage = "http://우리 아이피/myapp/route.do?id="+'${id}';
 	Kakao.Link.sendDefault({
 		objectType: 'location',
 		address: address,

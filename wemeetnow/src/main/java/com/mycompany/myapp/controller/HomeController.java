@@ -181,77 +181,73 @@ public class HomeController {
 		return "map/category0";
 	}
 	@RequestMapping("route.do")
-	public String route(@ModelAttribute("id")String id, HttpServletRequest request, Place place, Model model) {
+	public String route(@ModelAttribute("id") String id, HttpServletRequest request, Place place, Model model) {
 		//지하철,버스,
-		System.out.println(place.toString());
-		if(id.equals("")) {	
+		System.out.println(id+"?");
+		//System.out.println(place.toString());
+		if(id.equals("")) {
+			System.out.println("아이디없음");
 			Place endPlace = place;
 			List<Place> startPlaceList =(List<Place>) request.getSession().getAttribute("startPlaceList");			
 			
-			String primary = ms.finalDBSetting(startPlaceList,endPlace);
+			id = ms.finalDBSetting(startPlaceList,endPlace);
 			//최종 DB에 들어갈 칼럼 데이터 만들기,넣기
-			model.addAttribute("id", primary);
-			System.out.println(primary);
 			// survlrxbymwjdghmbboawthlitovss 서울 은평구 진관동 88/서울 서대문구 대현동 11-1/서울 종로구 명륜3가 53-21/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ NULL     NULL
 			
-		}else {
-			
+		}
+		
 			Route r = ms.routeSearch(id);
-			
+
 			String[] departure = r.getDeparture().split("/");
-			model.addAttribute("departure", departure);
-			
 			String[] bus_route = new String[departure.length];
 			String[] bus_time = new String[departure.length];
-			
+
 			String[] br1 = r.getBus_route().split("/");
 			String rstr = "";
 			String tstr = "";
-			
+
 			for(int i=0; i<departure.length; i++) {
+				if(br1[i].equals("NONE")) {
+					bus_route[i] = "검색된 대중 교통 경로가 없습니다.";
+					bus_time[i] = "*";
+					continue;
+				}
 				String[] br2 = br1[i].split("#");
 				for(int j=0; j<br2.length-1; j++) {
 					rstr += br2[j] + "-";
 				}				
 				bus_route[i] = rstr;
 				bus_time[i] = br2[br2.length-1];
-			}			
+			}
+			
 			String[] complex_route = new String[departure.length];
 			String[] complex_time = new String[departure.length];
-			
-			String[] br12 = r.getBus_route().split("/");
-			String rstr2 = "";
-			String tstr2 = "";
-			
+
+			br1 = r.getComplex_route().split("/");
+
 			for(int i=0; i<departure.length; i++) {
-				String[] br2 = br12[i].split("#");
+				if(br1[i].equals("NONE")) {
+					complex_route[i] = "검색된 대중 교통 경로가 없습니다.";
+					complex_time[i] = "*";
+					continue;
+				}
+				String[] br2 = br1[i].split("#");
 				for(int j=0; j<br2.length-1; j++) {
-					rstr += br2[j] + "-";
+					tstr += br2[j] + "-";
 				}				
-				complex_route[i] = rstr2;
+				complex_route[i] = tstr;
 				complex_time[i] = br2[br2.length-1];
 			}
-			model.addAttribute("id",id);
-			model.addAttribute("departure", new String[] { "서울 은평구 진관동 88","서울 서대문구 대현동 11-1","서울 종로구 명륜3가 53-21"});
-			model.addAttribute("bus_route", bus_route);
-			model.addAttribute("complex_route", new String[] {"신도초교.은평메디텍고등학교#720#무악재역#30#","봉원사입구#서대문11#무악재역#19#","명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#"});
-			model.addAttribute("bus_time", bus_time);
-			model.addAttribute("complex_time", new String[] { "30","19","34" });
-			
-//			model.addAttribute("departure", new String[] { "서울 은평구 진관동 88","서울 서대문구 대현동 11-1","서울 종로구 명륜3가 53-21"});
-//			model.addAttribute("bus_route", new String[] {"신도초교.은평메디텍고등학교#720#무악재역#30#","봉원사입구#서대문11#무악재역#19#","명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#" });
-//			model.addAttribute("complex_route", new String[] {"신도초교.은평메디텍고등학교#720#무악재역#30#","봉원사입구#서대문11#무악재역#19#","명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#"});
-//			model.addAttribute("bus_time", new String[] {"30","19","34" });
-//			model.addAttribute("complex_time", new String[] { "30","19","34" });
-			
-		}
-		//더미 데이터
-		model.addAttribute("id","survlrxbymwjdghmbboawthlitovss");
-		model.addAttribute("departure", new String[] { "서울 은평구 진관동 88","서울 서대문구 대현동 11-1","서울 종로구 명륜3가 53-21"});
-		model.addAttribute("bus_route", new String[] {"신도초교.은평메디텍고등학교#720#무악재역#30#","봉원사입구#서대문11#무악재역#19#","명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#" });
-		model.addAttribute("complex_route", new String[] {"신도초교.은평메디텍고등학교#720#무악재역#30#","봉원사입구#서대문11#무악재역#19#","명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#"});
-		model.addAttribute("bus_time", new String[] {"30","19","34" });
-		model.addAttribute("complex_time", new String[] { "30","19","34" });
+
+		model.addAttribute("id",id);
+		model.addAttribute("departure", departure);
+		model.addAttribute("bus_route", bus_route);
+		model.addAttribute("complex_route", complex_route);
+		model.addAttribute("bus_time", bus_time);
+		model.addAttribute("complex_time", complex_time);
+
 		return "map/route";
 	}
 }
+// gterlyvsmtzaeejytlbhwdoasnosqe 서울 종로구 명륜3가 53-21/서울 서대문구 대현동 11-1/서울 은평구 진관동 88/ NONE/이대부고#272#서울지방경찰청.경복궁역#사직동주민센터#8002#자하문터널입구.석파정#36#/제각말5단지.은평뉴타운도서관#7211#구기터널입구#구기터널입구#7022#자하문고개.윤동주문학관#46#/ NONE/이대부고#272#서울지방경찰청.경복궁역#사직동주민센터#8002#자하문터널입구.석파정#36#/제각말5단지.은평뉴타운도서관#7211#구기터널입구#구기터널입구#7022#자하문고개.윤동주문학관#46#/ NULL     NULL
+

@@ -33,4 +33,6 @@ public interface MapService {
 
 	public Route routeSearch(String id);
 
+	public String[] parsingRoute(String bus_route);
+
 }
