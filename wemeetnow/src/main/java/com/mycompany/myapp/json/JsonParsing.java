@@ -36,6 +36,7 @@ public class JsonParsing {
 					String stationName = stcoor.getName().split(" ")[0];
 					if(set.contains(stationName))continue;
 					set.add(stationName);
+					
 				stcoor.setX((String) docOb.get("x"));
 				stcoor.setY((String) docOb.get("y"));
 				stcoor.setAddress((String) docOb.get("address_name"));
