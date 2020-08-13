@@ -62,58 +62,6 @@ h1, h2, h3, h4, h5, h6 {
 		$("#"+target).css("display","");		// 보여줄 것만 display 설정
 	});
 }); 
-/* 
-function cafeClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-	
-	cafe.style.display = "";
-	food.style.display = "none";
-	culture.style.display = "none";
-	travel.style.display = "none";
-}
-
-function foodClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-	
-	cafe.style.display = "none";
-	food.style.display = "";
-	culture.style.display = "none";
-	travel.style.display = "none";
-}
-
-function cultureClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-		
-	cafe.style.display = "none";
-	food.style.display = "none";
-	culture.style.display = "";
-	travel.style.display = "none";
-}
-
-function travelClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-	
-	cafe.style.display = "none";
-	food.style.display = "none";
-	culture.style.display = "none";
-	travel.style.display = "";
-} */
 
 </script>
 
@@ -258,10 +206,6 @@ function travelClick(){
 	</footer>
 
 <script>
-/* var god = new Array();
-<c:forEach var="item" items="${at4placeList}">
-	god.push('${item.place_url}');
-</c:forEach> */
 
   function sendLink(btn) {
 	var url = $(btn).data("url");

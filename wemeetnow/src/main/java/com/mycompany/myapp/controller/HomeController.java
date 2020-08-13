@@ -178,7 +178,7 @@ public class HomeController {
 		model.addAttribute("at4placeList", at4placeList);
 		//------------------------------------------------------------
 		
-		return "map/category0";
+		return "map/category";
 	}
 	@RequestMapping("route.do")
 	public String route(@ModelAttribute("id") String id, HttpServletRequest request, Place place, Model model) {

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <title>title</title>
@@ -30,7 +31,10 @@ h1, h2, h3, h4, h5, h6 {
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/all.min.js"></script>
+	
 <script>
+
 function validate_useremail(val)
 {
   var pattern= new RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i);
@@ -137,22 +141,23 @@ function add(email){
 	        		return false;
 	        	} else if(data==-2){
 	        		alert("이미 요청을 보낸 친구입니다.")
+	        	}else if(data==100){	
+	        		alert("자신을 추가할 수 없습니다.")
 	        	}else{
 	        		alert("친구 요청을 보냈습니다.")
 		      		location.href="<%=request.getContextPath()%>/friendlist.do";
-	        	}  		
-	        }	    	
-	        ,
-	    	error:function(e){
-	    		alert("data error"+e);
-	    	}
-		});//$.ajax
-	}	
-}
+							}
+						},
+						error : function(e) {
+							alert("data error" + e);
+						}
+					});//$.ajax
+		}
+	}
 
-$(document).ready(function(){
-	$('#resultList').hide();
-});
+	$(document).ready(function() {
+		$('#resultList').hide();
+	});
 </script>
 <body>
 
@@ -162,6 +167,7 @@ $(document).ready(function(){
 			style="letter-spacing: 4px;">
 			<a href="index.jsp" class="w3-bar-item w3-button">Woori Jigum
 				Manna</a>
+
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
 				<a href="member_logout.do" class="w3-bar-item w3-button">로그 아웃</a> <a
@@ -175,14 +181,16 @@ $(document).ready(function(){
 	</div>
 	<div class='container-sm' style='max-width: 500px; margin-top: 80px'
 		align="left">
+
 		<h1>Friend List</h1>
+
 		<br>
 		<ul class="list-group">
 			<c:forEach var="friend" items="${list}" varStatus="status">
 				<li class="list-group-item">
 					<div class="w3-low">
 						<div class="w3-col s10">
-				
+
 							Email : ${friend.email }<br>addr : ${friend.addr1}
 						</div>
 						<div class="w3-col s2">
@@ -200,6 +208,8 @@ $(document).ready(function(){
 					<input type="text" id="email">
 					<button type="button" class="btn btn-outline-dark"
 						onclick="email_check()">친구 찾기</button>
+					<button type="button" class="btn btn-outline-dark" data-toggle="modal"
+						data-target="#myModal"><i class="fas fa-exclamation"></i>&ensp;<span class="badge badge-dark">${fn:length(fr_recommend) + fn:length(invite)}</span></button>
 				</form>
 			</div>
 		</div>
@@ -210,23 +220,48 @@ $(document).ready(function(){
 
 		</ul>
 	</div>
+	
+
+	<!-- The Modal -->
+	<div class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">detail</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">
+					<c:if test="${empty invite}">
+						대기중인 친구신청 없음
+					</c:if>
+					<c:if test="${not empty invite}">
+						<h5>요청 대기중 ......</h5>
+						<c:forEach var="invi" items="${invite}" varStatus="status">
+							${invi.invitee}<br>
+						</c:forEach>
+					</c:if>
+					<hr>
+					<c:if test="${empty fr_recommend}">
+						추천 친구 없음
+					</c:if>
+					<c:if test="${not empty fr_recommend}">
+						<h5>추천친구 ......</h5>
+						<c:forEach var="reco" items="${fr_recommend}" varStatus="status">
+							${reco.email1}<br>
+						</c:forEach>
+					</c:if>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<footer class="w3-center w3-light-grey w3-padding-32">
 		<p>
 			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
 				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
 		</p>
 	</footer>
-	친구 추가 요청을 보낸 사람 목록:<br>
-	<c:forEach var="invi" items="${invite}" varStatus="status">
-				${invi.invitee}<br>
-			</c:forEach>
-			<br>
-			<br>
-			</footer>
-	추천 친구 리스트:<br>
-	<c:forEach var="reco" items="${fr_recommend}" varStatus="status">
-				${reco.email1}<br>
-	</c:forEach>
 </body>
 </html>
 

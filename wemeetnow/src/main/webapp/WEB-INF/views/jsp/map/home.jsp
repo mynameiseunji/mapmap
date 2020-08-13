@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <title>title</title>
@@ -45,8 +46,6 @@ h1, h2, h3, h4, h5, h6 {
 			console.log("새로 진입123");
 		}
 	}
-	
-	
 </script>
 <body>
 
@@ -63,7 +62,26 @@ h1, h2, h3, h4, h5, h6 {
 					<a href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
 				</c:if>
 				<c:if test="${not empty email}">
-					${nickname}님 환영합니다!
+					<div class="w3-dropdown-hover">
+						<button class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
+						<div class="w3-dropdown-content w3-bar-block w3-card-4">
+							<c:forEach var="fr_push" items="${fr_push}">
+								<div class="w3-bar-item fr_push_list">
+									<div class="w3-row">
+										<div class="w3-col s6">
+											<span class="w3-bar-item ontop">${fr_push.inviter}</span>
+										</div>
+										<div class="w3-col s3">
+											<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','1')">O</button>
+										</div>
+										<div class="w3-col s3">
+											<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','2')">X</button>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
 					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
 					<a href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
 				</c:if>
@@ -161,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
 													data-addr="${item.addr1}" data-x_="${item.x_}"
 													data-y_="${item.y_}" class="btn btn-success"
 													onclick="fr_down(this)">주소 1</button>
-													<!-- c:if -->
+												<!-- c:if -->
 												<%-- <button data-nickname="${item.nickname}"
 													data-addr="${item.addr2}" data-x_="${item.x_}"
 													data-y_="${item.y_}" type="button" class="btn btn-success"
@@ -211,7 +229,7 @@ h1, h2, h3, h4, h5, h6 {
 					name='address' value='${item.address}' /> <input type='hidden'
 					name='y' value='${item.y}'>
 			</div>
-			</c:forEach>
+		</c:forEach>
 	</form>
 	<br>
 	<br>
@@ -223,11 +241,5 @@ h1, h2, h3, h4, h5, h6 {
 	</footer>
 	<div id="fl-list"></div>
 </body>
-<c:forEach var="fr_push" items="${fr_push}">
-	<div class="fr_push_list">
-	${fr_push.inviter}님이 친구요청했습니다.
-	<button class="w3-bar-item w3-button" onclick="frpush('${fr_push.inviter}','1')">수락</button>
-	<button class="w3-bar-item w3-button" onclick="frpush('${fr_push.inviter}','2')">거절</button>
-	</div>
-</c:forEach>
+
 </html>

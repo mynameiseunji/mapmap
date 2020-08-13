@@ -260,7 +260,7 @@ function frpush(inviter, status){
 	        },
 	        dataType:'text', 
 	        success: function (data){
-	        	$('.fr_push_list').remove();
+	        	location.reload(true);
 	        }
 		});
 	}

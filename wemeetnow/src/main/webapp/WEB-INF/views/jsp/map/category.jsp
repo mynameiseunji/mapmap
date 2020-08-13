@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <title>title</title>
@@ -25,93 +25,80 @@ h1, h2, h3, h4, h5, h6 {
 	letter-spacing: 5px;
 }
 
-#cafelist {}
-#foodlist {}
-#culturelist {}
-#travellist {}
+#cafelist {
+	max-width: 800px;
+}
+
+#foodlist {
+	max-width: 800px;
+}
+
+#culturelist {
+	max-width: 800px;
+}
+
+#travellist {
+	max-width: 800px;
+}
+
+.s2 {
+	line-height: 90px;
+	text-align: center;
+}
+
+/* If the text has multiple lines, add the following: */
+.s2 i {
+	line-height: 1.5;
+	vertical-align: middle;
+}
 
 .col {
 	padding: 10px;
 }
 </style>
-<script defer src="js/all.min.js"></script>
+<script defer src="<%=request.getContextPath()%>/js/all.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 <!-- ------------------------------  -->
 <script>
- $(document).ready(function(){
-	 $(".categorylist").css("display","none");
-	 $("#cafelist").css("display","");
-	 
-	$('.col').click(function(){
-		
-		//보여줄 태그 선택
-		var target = $(this).find("h5").text().toLowerCase()+"list";		
-		$(".categorylist").css("display","none"); // 전부 안보이게
-		$("#"+target).css("display","");		// 보여줄 것만 display 설정
+	Kakao.init('0b6c81e5d496e486ca93f4d82d0a0027');
+	console.log(Kakao.isInitialized());
+
+	$(document).ready(function() {
+		$(".categorylist").css("display", "none");
+		$("#cafelist").css("display", "");
+
+		$('.col').click(function() {
+
+			//보여줄 태그 선택
+			var target = $(this).find("h5").text().toLowerCase() + "list";
+			$(".categorylist").css("display", "none"); // 전부 안보이게
+			$("#" + target).css("display", ""); // 보여줄 것만 display 설정
+		});
 	});
-}); 
-/* 
-function cafeClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-	
-	cafe.style.display = "";
-	food.style.display = "none";
-	culture.style.display = "none";
-	travel.style.display = "none";
-}
-
-function foodClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-	
-	cafe.style.display = "none";
-	food.style.display = "";
-	culture.style.display = "none";
-	travel.style.display = "none";
-}
-
-function cultureClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-		
-	cafe.style.display = "none";
-	food.style.display = "none";
-	culture.style.display = "";
-	travel.style.display = "none";
-}
-
-function travelClick(){
-	
-	var cafe = document.getElementById("cafelist");
-	var food = document.getElementById("foodlist");
-	var culture = document.getElementById("culturelist");
-	var travel = document.getElementById("travellist");
-	
-	cafe.style.display = "none";
-	food.style.display = "none";
-	culture.style.display = "none";
-	travel.style.display = "";
-} */
-
+	function sendLink(btn) {
+		var url = $(btn).data("url");
+	    var name = $(btn).data("name");
+	    var x = $(btn).data("x");
+	    var y = $(btn).data("y");
+	    var address = $(btn).data("address");
+	    var phone = $(btn).data("phone");
+	    location.href="route.do?name="+name+
+	    		"&x="+x+
+	    		"&y="+y+
+	    		"&address="+address+
+	    		"&phone="+phone+
+	    		"&place_url="+url;
+	  }
 </script>
 
-<body >
+<body>
 	<!-- Navbar (sit on top) -->
 	<div class="w3-top w3-light-blue">
 		<div class="w3-bar w3-white w3-padding w3-card"
@@ -121,97 +108,174 @@ function travelClick(){
 			<div class="w3-right w3-hide-small">
 				<!-- 로그인 세션 있으면 회원정보로-->
 				<c:if test="${empty email}">
-				<a href="member_login.do" class="w3-bar-item w3-button">로그인</a> <a
-					href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
+					<a href="member_login.do" class="w3-bar-item w3-button">로그인</a>
+					<a href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
 				</c:if>
 				<c:if test="${not empty email}">
-				<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a> <a
-					href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
+					<a href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
 				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<!-- 로그인 세션 있으면 회원정보로 --><!-- 로그인 세션 있으면 회원정보로-->
+				<!-- 로그인 세션 있으면 회원정보로 -->
+				<!-- 로그인 세션 있으면 회원정보로-->
 				<c:if test="${empty email}">
-				<a href="member_login.do" class="w3-bar-item w3-button"> <i
-					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+					<a href="member_login.do" class="w3-bar-item w3-button"> <i
+						class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
 				</c:if>
 				<c:if test="${not empty email}">
-				<a href="member_info.do" class="w3-bar-item w3-button"> <i
-					class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+					<a href="member_info.do" class="w3-bar-item w3-button"> <i
+						class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
 				</c:if>
 			</div>
 		</div>
 	</div>
-	<div class="container-sm " align="center" style="margin-top: 80px">
+	<div class="container-sm" align="center" style="margin-top: 80px">
 		<!-- 
 		<div class="container">
 			<img src="map.png" style="width:100%">
 		</div>
 		 -->
 		<br>
-		<div class="row">
-			<div class="col" >
-				<i class="fa fa-coffee fa-3x" ></i>
+		<div class="row" style="max-width: 800px;">
+			<div class="col">
+				<i class="fa fa-coffee fa-3x"></i>
 				<h5>Cafe</h5>
 			</div>
-			<div class="col" >
-				<i class="fas fa-utensils fa-3x"  ></i>
+			<div class="col">
+				<i class="fas fa-utensils fa-3x"></i>
 				<h5>Food</h5>
 			</div>
-			<div class="col" >
-				<i class="fa fa-film fa-3x"  ></i>
+			<div class="col">
+				<i class="fa fa-film fa-3x"></i>
 				<h5>Culture</h5>
 			</div>
-			<div class="col" >
-				<i class="fas fa-archway fa-3x" ></i>
+			<div class="col">
+				<i class="fas fa-archway fa-3x"></i>
 				<h5>Travel</h5>
 			</div>
 		</div>
 		<br>
-		<div id="cafelist" class="categorylist" >
-		<ul class="list-group">
-			<c:forEach var="item" items="${ce7placeList}">
-			<li class="list-group-item">
-				${item.name} - ${item.address} - ${item.phone} -
-				<a href="${item.place_url}">${item.place_url}</a>
-			</li>
-			</c:forEach>
-		</ul>
+		<div id="cafelist" class="categorylist">
+			<ul class="list-group">
+				<c:forEach var="item" items="${ce7placeList}">
+					<li class="list-group-item">
+						<div class="w3-low" style="vertical-align: middle">
+							<div class="w3-col s2">
+								<i class="fa fa-coffee fa-2x"></i>
+							</div>
+							<div class="w3-col s8" align="left">
+								<h5>
+									<b>${item.name}</b>
+								</h5>
+								<p class="w3-opacity">
+									${item.address}<br> ${item.phone}
+								</p>
+							</div>
+							<div class="w3-col s2">
+								<button class="btn btn-outline-dark" data-name="${item.name}"
+									data-x="${item.x}" data-y="${item.y}"
+									data-address="${item.address}" data-phone="${item.phone}"
+									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+							</div>
+
+
+						</div>
+					</li>
+				</c:forEach>
+			</ul>
 		</div>
 		<div id="foodlist" class="categorylist">
-		<ul class="list-group">
-			<c:forEach var="item" items="${fd6placeList}">
-			<li class="list-group-item">
-				${item.name} - ${item.address} - ${item.phone} -
-				<a href="${item.place_url}">${item.place_url}</a>
-			</li>
-			</c:forEach>
-		</ul>
+			<ul class="list-group">
+				<c:forEach var="item" items="${fd6placeList}">
+					<li class="list-group-item">
+						<div class="w3-low" style="vertical-align: middle">
+							<div class="w3-col s2">
+								<i class="fas fa-utensils fa-2x"></i>
+							</div>
+							<div class="w3-col s8" align="left">
+								<h5>
+									<b>${item.name}</b>
+								</h5>
+								<p class="w3-opacity">
+									${item.address}<br> ${item.phone}
+								</p>
+							</div>
+							<div class="w3-col s2">
+								<button class="btn btn-outline-dark" data-name="${item.name}"
+									data-x="${item.x}" data-y="${item.y}"
+									data-address="${item.address}" data-phone="${item.phone}"
+									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+							</div>
+
+
+						</div>
+					</li>
+				</c:forEach>
+			</ul>
 		</div>
 		<div id="culturelist" class="categorylist">
-		<ul class="list-group">
-			<c:forEach var="item" items="${ct1placeList}">
-			<li class="list-group-item">
-				${item.name} - ${item.address} - ${item.phone} - 
-				<a href="${item.place_url}">${item.place_url}</a>
-			</li>
-			</c:forEach>
-		</ul>
+			<ul class="list-group">
+				<c:forEach var="item" items="${ct1placeList}">
+					<li class="list-group-item">
+						<div class="w3-low" style="vertical-align: middle">
+							<div class="w3-col s2">
+								<i class="fa fa-film fa-2x"></i>
+							</div>
+							<div class="w3-col s8" align="left">
+								<h5>
+									<b>${item.name}</b>
+								</h5>
+								<p class="w3-opacity">
+									${item.address}<br> ${item.phone}
+								</p>
+							</div>
+							<div class="w3-col s2">
+								<button class="btn btn-outline-dark" data-name="${item.name}"
+									data-x="${item.x}" data-y="${item.y}"
+									data-address="${item.address}" data-phone="${item.phone}"
+									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+							</div>
+
+
+						</div>
+					</li>
+				</c:forEach>
+			</ul>
 		</div>
 		<div id="travellist" class="categorylist">
-		<ul class="list-group">
-			<c:forEach var="item" items="${at4placeList}">
-			<li class="list-group-item">
-				${item.name} - ${item.address} - ${item.phone} - 
-				<a href="${item.place_url}">${item.place_url}</a>
-			</li>
-			</c:forEach>
-		</ul>
+			<ul class="list-group">
+				<c:forEach var="item" items="${at4placeList}">
+					<li class="list-group-item">
+						<div class="w3-low" style="vertical-align: middle">
+							<div class="w3-col s2">
+								<i class="fas fa-archway fa-2x"></i>
+							</div>
+							<div class="w3-col s8" align="left">
+								<h5>
+									<b>${item.name}</b>
+								</h5>
+								<p class="w3-opacity">
+									${item.address}<br> ${item.phone}
+								</p>
+							</div>
+							<div class="w3-col s2">
+								<button class="btn btn-outline-dark" data-name="${item.name}"
+									data-x="${item.x}" data-y="${item.y}"
+									data-address="${item.address}" data-phone="${item.phone}"
+									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+							</div>
+
+
+						</div>
+					</li>
+				</c:forEach>
+			</ul>
 		</div>
 	</div>
 	<br>
 	<br>
-	
+
 	<footer class="w3-center w3-light-grey w3-padding-32">
 		<p>
 			Powered by <a href="https://www.w3schools.com/w3css/default.asp"

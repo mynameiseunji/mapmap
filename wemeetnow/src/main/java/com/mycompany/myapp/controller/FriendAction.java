@@ -65,6 +65,9 @@ public class FriendAction {
 		String myEmail = (String) session.getAttribute("email");
 		System.out.println(myEmail);
 		System.out.println(email);
+		if (myEmail.equals(email)) {
+			return 100;
+		}
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("inviter", myEmail);
 		m.put("invitee", email);
