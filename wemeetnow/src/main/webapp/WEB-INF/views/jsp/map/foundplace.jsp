@@ -219,7 +219,7 @@ h1, h2, h3, h4, h5, h6 {
 						map : map,
 					});
 		}
-		markerevent(0); // 마크 이벤트 실행
+		eplmarkerevent(0); // 추천 마크 이벤트들 실행
 		
 		//  경로탐색 API 사용요청
 		for (var t = 0; t < spl_num; t++) {
@@ -306,24 +306,24 @@ h1, h2, h3, h4, h5, h6 {
 		}
 		map.fitBounds(PTbounds);
 		
-		// 마크 클릭 함수
-		function markerevent(i) {
-			marker_e[1].addListener("click", function(evt) {
-				$("#loc1").click();
-			});
-			marker_e[2].addListener("click", function(evt) {
-				$("#loc2").click();
-			});
-			marker_e[3].addListener("click", function(evt) {
-				$("#loc3").click();
-			});
-			marker_e[4].addListener("click", function(evt) {
-				$("#loc4").click();
-			});
-			marker_e[5].addListener("click", function(evt) {
-				$("#loc5").click();
-			});
+		// 마커 클릭 이벤트 마크 수 만큼 생성 함수
+		function eplmarkerevent(i) {
+
+			for (var j = 1; j < epl_num; j++) {
+				markerevent(j);
+			}
+
 		}
+
+		function markerevent(i) { // 마커 클릭 단일 이벤트 함수
+			
+			marker_e[i].addListener("click", function(evt) {
+				$("#loc" + i).click();
+			});
+		
+		}
+
+
 		
 		// 마크 클릭 확대 및 넘어가는 값 저장
 		function remarker(i) {
@@ -349,7 +349,7 @@ h1, h2, h3, h4, h5, h6 {
 						iconSize : new Tmapv2.Size(32, 50),
 						map : map
 					});
-			markerevent(0); //  새로 그려진 마크에 클릭함수 
+			eplmarkerevent(0); //  새로 그려진 마크에 클릭함수 
 			$('#selected_x').attr('value', endPlaceList_x[i]);
 			$('#selected_y').attr('value', endPlaceList_y[i]);
 			$('#selected_name').attr('value', endPlaceList_name[i]);
