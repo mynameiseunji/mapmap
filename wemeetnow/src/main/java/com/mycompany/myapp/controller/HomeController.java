@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
+import com.mycompany.myapp.model.Route;
 import com.mycompany.myapp.model.stationXY;
 import com.mycompany.myapp.service.MapService;
 
@@ -194,6 +195,48 @@ public class HomeController {
 			// survlrxbymwjdghmbboawthlitovss 서울 은평구 진관동 88/서울 서대문구 대현동 11-1/서울 종로구 명륜3가 53-21/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ NULL     NULL
 			
 		}else {
+			
+			Route r = ms.routeSearch(id);
+			
+			String[] departure = r.getDeparture().split("/");
+			model.addAttribute("departure", departure);
+			
+			String[] bus_route = new String[departure.length];
+			String[] bus_time = new String[departure.length];
+			
+			String[] br1 = r.getBus_route().split("/");
+			String rstr = "";
+			String tstr = "";
+			
+			for(int i=0; i<departure.length; i++) {
+				String[] br2 = br1[i].split("#");
+				for(int j=0; j<br2.length-1; j++) {
+					rstr += br2[j] + "-";
+				}				
+				bus_route[i] = rstr;
+				bus_time[i] = br2[br2.length-1];
+			}			
+			String[] complex_route = new String[departure.length];
+			String[] complex_time = new String[departure.length];
+			
+			String[] br12 = r.getBus_route().split("/");
+			String rstr2 = "";
+			String tstr2 = "";
+			
+			for(int i=0; i<departure.length; i++) {
+				String[] br2 = br12[i].split("#");
+				for(int j=0; j<br2.length-1; j++) {
+					rstr += br2[j] + "-";
+				}				
+				complex_route[i] = rstr2;
+				complex_time[i] = br2[br2.length-1];
+			}
+			model.addAttribute("id",id);
+			model.addAttribute("departure", new String[] { "서울 은평구 진관동 88","서울 서대문구 대현동 11-1","서울 종로구 명륜3가 53-21"});
+			model.addAttribute("bus_route", bus_route);
+			model.addAttribute("complex_route", new String[] {"신도초교.은평메디텍고등학교#720#무악재역#30#","봉원사입구#서대문11#무악재역#19#","명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#"});
+			model.addAttribute("bus_time", bus_time);
+			model.addAttribute("complex_time", new String[] { "30","19","34" });
 			
 //			model.addAttribute("departure", new String[] { "서울 은평구 진관동 88","서울 서대문구 대현동 11-1","서울 종로구 명륜3가 53-21"});
 //			model.addAttribute("bus_route", new String[] {"신도초교.은평메디텍고등학교#720#무악재역#30#","봉원사입구#서대문11#무악재역#19#","명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#" });

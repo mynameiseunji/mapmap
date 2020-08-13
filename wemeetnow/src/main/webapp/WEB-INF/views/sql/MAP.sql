@@ -3,14 +3,26 @@ create table sub_rcm(
     xs varchar2(50),
     ys varchar2(50)
 );
+select * from sub_rcm;
+delete from sub_rcm;
+drop table sub_rcm;
+
+create table route(
+	id varchar2(30),
+	departure varchar2(300),
+	bus_route varchar2(500),
+	complex_route varchar2(500),
+	bus_time varchar2(10),
+	complex_time varchar2(10)
+	constraint route_pk primary key(id)
+);
+select * from route;
+
 
 select * from tab;
-select * from sub_rcm;
-drop table sub_rcm;
-delete from sub_rcm;
+
 
 delete from sub_rcm where subname = '잠실역2호선';
-
 
 insert into sub_rcm values('고속터미널역 9호선', '127.004211793489','37.5059814899483');
 insert into sub_rcm values('신사역 3호선', '127.020310824772','37.5164350739218');

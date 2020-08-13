@@ -29,5 +29,11 @@ public class MapDAOImpl implements MapDAO{
 	@Override
 	public int insertData(Route route) {
 		return sqlSession.insert("insertData", route);
-	}	
+	}
+	
+	@Override
+	public Route routeSearch(String id) {
+		return sqlSession.selectOne("mapns.routeSearch", id);
+	}
+	
 }

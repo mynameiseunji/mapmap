@@ -281,4 +281,11 @@ public class MapServiceImpl implements MapService {
 //			path.append("/");
 //		}
 //	}
+	@Override
+	public Route routeSearch(String id) {
+		
+		Route r = md.routeSearch(id);
+		
+		return r;
+	}
 }

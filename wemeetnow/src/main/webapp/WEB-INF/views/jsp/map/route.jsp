@@ -39,6 +39,44 @@ h1, h2, h3, h4, h5, h6 {
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+	Kakao.init('0b6c81e5d496e486ca93f4d82d0a0027');
+	console.log(Kakao.isInitialized());
+</script>
+
+<script>  
+function sendLink(btn) {
+	var name = $(btn).data("name");
+	var address = $(btn).data("address");
+	var url = $(btn).data("url");
+	  
+	Kakao.Link.sendDefault({
+		objectType: 'location',
+		address: address,
+		addressTitle: name,
+		content: {
+			title: '우리 지금 만나',
+			imageUrl: 'https://placeholder.com',
+			link: {
+				mobileWebUrl: url,
+				webUrl: url,
+			},
+		},
+		buttons: [
+        {
+        	title: '웹으로 보기',
+        	link: {
+        		mobileWebUrl: url,
+        		webUrl: url,
+        	},
+		},
+		],
+	})
+}
+</script>
+
 <script>
 	/* if('${startPlaceList}'==""){
 		alert("세션이 없습니다.")
@@ -74,8 +112,8 @@ h1, h2, h3, h4, h5, h6 {
 				<h1>Route</h1>
 			</div>
 			<div class="w3-col s6" align="right">
-				<button class="btn btn-outline-warning"
-				onclick="temp('${id}')">공유공유</button>
+				<%-- <button class="btn btn-outline-warning"	onclick="temp('${id}')">공유공유</button> --%>
+				<input type="button" class="btn btn-outline-warning" value="공유공유" data-name="${param.name}" data-address="${param.address}" data-url="${param.place_url}" onclick="sendLink(this)"/>
 			</div>
 		</div>
 		<table class="table">
@@ -120,6 +158,7 @@ h1, h2, h3, h4, h5, h6 {
 				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
 		</p>
 	</footer>
+
 </body>
 </html>
 

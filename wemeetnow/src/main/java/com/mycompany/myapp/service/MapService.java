@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
+import com.mycompany.myapp.model.Route;
 import com.mycompany.myapp.model.stationXY;
 
 public interface MapService {
@@ -29,4 +30,7 @@ public interface MapService {
 	public String getFinalPath(List<Place> startPlaceList, Place endPlace, String transport);
 
 	public String finalDBSetting(List<Place> startPlaceList, Place endPlace);
+
+	public Route routeSearch(String id);
+
 }
