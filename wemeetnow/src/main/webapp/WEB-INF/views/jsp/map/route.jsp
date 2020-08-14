@@ -120,32 +120,39 @@ function sendLink(btn) {
 			<tr align=center>
 				<th>출발</th>
 				<th colspan=2>경로</th>
-				<th>시간</th>
+				<th width="100px">시간</th>
 			</tr>
 			<c:forEach var="item" items="${departure}" varStatus="status">
 				<tr>
-				<td style="vertical-align: middle; text-align: center"><i
-					class="fas fa-user-alt fa-2x"></i>
-					<p>출발지${status.count}</p>
-					<p>${item}</p></td>
-				<td width="70px">
-					<p class="station">
-						<i class="fas fa-bus"></i>
-					</p>
-					<p class="station">
-						<i class="fas fa-subway"></i><b>+</b><i class="fas fa-bus"></i>
-					</p>
-				</td>
-				<td>
-					<p class="station">${bus_route[status.index]}</p>
-					<p class="station">${complex_route[status.index]}</p>
-				</td>
-				<td align="center">
-					<p>${bus_time[status.index]}</p>
-					<p>${complex_time[status.index]}</p>
-				</td>
-			</tr>
-			
+					<td rowspan=2 style="vertical-align: middle; text-align: center">
+					<i class="fas fa-user-alt fa-2x"></i>
+						<p>출발지${status.count}</p>
+						<p>${item}</p></td>
+					<td width="70px">
+						<p class="station">
+							<i class="fas fa-bus"></i>
+						</p>
+					</td>
+					<td>
+						<p class="station">${bus_route[status.index]}</p>
+					</td>
+					<td align="center">
+						<p>${bus_time[status.index]}분</p>
+					</td>
+				</tr>
+				<tr>
+					<td width="70px">
+						<p class="station">
+							<i class="fas fa-subway"></i><b>+</b><i class="fas fa-bus"></i>
+						</p>
+					</td>
+					<td>
+						<p class="station">${complex_route[status.index]}</p>
+					</td>
+					<td align="center">
+						<p>${complex_time[status.index]}분</p>
+					</td>
+				</tr>
 			</c:forEach>
 			
 		</table>

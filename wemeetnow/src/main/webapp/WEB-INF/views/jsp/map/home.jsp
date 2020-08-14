@@ -46,6 +46,7 @@ h1, h2, h3, h4, h5, h6 {
 			console.log("새로 진입123");
 		}
 	}
+	
 </script>
 <body>
 
@@ -63,7 +64,7 @@ h1, h2, h3, h4, h5, h6 {
 				</c:if>
 				<c:if test="${not empty email}">
 					<div class="w3-dropdown-hover">
-						<button class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
+						<button id="fr_request" class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
 						<div class="w3-dropdown-content w3-bar-block w3-card-4">
 							<c:forEach var="fr_push" items="${fr_push}">
 								<div class="w3-bar-item fr_push_list">
@@ -82,12 +83,11 @@ h1, h2, h3, h4, h5, h6 {
 							</c:forEach>
 						</div>
 					</div>
-					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
 					<a href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
 				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<!-- 로그인 세션 있으면 회원정보로 -->
 				<!-- 로그인 세션 있으면 회원정보로-->
 				<c:if test="${empty email}">
 					<a href="member_login.do" class="w3-bar-item w3-button"> <i
@@ -239,7 +239,6 @@ h1, h2, h3, h4, h5, h6 {
 				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
 		</p>
 	</footer>
-	<div id="fl-list"></div>
 </body>
 
 </html>

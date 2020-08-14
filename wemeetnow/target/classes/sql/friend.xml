@@ -37,7 +37,7 @@
 		where inviter=#{inviter} and invitee=#{invitee}
 	</update>
 	<select id="recommend" parameterType="String" resultType="friend">
-		select * from friendship where email2=#{email}
+		select * from friendship where email2=#{email} and email1 not in (select email2 from friendship where email1=#{email});
 	</select>
 	<delete id="pushDel" parameterType="friendconfirm">
 		delete from friend_confirm where inviter=#{inviter} and invitee=#{invitee}

@@ -138,19 +138,19 @@ h1, h2, h3, h4, h5, h6 {
 		 -->
 		<br>
 		<div class="row" style="max-width: 800px;">
-			<div class="col">
+			<div class="col w3-button">
 				<i class="fa fa-coffee fa-3x"></i>
 				<h5>Cafe</h5>
 			</div>
-			<div class="col">
+			<div class="col w3-button">
 				<i class="fas fa-utensils fa-3x"></i>
 				<h5>Food</h5>
 			</div>
-			<div class="col">
+			<div class="col w3-button">
 				<i class="fa fa-film fa-3x"></i>
 				<h5>Culture</h5>
 			</div>
-			<div class="col">
+			<div class="col w3-button">
 				<i class="fas fa-archway fa-3x"></i>
 				<h5>Travel</h5>
 			</div>
@@ -169,14 +169,15 @@ h1, h2, h3, h4, h5, h6 {
 									<b>${item.name}</b>
 								</h5>
 								<p class="w3-opacity">
-									${item.address}<br> ${item.phone}
+									${item.address}<br>${item.phone}<br>
+									<a href="${item.place_url}">상세정보</a>
 								</p>
 							</div>
 							<div class="w3-col s2">
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
-									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 
 
@@ -284,4 +285,6 @@ h1, h2, h3, h4, h5, h6 {
 	</footer>
 </body>
 </html>
+
+
 
