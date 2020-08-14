@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
@@ -17,6 +16,7 @@
 	rel="stylesheet">
 
 <style>
+
 body {
 	font-family: 'Nanum Gothic', sans-serif;
 }
@@ -64,24 +64,26 @@ h1, h2, h3, h4, h5, h6 {
 				</c:if>
 				<c:if test="${not empty email}">
 					<div class="w3-dropdown-hover">
-						<button id="fr_request" class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
-						<div class="w3-dropdown-content w3-bar-block w3-card-4">
-							<c:forEach var="fr_push" items="${fr_push}">
-								<div class="w3-bar-item fr_push_list">
-									<div class="w3-row">
-										<div class="w3-col s6">
-											<span class="w3-bar-item ontop">${fr_push.inviter}</span>
-										</div>
-										<div class="w3-col s3">
-											<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','1')">O</button>
-										</div>
-										<div class="w3-col s3">
-											<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','2')">X</button>
+						<c:if test="${fn:length(fr_push) > 0}">
+							<button id="fr_request" class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
+							<div class="w3-dropdown-content w3-bar-block w3-card-4">
+								<c:forEach var="fr_push" items="${fr_push}">
+									<div class="w3-bar-item fr_push_list">
+										<div class="w3-row">
+											<div class="w3-col s10">
+												<span class="w3-bar-item ontop">${fr_push.inviter}</span>
+											</div>
+											<div class="w3-col s1">
+												<button class="w3-bar-item ontop" onclick="frpush('${fr_push.inviter}','1')">o</button>
+											</div>
+											<div class="w3-col s1">
+												<button class="w3-bar-item ontop" onclick="frpush('${fr_push.inviter}','2')">x</button>
+											</div>
 										</div>
 									</div>
-								</div>
-							</c:forEach>
-						</div>
+								</c:forEach>
+							</div>
+						</c:if>
 					</div>
 					<a href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
 					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>

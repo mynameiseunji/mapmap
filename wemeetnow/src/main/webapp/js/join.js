@@ -89,7 +89,7 @@ var callback = function(result, status) {
 
 				// 20/08/10 권은지 변경 : modal-body append 태그
 				// 변경=========================
-				var str = "<tr><td class='btn'>" + p_name + "<br>"
+				var str = "<tr><td class='btn' data-dismiss='modal'>" + p_name + "<br>"
 				+ "<p class=w3-opacity style='font-size: 12px'>"
 				+ result[i].address_name + "</p>"
 				+ "<input name='hh' type='hidden' "
@@ -97,9 +97,6 @@ var callback = function(result, status) {
 				+ "' data-y='" + result[i].y + "' data-addr='"
 				+ result[i].address_name
 				+ "'></td></tr>";
-				$("#table_part tbody").append(str);
-				// ===================================================================
-
 				$("#table_part tbody").append(str);
 				// ------20/08/04 권은지 : 유효성 검사 추가3 / 수도권 지역(서울, 경기, 인천) 아닌 지역
 				// 검색결과에서 제외 -------
@@ -163,11 +160,9 @@ $(document).on('click','td.btn', function(){
 	'</span></div></li>';
 	$('.w3-ul.w3-card-4').html(tag);
 
-	$("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
 	$('input[name="addr1"]').attr('value',addr_name);
 	$('input[name="x_"]').attr('value',x);
 	$('input[name="y_"]').attr('value',y);
-	$('button.close').click();
 	
 });
 // ==============================================================================
