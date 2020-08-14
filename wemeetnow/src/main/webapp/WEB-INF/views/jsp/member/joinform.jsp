@@ -167,10 +167,10 @@ h1, h2, h3, h4, h5, h6 {
 		</form>
 	</div>
 	<footer class="w3-center w3-light-grey w3-padding-32">
-		<p>
-			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-		</p>
+		Contact Us 
+		<div class="btn-group">
+			<button onclick="location.href='https://github.com/mynameiseunji/mapmap'" title="github" class='btn'><i class="fab fa-github-square fa-lg"></i></button>		
+		</div>
 	</footer>
 </body>
 </html>

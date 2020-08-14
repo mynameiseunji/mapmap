@@ -35,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0b6c81e5d496e486ca93f4d82d0a0027&libraries=services"></script>
 <script src="<%=request.getContextPath()%>/js/home.js"></script>
+<script src="<%=request.getContextPath()%>/js/all.min.js"></script>
 <script>
 	window.onpageshow = function(event) {
 		if (event.persisted
@@ -70,13 +71,13 @@ h1, h2, h3, h4, h5, h6 {
 								<c:forEach var="fr_push" items="${fr_push}">
 									<div class="w3-bar-item fr_push_list">
 										<div class="w3-row">
-											<div class="w3-col s10">
+											<div class="w3-col s8">
 												<span class="w3-bar-item ontop">${fr_push.inviter}</span>
 											</div>
-											<div class="w3-col s1">
+											<div class="w3-col s2">
 												<button class="w3-bar-item ontop" onclick="frpush('${fr_push.inviter}','1')">o</button>
 											</div>
-											<div class="w3-col s1">
+											<div class="w3-col s2">
 												<button class="w3-bar-item ontop" onclick="frpush('${fr_push.inviter}','2')">x</button>
 											</div>
 										</div>
@@ -175,11 +176,11 @@ h1, h2, h3, h4, h5, h6 {
 									<tr>
 										<td><div align="center">${item.nickname}
 												<span class=w3-opacity style='font-size: 12px'>${item.email}</span>
-											</div>
+											</div></td><td>
 											<div align="center">
 												<button type="button" data-nickname="${item.nickname}"
 													data-addr="${item.addr1}" data-x_="${item.x_}"
-													data-y_="${item.y_}" class="btn btn-success"
+													data-y_="${item.y_}" class="btn btn-dark"
 													onclick="fr_down(this)">주소 1</button>
 												<!-- c:if -->
 												<%-- <button data-nickname="${item.nickname}"
@@ -220,6 +221,7 @@ h1, h2, h3, h4, h5, h6 {
 				</c:forEach>
 			</ul>
 			<div align="center">
+				<br>
 				<button id="check_data" type="submit" class="btn btn-dark">전송</button>
 			</div>
 
@@ -236,11 +238,10 @@ h1, h2, h3, h4, h5, h6 {
 	<br>
 	<br>
 	<footer class="w3-center w3-light-grey w3-padding-32">
-		<p>
-			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-		</p>
+		Contact Us 
+		<div class="btn-group">
+			<button onclick="location.href='https://github.com/mynameiseunji/mapmap'" title="github" class='btn'><i class="fab fa-github-square fa-lg"></i></button>		
+		</div>
 	</footer>
 </body>
-
 </html>

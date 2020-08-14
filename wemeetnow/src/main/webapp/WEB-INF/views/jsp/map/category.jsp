@@ -121,13 +121,13 @@ h1, h2, h3, h4, h5, h6 {
 								<c:forEach var="fr_push" items="${fr_push}">
 									<div class="w3-bar-item fr_push_list">
 										<div class="w3-row">
-											<div class="w3-col s6">
+											<div class="w3-col s8">
 												<span class="w3-bar-item ontop">${fr_push.inviter}</span>
 											</div>
-											<div class="w3-col s3">
+											<div class="w3-col s2">
 												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','1')">O</button>
 											</div>
-											<div class="w3-col s3">
+											<div class="w3-col s2">
 												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','2')">X</button>
 											</div>
 										</div>
@@ -202,8 +202,6 @@ h1, h2, h3, h4, h5, h6 {
 									data-address="${item.address}" data-phone="${item.phone}"
 									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
-
-
 						</div>
 					</li>
 				</c:forEach>
@@ -222,14 +220,15 @@ h1, h2, h3, h4, h5, h6 {
 									<b>${item.name}</b>
 								</h5>
 								<p class="w3-opacity">
-									${item.address}<br> ${item.phone}
+									${item.address}<br> ${item.phone}<br>
+									<a href="${item.place_url}">상세정보</a>
 								</p>
 							</div>
 							<div class="w3-col s2">
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
-									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 
 
@@ -251,14 +250,15 @@ h1, h2, h3, h4, h5, h6 {
 									<b>${item.name}</b>
 								</h5>
 								<p class="w3-opacity">
-									${item.address}<br> ${item.phone}
+									${item.address}<br> ${item.phone}<br>
+									<a href="${item.place_url}">상세정보</a>
 								</p>
 							</div>
 							<div class="w3-col s2">
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
-									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 
 
@@ -280,14 +280,15 @@ h1, h2, h3, h4, h5, h6 {
 									<b>${item.name}</b>
 								</h5>
 								<p class="w3-opacity">
-									${item.address}<br> ${item.phone}
+									${item.address}<br> ${item.phone}<br>
+									<a href="${item.place_url}">상세정보</a>
 								</p>
 							</div>
 							<div class="w3-col s2">
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
-									data-url="${item.place_url}" onclick="sendLink(this)">Detail</button>
+									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 
 
@@ -299,12 +300,11 @@ h1, h2, h3, h4, h5, h6 {
 	</div>
 	<br>
 	<br>
-
 	<footer class="w3-center w3-light-grey w3-padding-32">
-		<p>
-			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-		</p>
+		Contact Us 
+		<div class="btn-group">
+			<button onclick="location.href='https://github.com/mynameiseunji/mapmap'" title="github" class='btn'><i class="fab fa-github-square fa-lg"></i></button>		
+		</div>
 	</footer>
 </body>
 </html>
