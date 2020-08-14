@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, h6 {
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="<%=request.getContextPath()%>/js/friend.js"></script>
 <script>
 	Kakao.init('0b6c81e5d496e486ca93f4d82d0a0027');
 	console.log(Kakao.isInitialized());

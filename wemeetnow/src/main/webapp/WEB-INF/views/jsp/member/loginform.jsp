@@ -31,6 +31,7 @@ h1, h2, h3, h4, h5, h6 {
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/friend.js"></script>
 <script>
 function check(){
 	 if($.trim($("#email").val())==""){

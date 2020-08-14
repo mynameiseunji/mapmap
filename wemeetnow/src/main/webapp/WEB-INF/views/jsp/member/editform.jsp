@@ -34,6 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/join.js"></script>
+<script src="<%=request.getContextPath()%>/js/friend.js"></script>
 <script >
 
 </script>
