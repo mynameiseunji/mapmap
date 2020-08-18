@@ -183,17 +183,18 @@ public class HomeController {
 	@RequestMapping("route.do")
 	public String route(@ModelAttribute("id") String id, HttpServletRequest request, Place place, Model model) {
 		//지하철,버스,
-		System.out.println(id+"?");
+		//공유하기 버튼 분기
+		model.addAttribute("original", 0);
 		//System.out.println(place.toString());
 		if(id.equals("")) {
-			System.out.println("아이디없음");
+			//System.out.println("아이디없음");
 			Place endPlace = place;
 			List<Place> startPlaceList =(List<Place>) request.getSession().getAttribute("startPlaceList");			
 			
 			id = ms.finalDBSetting(startPlaceList,endPlace);
 			//최종 DB에 들어갈 칼럼 데이터 만들기,넣기
 			// survlrxbymwjdghmbboawthlitovss 서울 은평구 진관동 88/서울 서대문구 대현동 11-1/서울 종로구 명륜3가 53-21/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ NULL     NULL
-			
+			model.addAttribute("original", 1);
 		}
 		
 			Route r = ms.routeSearch(id);

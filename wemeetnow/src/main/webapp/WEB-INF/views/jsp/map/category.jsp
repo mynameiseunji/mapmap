@@ -84,7 +84,20 @@ h1, h2, h3, h4, h5, h6 {
 			$("#" + target).css("display", ""); // 보여줄 것만 display 설정
 		});
 	});
+	
+	var doubleSubmitFlag = false;
+    function doubleSubmitCheck(){
+        if(doubleSubmitFlag){
+            return doubleSubmitFlag;
+        }else{
+            doubleSubmitFlag = true;
+            return false;
+        }
+    }
+	
 	function sendLink(btn) {
+		if(doubleSubmitCheck()) return;
+		
 		var url = $(btn).data("url");
 	    var name = $(btn).data("name");
 	    var x = $(btn).data("x");
@@ -97,6 +110,7 @@ h1, h2, h3, h4, h5, h6 {
 	    		"&address="+address+
 	    		"&phone="+phone+
 	    		"&place_url="+url;
+	    //$(btn).attr("disabled", true);
 	  }
 </script>
 

@@ -34,15 +34,21 @@ h1, h2, h3, h4, h5, h6 {
 <script src="<%=request.getContextPath()%>/js/friend.js"></script>
 <script src="<%=request.getContextPath()%>/js/all.min.js"></script>
 <script>
+var doubleSubmitFlag = false;
 function check(){
+	if(doubleSubmitFlag) return false;
+	doubleSubmitFlag = true;
+	
 	 if($.trim($("#email").val())==""){
 		 alert("전자우편 입력");
 		 $("#email").val("").focus();
+		 doubleSubmitFlag =false;
 		 return false;
 	 }
 	 if($.trim($("#pwd").val())==""){
 		 alert("비밀번호 입력");
 		 $("#pwd").val("").focus();
+		 doubleSubmitFlag =false;
 		 return false;
 	 }
 }

@@ -47,7 +47,7 @@ public class FriendAction {
 	}
 	@RequestMapping(value = "/friend_accept.do", method = RequestMethod.POST)
 	@ResponseBody
-	public int member_friendAccept_push(HttpSession session ,HttpServletRequest request,FriendConfirm fc, Model model) throws Exception {
+	public int member_friendAccept_push(HttpSession session, HttpServletRequest request,FriendConfirm fc, Model model) throws Exception {
 		fc.setInvitee((String)request.getSession().getAttribute("email"));
 		int result =0;
 		if(fc.getStatus()==1)

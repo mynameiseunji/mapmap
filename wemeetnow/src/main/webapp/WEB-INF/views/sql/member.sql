@@ -49,6 +49,3 @@ select * from FRIEND_CONFIRM
 select * from tab;
 select * from route;
 SELECT * FROM ALL_TRIGGERS;
-
- akhoszjnyczcxcssuycinsxdlkykvc 서울 마포구 대흥동 3-63/서울 서대문구 창천동 30-16/     이대역#751#신촌기차역#10#/신촌전철역#서대문05#신촌기차역#9#/                                                                         이대역#751#신촌기차역#10#/신촌전철역#서대문05#신촌기차역#9#/                                                                             NULL     NULL
-

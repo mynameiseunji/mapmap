@@ -7,7 +7,15 @@ var options = {
 	location : latlng,
 	size : 5
 };
-
+var doubleSubmitFlag = false;
+function doubleSubmitCheck(){
+    if(doubleSubmitFlag){
+        return doubleSubmitFlag;
+    }else{
+        doubleSubmitFlag = true;
+        return false;
+    }
+}
 $(document).ready(
 		function() {
 			$('#fr_request').mouseover(function(){
@@ -24,12 +32,15 @@ $(document).ready(
 			});
 			$('#check_data').click(
 					function() {
-						// console.log($('.place_values').length);
+						if(doubleSubmitCheck())
+							return false;
+						
 						if ($('.place_values').length < 2) {
 							alert("주소지 정보를 2개 이상 입력해주세요");
+							doubleSubmitFlag=false;
 							return false;
 						}
-						$('#check_data').attr("disabled");
+						//$('#check_data').attr("disabled");
 						$('#check_data').html('<span class="spinner-border spinner-border-sm"></span>');
 						// controller에서 객체 리스트로 매핑하기위한 코드.
 						// submit 버튼 눌렀을 때 작동하는 이벤트
@@ -279,33 +290,3 @@ function frpush(inviter, status){
 	}
 	
 };
-// ==============================================================================
-// modal에서 주소 선택했을 때 클릭 이벤트(home.jsp)======================================
-// function down(btn) {
-// var name = $(btn).data("name");
-// console.log(name);
-// var x = $(btn).data("x");
-// var y = $(btn).data("y");
-// var addr_name = $(btn).data("addr");
-//
-// var tag = '<li class="w3-bar"><span onclick="remove(this)" '
-// + ' data-x="'
-// + x
-// + '" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">×</span>'
-// + '<div class="w3-bar-item"><span class="w3-large">' + name
-// + '</span><br> <span class="w3-addr">' + addr_name
-// + '</span></div></li>';
-//
-// var str = "<div class='place_values'>"
-// + "<input type='hidden' name='name' value='" + name
-// + "'/><input type='hidden' name='x' value='" + x
-// + "'/><input type='hidden' name='address' value='" + addr_name
-// + "'/><input type='hidden' name='y' value='" + y + "'></div>";
-//
-// $('.w3-ul.w3-card-4').append(tag); // 메인 화면에서 사용자에게 선택한 장소 보여주기.
-//
-// $("#form").append(str); // 데이터 넘기기위해 input type hidden으로 append
-//
-// $('button.close').click();
-// $("#table_part tbody").empty();
-// }

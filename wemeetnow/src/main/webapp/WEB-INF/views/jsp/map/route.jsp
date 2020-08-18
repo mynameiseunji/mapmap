@@ -49,22 +49,25 @@ h1, h2, h3, h4, h5, h6 {
 	console.log(Kakao.isInitialized());
 </script>
 
-<script>  
-function sendLink(btn) {
+<script>
+
+function sendLink(btn){
+	
+	
 	var name = $(btn).data("name");
 	var address = $(btn).data("address");
 	var url = $(btn).data("url");
-	var lastPage = "http://3.34.136.19/myapp/route.do?id="+'${id}';
+	var lastPage = "http://3.34.136.19/route.do?id="+'${id}';
 	Kakao.Link.sendDefault({
 		objectType: 'location',
 		address: address,
 		addressTitle: name,
 		content: {
 			title: '우리 지금 만나',
-			imageUrl: 'https://placeholder.com',
+			imageUrl: 'https://minjoon93.s3.ap-northeast-2.amazonaws.com/img/city-map.png',
 			link: {
-				mobileWebUrl: url,
-				webUrl: url,
+				mobileWebUrl: lastPage,
+				webUrl: lastPage,
 			},
 		},
 		buttons: [
@@ -80,16 +83,6 @@ function sendLink(btn) {
 }
 </script>
 
-<script>
-	/* if('${startPlaceList}'==""){
-		alert("세션이 없습니다.")
-		location.href="test.do"
-	} */
-	function temp(id){
-		var url = "http://우리서버아이피/test.do?id="+id;
-		alert("["+url+"]을 링크로 전송");		
-	}
-</script>
 <body>
 
 	<!-- Navbar (sit on top) -->
@@ -150,8 +143,9 @@ function sendLink(btn) {
 				<h1>Route</h1>
 			</div>
 			<div class="w3-col s6" align="right">
-				<%-- <button class="btn btn-outline-warning"	onclick="temp('${id}')">공유공유</button> --%>
+				<c:if test="${original ==1}">
 				<input type="button" class="btn btn-outline-warning" value="공유공유" data-name="${param.name}" data-address="${param.address}" data-url="${param.place_url}" onclick="sendLink(this)"/>
+				</c:if>
 			</div>
 		</div>
 		<table class="table">
