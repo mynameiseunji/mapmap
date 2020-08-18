@@ -222,7 +222,7 @@ h1, h2, h3, h4, h5, h6 {
 			</ul>
 			<div align="center">
 				<br>
-				<button id="check_data" type="submit" class="btn btn-dark">전송</button>
+				<button id="check_data" type="submit" class="btn btn-dark">중간지점 찾기</button>
 			</div>
 
 		</div>
