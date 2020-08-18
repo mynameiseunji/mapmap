@@ -110,7 +110,7 @@ h1, h2, h3, h4, h5, h6 {
          var str = "";
          for(var j=0; j<x_num; j++){
         	 console.log(path_list[i*x_num+j])
-            if(path_list[i*x_num+j]==""){
+            if(path_list[i*x_num+j]=="NONE"){
                //str +='<p>출발지 '+(j+1)+'번 예상 이동시간(도보) : 분</p>';
                str += '<p>출발지 '+(j+1)+'번 : 이용할 수 있는 대중 교통이 없습니다.';
             }else{
