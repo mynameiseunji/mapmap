@@ -42,12 +42,19 @@
 			<beans:ref bean="sessionChk"/>
 		</interceptor>
 	</interceptors>	 
-	<beans:bean id="log" class="com.mycompany.myapp.advice.logTestAdvice"></beans:bean>
+	<!-- <beans:bean id="log" class="com.mycompany.myapp.advice.logTestAdvice"></beans:bean> -->
+	<beans:bean id="push" class="com.mycompany.myapp.advice.pushTestAdvice"></beans:bean>
 	
-	<aop:config>
+	<!-- <aop:config>
 		<aop:pointcut id = "restAPIPointcut" expression="execution(!void com.mycompany.myapp..*Impl.*Search(..))"/>
 		<aop:aspect ref="log">
 			<aop:before pointcut-ref="restAPIPointcut" method="printLog" />
+		</aop:aspect>
+	</aop:config>  -->
+	<aop:config>
+		<aop:pointcut id = "pushPointcut" expression="execution(* com.mycompany.myapp..*Action.*_push(..))"/>
+		<aop:aspect ref="push">
+			<aop:after pointcut-ref="pushPointcut" method="pushSession" />
 		</aop:aspect>
 	</aop:config>
 	

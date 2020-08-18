@@ -62,9 +62,9 @@ public class MemberAction {
 	
 	//sign in verification
 	@RequestMapping(value = "/member_login_ok.do", method = RequestMethod.POST)
-	public String member_login_ok(@RequestParam("email") String email,
+	public String member_login_ok_push(HttpSession session,@RequestParam("email") String email,
 			                      @RequestParam("pwd") String pwd,
-			                      HttpSession session, Model model) throws Exception {
+			                       Model model) throws Exception {
 		int result=0;		
 		MemberBean m = memberService.userCheck(email);		
 		if (m == null) {	//member not exists
@@ -93,8 +93,8 @@ public class MemberAction {
 	            session.setAttribute("fr_list",friendList);
 	            
 	            //받은 친구 요청 리스트
-	            List<FriendConfirm> invitedList = friendService.invited(email);
-	            session.setAttribute("fr_push",invitedList);
+	            //List<FriendConfirm> invitedList = friendService.invited(email);
+	            //session.setAttribute("fr_push",invitedList);
 	            
 	            
 	            return "redirect:test.do";

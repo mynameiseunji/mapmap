@@ -19,7 +19,7 @@ create table friend_confirm(
 	constraint friend_confirm_fk2 foreign key(invitee) references member(email),
 	constraint friend_confirm_pk1 primary key(inviter, invitee)
 )
-select * from FRIEND_CONFIRM
+
 create table friendship (
 	fno	number(20), 
 	email1 varchar2(50),
@@ -45,7 +45,10 @@ create sequence friend_seq increment by 1 start with 1 nocache;
 
 select * from member;
 select * from friendship;
+select * from FRIEND_CONFIRM
 select * from tab;
 select * from route;
+SELECT * FROM ALL_TRIGGERS;
 
+ akhoszjnyczcxcssuycinsxdlkykvc 서울 마포구 대흥동 3-63/서울 서대문구 창천동 30-16/     이대역#751#신촌기차역#10#/신촌전철역#서대문05#신촌기차역#9#/                                                                         이대역#751#신촌기차역#10#/신촌전철역#서대문05#신촌기차역#9#/                                                                             NULL     NULL
 

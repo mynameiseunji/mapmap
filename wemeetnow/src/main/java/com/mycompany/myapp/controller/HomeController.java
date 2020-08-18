@@ -28,7 +28,7 @@ public class HomeController {
 	private MapService ms;
 
 	@RequestMapping("test.do")
-	public String home() {
+	public String home(HttpServletRequest request) {
 		return "map/home";
 	}
 	
