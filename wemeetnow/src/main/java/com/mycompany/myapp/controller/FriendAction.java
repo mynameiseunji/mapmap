@@ -47,7 +47,7 @@ public class FriendAction {
 	}
 	@RequestMapping(value = "/friend_accept.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String member_friendAccept(HttpServletRequest request,FriendConfirm fc, Model model) throws Exception {
+	public int member_friendAccept(HttpSession session ,HttpServletRequest request,FriendConfirm fc, Model model) throws Exception {
 		fc.setInvitee((String)request.getSession().getAttribute("email"));
 		int result =0;
 		if(fc.getStatus()==1)
@@ -55,7 +55,10 @@ public class FriendAction {
 		else
 			result = friendService.reject(fc);
 		
-		return "결과";
+		//받은 친구 요청 리스트
+        List<FriendConfirm> invitedList = friendService.invited((String)session.getAttribute("email"));
+        session.setAttribute("fr_push",invitedList);
+		return result;
 	}
 
 	// add friend
@@ -123,6 +126,10 @@ public class FriendAction {
 		//추천 친구 리스트
         List<FriendBean> recommend = friendService.recommend(email);
         session.setAttribute("fr_recommend",recommend);
+        
+      //받은 친구 요청 리스트
+        List<FriendConfirm> invitedList = friendService.invited(email);
+        session.setAttribute("fr_push",invitedList);
         
 		return "member/friend";
 	}

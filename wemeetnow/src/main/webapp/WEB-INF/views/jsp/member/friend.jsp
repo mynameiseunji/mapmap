@@ -32,7 +32,7 @@ h1, h2, h3, h4, h5, h6 {
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/all.min.js"></script>
-	
+<script src="<%=request.getContextPath()%>/js/friend.js"></script>
 <script>
 
 function validate_useremail(val)
@@ -165,17 +165,51 @@ function add(email){
 	<div class="w3-top w3-light-blue">
 		<div class="w3-bar w3-white w3-padding w3-card"
 			style="letter-spacing: 4px;">
-			<a href="index.jsp" class="w3-bar-item w3-button">Woori Jigum
-				Manna</a>
-
+			<a href="index.jsp" class="w3-bar-item w3-button">우리 지금 만나</a>
 			<!-- Right-sided navbar links. Hide them on small screens -->
 			<div class="w3-right w3-hide-small">
-				<a href="member_logout.do" class="w3-bar-item w3-button">로그 아웃</a> <a
-					href="member_info.do" class="w3-bar-item w3-button">회원 정보</a>
+				<!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${empty email}">
+					<a href="member_login.do" class="w3-bar-item w3-button">로그인</a>
+					<a href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
+				</c:if>
+				<c:if test="${not empty email}">
+					<div class="w3-dropdown-hover">
+						<c:if test="${fn:length(fr_push) > 0}">
+							<button id="fr_request" class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
+							<div class="w3-dropdown-content w3-bar-block w3-card-4">
+								<c:forEach var="fr_push" items="${fr_push}">
+									<div class="w3-bar-item fr_push_list">
+										<div class="w3-row">
+											<div class="w3-col s6">
+												<span class="w3-bar-item ontop">${fr_push.inviter}</span>
+											</div>
+											<div class="w3-col s3">
+												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','1')">O</button>
+											</div>
+											<div class="w3-col s3">
+												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','2')">X</button>
+											</div>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+						</c:if>
+					</div>
+					<a href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
+				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<a href="member_info.do" class="w3-bar-item w3-button"> <i
-					class="fa fa-user-circle" aria-hidden="true"> </i></a>
+				<!-- 로그인 세션 있으면 회원정보로-->
+				<c:if test="${empty email}">
+					<a href="member_login.do" class="w3-bar-item w3-button"> <i
+						class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
+				<c:if test="${not empty email}">
+					<a href="member_info.do" class="w3-bar-item w3-button"> <i
+						class="fa fa-user-circle fa-lg" aria-hidden="true"> </i></a>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -255,12 +289,11 @@ function add(email){
 			</div>
 		</div>
 	</div>
-
 	<footer class="w3-center w3-light-grey w3-padding-32">
-		<p>
-			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-		</p>
+		Contact Us 
+		<div class="btn-group">
+			<button onclick="location.href='https://github.com/mynameiseunji/mapmap'" title="github" class='btn'><i class="fab fa-github-square fa-lg"></i></button>		
+		</div>
 	</footer>
 </body>
 </html>

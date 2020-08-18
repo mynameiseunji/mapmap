@@ -97,7 +97,7 @@ public class MemberAction {
 	            session.setAttribute("fr_push",invitedList);
 	            
 	            
-	            return "map/home";
+	            return "redirect:test.do";
 			} else {		//incorrect password
 				result = 2;
 				model.addAttribute("result", result);

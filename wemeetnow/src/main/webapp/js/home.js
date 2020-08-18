@@ -10,7 +10,18 @@ var options = {
 
 $(document).ready(
 		function() {
-
+			$('#fr_request').mouseover(function(){
+				$('#search').hide();
+			});
+			$('#fr_request').mouseout(function(){
+				$('#search').show();
+			});
+			$('.w3-dropdown-content').mouseover(function(){
+				$('#search').hide();
+			});
+			$('.w3-dropdown-content').mouseout(function(){
+				$('#search').show();
+			});
 			$('#check_data').click(
 					function() {
 						// console.log($('.place_values').length);

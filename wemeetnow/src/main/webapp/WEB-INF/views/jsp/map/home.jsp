@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
@@ -17,6 +16,7 @@
 	rel="stylesheet">
 
 <style>
+
 body {
 	font-family: 'Nanum Gothic', sans-serif;
 }
@@ -35,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0b6c81e5d496e486ca93f4d82d0a0027&libraries=services"></script>
 <script src="<%=request.getContextPath()%>/js/home.js"></script>
+<script src="<%=request.getContextPath()%>/js/all.min.js"></script>
 <script>
 	window.onpageshow = function(event) {
 		if (event.persisted
@@ -46,6 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 			console.log("새로 진입123");
 		}
 	}
+	
 </script>
 <body>
 
@@ -63,31 +65,32 @@ h1, h2, h3, h4, h5, h6 {
 				</c:if>
 				<c:if test="${not empty email}">
 					<div class="w3-dropdown-hover">
-						<button class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
-						<div class="w3-dropdown-content w3-bar-block w3-card-4">
-							<c:forEach var="fr_push" items="${fr_push}">
-								<div class="w3-bar-item fr_push_list">
-									<div class="w3-row">
-										<div class="w3-col s6">
-											<span class="w3-bar-item ontop">${fr_push.inviter}</span>
-										</div>
-										<div class="w3-col s3">
-											<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','1')">O</button>
-										</div>
-										<div class="w3-col s3">
-											<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','2')">X</button>
+						<c:if test="${fn:length(fr_push) > 0}">
+							<button id="fr_request" class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
+							<div class="w3-dropdown-content w3-bar-block w3-card-4">
+								<c:forEach var="fr_push" items="${fr_push}">
+									<div class="w3-bar-item fr_push_list">
+										<div class="w3-row">
+											<div class="w3-col s8">
+												<span class="w3-bar-item ontop">${fr_push.inviter}</span>
+											</div>
+											<div class="w3-col s2">
+												<button class="w3-bar-item ontop" onclick="frpush('${fr_push.inviter}','1')">o</button>
+											</div>
+											<div class="w3-col s2">
+												<button class="w3-bar-item ontop" onclick="frpush('${fr_push.inviter}','2')">x</button>
+											</div>
 										</div>
 									</div>
-								</div>
-							</c:forEach>
-						</div>
+								</c:forEach>
+							</div>
+						</c:if>
 					</div>
-					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
 					<a href="member_info.do" class="w3-bar-item w3-button">회원정보</a>
+					<a href="member_logout.do" class="w3-bar-item w3-button">로그아웃</a>
 				</c:if>
 			</div>
 			<div class="w3-right w3-hide-large w3-hide-medium">
-				<!-- 로그인 세션 있으면 회원정보로 -->
 				<!-- 로그인 세션 있으면 회원정보로-->
 				<c:if test="${empty email}">
 					<a href="member_login.do" class="w3-bar-item w3-button"> <i
@@ -173,11 +176,11 @@ h1, h2, h3, h4, h5, h6 {
 									<tr>
 										<td><div align="center">${item.nickname}
 												<span class=w3-opacity style='font-size: 12px'>${item.email}</span>
-											</div>
+											</div></td><td>
 											<div align="center">
 												<button type="button" data-nickname="${item.nickname}"
 													data-addr="${item.addr1}" data-x_="${item.x_}"
-													data-y_="${item.y_}" class="btn btn-success"
+													data-y_="${item.y_}" class="btn btn-dark"
 													onclick="fr_down(this)">주소 1</button>
 												<!-- c:if -->
 												<%-- <button data-nickname="${item.nickname}"
@@ -218,6 +221,7 @@ h1, h2, h3, h4, h5, h6 {
 				</c:forEach>
 			</ul>
 			<div align="center">
+				<br>
 				<button id="check_data" type="submit" class="btn btn-dark">전송</button>
 			</div>
 
@@ -234,12 +238,10 @@ h1, h2, h3, h4, h5, h6 {
 	<br>
 	<br>
 	<footer class="w3-center w3-light-grey w3-padding-32">
-		<p>
-			Powered by <a href="https://www.w3schools.com/w3css/default.asp"
-				title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a>
-		</p>
+		Contact Us 
+		<div class="btn-group">
+			<button onclick="location.href='https://github.com/mynameiseunji/mapmap'" title="github" class='btn'><i class="fab fa-github-square fa-lg"></i></button>		
+		</div>
 	</footer>
-	<div id="fl-list"></div>
 </body>
-
 </html>
