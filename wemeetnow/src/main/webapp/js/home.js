@@ -29,12 +29,14 @@ $(document).ready(
 							alert("주소지 정보를 2개 이상 입력해주세요");
 							return false;
 						}
+						$('#check_data').attr("disabled");
+						$('#check_data').html('<span class="spinner-border spinner-border-sm"></span>');
 						// controller에서 객체 리스트로 매핑하기위한 코드.
 						// submit 버튼 눌렀을 때 작동하는 이벤트
 						// name을 places[0].x, places[0].y .. 처럼 설정해주면
 						// controller에서 dto 리스트로 받을 수 있음
 						// 참고
-						// http://noveloper.github.io/blog/spring/2015/02/16/how-mapping-to-model-arrayvalue.html
+						// http://noveloper.github.io/blog/spring/2015/02/16/how-mapping-to-model-arrayvalue.html						
 						$("#form .place_values").each(
 								function(index) {
 									$(this).find("input[name=x]").attr("name","places[" + index + "].x");

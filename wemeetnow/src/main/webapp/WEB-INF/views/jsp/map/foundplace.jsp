@@ -34,6 +34,7 @@ h1, h2, h3, h4, h5, h6 {
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/friend.js"></script>
+<script src="<%=request.getContextPath()%>/js/all.min.js"></script>
 <!-- T맵 api -->
 <script
 	src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx45b1d9cc7eb14ee98cb9d6aca431df5e"></script>

@@ -92,7 +92,7 @@ public class MemberAction {
 	            }
 	            session.setAttribute("fr_list",friendList);
 	            
-	            //받은 친구 요청 리스트
+	            //받은 친구 요청 리스트(aop)
 	            //List<FriendConfirm> invitedList = friendService.invited(email);
 	            //session.setAttribute("fr_push",invitedList);
 	            

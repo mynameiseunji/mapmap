@@ -55,7 +55,7 @@ public class FriendAction {
 		else
 			result = friendService.reject(fc);
 		
-		//받은 친구 요청 리스트
+		//받은 친구 요청 리스트(aop)
        // List<FriendConfirm> invitedList = friendService.invited((String)session.getAttribute("email"));
         //session.setAttribute("fr_push",invitedList);
 		return result;
