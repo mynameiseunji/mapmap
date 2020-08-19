@@ -178,17 +178,17 @@ function add(email){
 						<c:if test="${fn:length(fr_push) > 0}">
 							<button id="fr_request" class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
 							<div class="w3-dropdown-content w3-bar-block w3-card-4">
-								<c:forEach var="fr_push" items="${fr_push}">
+								<c:forEach var="fr_push" items="${fr_push}" varStatus="st">
 									<div class="w3-bar-item fr_push_list">
-										<div class="w3-row">
+										<div class="w3-row" >
 											<div class="w3-col s6">
 												<span class="w3-bar-item ontop">${fr_push.inviter}</span>
 											</div>
 											<div class="w3-col s3">
-												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','1')">O</button>
+												<button class="w3-bar-item w3-button ontop" onclick="frpush1('${fr_push.inviter}','1')">O</button>
 											</div>
 											<div class="w3-col s3">
-												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','2')">X</button>
+												<button class="w3-bar-item w3-button ontop" onclick="frpush1('${fr_push.inviter}','2')">X</button>
 											</div>
 										</div>
 									</div>

@@ -22,13 +22,13 @@ import com.mycompany.myapp.service.MapService;
  * Handles requests for the application home page.
  */
 @Controller
-public class HomeController {
+public class HomeAction {
 	
 	@Autowired
 	private MapService ms;
 
 	@RequestMapping("test.do")
-	public String home(HttpServletRequest request) {
+	public String home_push(HttpSession session, HttpServletRequest request) {
 		return "map/home";
 	}
 	

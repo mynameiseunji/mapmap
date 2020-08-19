@@ -48,4 +48,7 @@ select * from friendship;
 select * from FRIEND_CONFIRM
 select * from tab;
 select * from route;
+
 SELECT * FROM ALL_TRIGGERS;
+
+insert into friend_confirm values('jw@mail.com', 'js@mail.com', 0)
