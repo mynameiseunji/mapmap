@@ -35,5 +35,10 @@ public class MapDAOImpl implements MapDAO{
 	public Route routeSearch(String id) {
 		return sqlSession.selectOne("mapns.routeSearch", id);
 	}
-	
+	@Override
+	public int idCheck(String id) {
+		Route r =sqlSession.selectOne("mapns.idCheck",id);
+		if(r==null)return 0;
+		return 1;
+	}
 }

@@ -149,7 +149,7 @@ public class HomeAction {
 	}
 
 	@RequestMapping("category.do")
-	public String categorySelect(Place place, Model model) {
+	public String categorySelect(Place place, Model model, HttpSession session) {
 
 		
 		model.addAttribute("place", place);
@@ -158,38 +158,54 @@ public class HomeAction {
 		String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/size/5/radius/2000";
 		//String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/radius/2000";
 		
+		StringBuilder sb = new StringBuilder();
+		List<Place> startPlaceList = (List<Place>)session.getAttribute("startPlaceList");
+		for(Place p : startPlaceList)
+			sb.append(p.getAddress());
 		// CT1 문화시설
 		List<Place> ct1placeList = ms.categorySearch("CT1", option);
+		ms.createId(ct1placeList, sb.toString());
 		model.addAttribute("ct1placeList", ct1placeList);
 		// FD6 음식점
 		List<Place> fd6placeList = ms.categorySearch("FD6", option);
+		ms.createId(fd6placeList, sb.toString());
 		model.addAttribute("fd6placeList", fd6placeList);
 		// CE7 카페
 		List<Place> ce7placeList = ms.categorySearch("CE7", option);
+		ms.createId(ce7placeList, sb.toString());
 		model.addAttribute("ce7placeList", ce7placeList);
 		// AT4 관광명소
 		List<Place> at4placeList = ms.categorySearch("AT4", option);
+		ms.createId(at4placeList, sb.toString());
 		model.addAttribute("at4placeList", at4placeList);
 		//------------------------------------------------------------
 		
 		return "map/category";
 	}
 	@RequestMapping("route.do")
-	public String route(@ModelAttribute("id") String id, HttpServletRequest request, Place place, Model model) {
+	public String route(@ModelAttribute("id") String id, HttpSession session, Place place, Model model) {
 		//지하철,버스,
 		//공유하기 버튼 분기
 		model.addAttribute("original", 0);
-		if(id.equals("")) {
+		System.out.println(id+"  ::  " +session.getAttribute("id"));
+		//boolean check = ms.idCheck(id); // already : true, first : false
+		Route r = ms.routeSearch(id);
+		// r ==null  ==> 요구하는 경로가 db에 저장돼있는지?
+		// session.getAttribute("id") == null  ==> 공유된 링크를 통해서 진입한 상황 고려.
+		// !session.getAttribute("id").equals(id)  ==> 뒤로가기 했다가 다시 경로를 선택한 상황 고려.
+		if(r == null && (session.getAttribute("id") == null || !session.getAttribute("id").equals(id)) ) { // && session.getAttribute("id") != null
+			session.setAttribute("id", id);
 			Place endPlace = place;
-			List<Place> startPlaceList =(List<Place>) request.getSession().getAttribute("startPlaceList");			
+			List<Place> startPlaceList =(List<Place>) session.getAttribute("startPlaceList");			
 			
-			id = ms.finalDBSetting(startPlaceList,endPlace);
+			ms.finalDBSetting(startPlaceList,endPlace,id);
 			//최종 DB에 들어갈 칼럼 데이터 만들기,넣기
 			// survlrxbymwjdghmbboawthlitovss 서울 은평구 진관동 88/서울 서대문구 대현동 11-1/서울 종로구 명륜3가 53-21/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ NULL     NULL
 			model.addAttribute("original", 1);
+			r = ms.routeSearch(id);
 		}
 		
-			Route r = ms.routeSearch(id);
+			//Route r = ms.routeSearch(id);
 
 			String[] departure = r.getDeparture().split("/");
 			String[] bus_route = new String[departure.length];

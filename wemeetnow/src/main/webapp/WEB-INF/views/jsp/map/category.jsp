@@ -69,8 +69,7 @@ h1, h2, h3, h4, h5, h6 {
 
 <!-- ------------------------------  -->
 <script>
-	Kakao.init('0b6c81e5d496e486ca93f4d82d0a0027');
-	console.log(Kakao.isInitialized());
+	
 
 	$(document).ready(function() {
 		$(".categorylist").css("display", "none");
@@ -99,12 +98,14 @@ h1, h2, h3, h4, h5, h6 {
 		if(doubleSubmitCheck()) return;
 		
 		var url = $(btn).data("url");
+		var id = $(btn).data("id");
 	    var name = $(btn).data("name");
 	    var x = $(btn).data("x");
 	    var y = $(btn).data("y");
 	    var address = $(btn).data("address");
 	    var phone = $(btn).data("phone");
 	    location.href="route.do?name="+name+
+	    		"&id="+id+
 	    		"&x="+x+
 	    		"&y="+y+
 	    		"&address="+address+
@@ -214,6 +215,7 @@ h1, h2, h3, h4, h5, h6 {
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
+									data-id="${item.id}"
 									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 						</div>
@@ -242,6 +244,7 @@ h1, h2, h3, h4, h5, h6 {
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
+									data-id="${item.id}"
 									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 
@@ -272,6 +275,7 @@ h1, h2, h3, h4, h5, h6 {
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
+									data-id="${item.id}"
 									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 
@@ -302,6 +306,7 @@ h1, h2, h3, h4, h5, h6 {
 								<button class="btn btn-outline-dark" data-name="${item.name}"
 									data-x="${item.x}" data-y="${item.y}"
 									data-address="${item.address}" data-phone="${item.phone}"
+									data-id="${item.id}"
 									data-url="${item.place_url}" onclick="sendLink(this)">경로보기</button>
 							</div>
 

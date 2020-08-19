@@ -8,9 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.myapp.dao.MapDAO;
 import com.mycompany.myapp.json.JsonParsing;
-import com.mycompany.myapp.json.XmlParsing;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.Route;
@@ -211,14 +210,13 @@ public class MapServiceImpl implements MapService {
 	
 	//마지막 페이지에 필요한 정보(출발지, 경로1, 경로2, 시간1, 시간2)
 	@Override
-	public String finalDBSetting(List<Place> startPlaceList, Place endPlace){
+	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, String id){
 		/*ID
 		DEPARTURE
 		BUS_ROUTE
 		COMPLEX_ROUTE
 		BUS_TIME
-		COMPLEX_TIME*/
-		String id = createId(30);
+		COMPLEX_TIME*/		
 		String BUS = getFinalPath(startPlaceList, endPlace,"Bus");
 		String BNS = getFinalPath(startPlaceList, endPlace,"BusNSub");
 				
@@ -244,18 +242,18 @@ public class MapServiceImpl implements MapService {
 		route.setDeparture(DEPARTURE.toString());		
 		int result = md.insertData(route);
 		//프라이머리키 리턴
-		return id;
+		return result;
 	}
-	public String createId(int num) {
-		
-		//String[] parse = data.split("/");
-		StringBuffer sb = new StringBuffer();
-		Random rnd = new Random();
-		for(int i=0; i<num; i++)
-			sb.append(String.valueOf((char) ((int) (rnd.nextInt(26)) + 97)));
-		
-		return sb.toString();
-	}
+//	public String createId(int num) {
+//		
+//		//String[] parse = data.split("/");
+//		StringBuffer sb = new StringBuffer();
+//		Random rnd = new Random();
+//		for(int i=0; i<num; i++)
+//			sb.append(String.valueOf((char) ((int) (rnd.nextInt(26)) + 97)));
+//		
+//		return sb.toString();
+//	}
 //	public void pathParse(StringBuilder path, StringBuilder time, String route){
 //		String[] piece = route.split("/");
 //		
@@ -289,6 +287,30 @@ public class MapServiceImpl implements MapService {
 	public String[] parsingRoute(String bus_route) {
 		String[] pieces= bus_route.split("#");
 		return null;
+	}
+	public void createId(List<Place> list, String spl) {		
+		Collections.sort(list, new Comparator<Place>() {
+			public int compare(Place o1, Place o2) {
+				return o1.getAddress().compareTo(o2.getAddress());
+			};
+		});
+		for(Place p : list) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(spl);
+			sb.append(p.getPlace_url());
+			int id = sb.toString().hashCode();
+			p.setId(id);
+			
+		}
+	}
+	
+	@Override
+	public boolean idCheck(String id) {
+		if(md.idCheck(id)==1)
+			return true;
+		else
+			return false;
+		
 	}
 }
 

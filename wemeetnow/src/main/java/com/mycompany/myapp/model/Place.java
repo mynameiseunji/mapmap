@@ -11,10 +11,17 @@ public class Place implements Serializable{
 	private String phone;
 	private String place_url;
 	
+	private int id;
 	//출발지 주소 받아올때 controller에서 
 	//리스트로 매핑받기 위해 필요함
 	private List<Place> places;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getPhone() {
 		return phone;
 	}

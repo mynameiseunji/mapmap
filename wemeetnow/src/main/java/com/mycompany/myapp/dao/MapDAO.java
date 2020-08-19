@@ -10,4 +10,6 @@ public interface MapDAO {
 	
 	public Route routeSearch(String id);
 
+	public int idCheck(String id);
+
 }

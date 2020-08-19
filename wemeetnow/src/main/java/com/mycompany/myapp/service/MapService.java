@@ -29,10 +29,13 @@ public interface MapService {
 	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList,String transport);
 	public String getFinalPath(List<Place> startPlaceList, Place endPlace, String transport);
 
-	public String finalDBSetting(List<Place> startPlaceList, Place endPlace);
+	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, String id);
 
 	public Route routeSearch(String id);
 
 	public String[] parsingRoute(String bus_route);
 
+	public void createId(List<Place> list, String spl);
+
+	public boolean idCheck(String id);
 }

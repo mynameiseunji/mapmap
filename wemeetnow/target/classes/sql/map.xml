@@ -12,6 +12,9 @@
 	<select id="routeSearch" parameterType="String" resultType="com.mycompany.myapp.model.Route">
 		select * from route where id=#{id}
 	</select>
+	<select id="idCheck" parameterType="String" resultType="com.mycompany.myapp.model.Route">
+		select * from route where id=#{id}
+	</select>
 </mapper>
 
 

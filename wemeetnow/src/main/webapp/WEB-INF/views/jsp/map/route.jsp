@@ -201,15 +201,3 @@ function sendLink(btn){
 </html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
