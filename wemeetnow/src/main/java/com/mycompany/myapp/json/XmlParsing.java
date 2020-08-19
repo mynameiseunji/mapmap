@@ -25,7 +25,6 @@ public class XmlParsing {
 	public String getRouteInfo(String publicDatas) {
 		StringBuilder sb =null;
 		try {
-			//System.out.println(publicDatas);
 			//xml 읽어들일 객체 생성
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
@@ -63,9 +62,8 @@ public class XmlParsing {
 				}
 
 		} catch (NullPointerException e) {
-			System.out.println("there is no route");
+			System.out.println("public data service has no data");
 			sb.append("NONE");
-			//System.out.println(publicDatas);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

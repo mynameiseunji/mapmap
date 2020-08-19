@@ -24,9 +24,7 @@ public class pushTestAdvice {
 		if(session.getAttribute("email")==null)return;
 		
 		String email =(String)session.getAttribute("email");
-		System.out.println(email);
 		List<FriendConfirm> invitedList = friendService.invited(email);
         session.setAttribute("fr_push",invitedList);
-        System.out.println(invitedList.size());
 	}
 }

@@ -38,7 +38,6 @@ public class HomeController {
 		
 		ArrayList<Place> startPlaceList = new ArrayList<Place>();
 		int n = place.getName().split(",").length;
-		//System.out.println(n);
 		for(int i=0; i<n; i++) {
 			Place p = new Place();
 			p.setAddress(place.getAddress().split(",")[i]);
@@ -124,9 +123,6 @@ public class HomeController {
 		model.addAttribute("endPlaceList_x", epl_x.toString());
 		model.addAttribute("endPlaceList_y", epl_y.toString());
 		model.addAttribute("endPlaceList_name", epl_name.toString());
-		// DB에서 검색결과 return
-//		model.addAttribute("rcm_stationList", rcm_stationList);
-//		System.out.println(rcm_stationList.size());
 		
 		//startplacelist 정보 넘기기
 		StringBuilder spl_x = new StringBuilder();
@@ -164,8 +160,6 @@ public class HomeController {
 		
 		// CT1 문화시설
 		List<Place> ct1placeList = ms.categorySearch("CT1", option);
-//		for(Place p : ct1placeList)
-//			System.out.println(p.toString());
 		model.addAttribute("ct1placeList", ct1placeList);
 		// FD6 음식점
 		List<Place> fd6placeList = ms.categorySearch("FD6", option);
@@ -185,9 +179,7 @@ public class HomeController {
 		//지하철,버스,
 		//공유하기 버튼 분기
 		model.addAttribute("original", 0);
-		//System.out.println(place.toString());
 		if(id.equals("")) {
-			//System.out.println("아이디없음");
 			Place endPlace = place;
 			List<Place> startPlaceList =(List<Place>) request.getSession().getAttribute("startPlaceList");			
 			

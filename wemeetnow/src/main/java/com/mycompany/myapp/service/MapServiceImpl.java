@@ -116,7 +116,6 @@ public class MapServiceImpl implements MapService {
 
 			// 주소 확인용 디버깅 코드
 			String final_request_url = sb.toString();
-			System.out.println(final_request_url);
 			URL url = new URL(final_request_url);
 
 			conn = (HttpURLConnection) url.openConnection();
@@ -128,14 +127,12 @@ public class MapServiceImpl implements MapService {
 			// 보내고 결과값 받기
 			// 통신 상태 확인 코드.
 			int responseCode = conn.getResponseCode();
-			System.out.println(responseCode);
 			if (responseCode == 400) {
-				System.out.println(
-						"400:: 해당 명령을 실행할 수 없음 (실행할 수 없는 상태일 때, 엘리베이터 수와 Command 수가 일치하지 않을 때, 엘리베이터 정원을 초과하여 태울 때)");
+				System.out.println("kakao connection :: 400 error");
 			} else if (responseCode == 401) {
-				System.out.println("401:: X-Auth-Token Header가 잘못됨");
+				System.out.println("401:: Wrong X-Auth-Token Header");
 			} else if (responseCode == 500) {
-				System.out.println("500:: 서버 에러, 문의 필요");
+				System.out.println("500:: kakao server error");
 			} else { // 성공 후 응답 JSON 데이터받기
 				sb = new StringBuilder();
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));

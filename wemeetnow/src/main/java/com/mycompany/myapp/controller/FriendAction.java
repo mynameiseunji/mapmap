@@ -66,8 +66,7 @@ public class FriendAction {
 	@ResponseBody
 	public int add_friend(@RequestParam("email") String email, HttpSession session, Model model) throws Exception {
 		String myEmail = (String) session.getAttribute("email");
-		System.out.println(myEmail);
-		System.out.println(email);
+		
 		if (myEmail.equals(email)) {
 			return 100;
 		}
@@ -76,7 +75,6 @@ public class FriendAction {
 		m.put("invitee", email);
 
 		int resultc = friendService.checkFriend(m);
-		System.out.println(resultc);
 		if (resultc == -1) {
 
 			return resultc;
@@ -96,7 +94,6 @@ public class FriendAction {
 	public String delete_friend(HttpServletRequest request, String email, Model model) throws Exception {
 		
 		String myEmail = (String) request.getSession().getAttribute("email");
-		System.out.println(myEmail);
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("email1", myEmail);
 		m.put("email2", email);

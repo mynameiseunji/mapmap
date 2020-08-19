@@ -53,7 +53,6 @@ public class MemberAction {
 	//member information save
 	@RequestMapping(value = "/member_join_ok.do", method = RequestMethod.POST)
 	public String member_join_ok(@ModelAttribute MemberBean member) throws Exception {
-		//System.out.println(member.toString());
 		memberService.insertMember(member);
 
 		return "redirect:member_login.do";
