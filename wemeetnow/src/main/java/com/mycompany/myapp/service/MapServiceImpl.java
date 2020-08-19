@@ -299,7 +299,7 @@ public class MapServiceImpl implements MapService {
 			sb.append(spl);
 			sb.append(p.getPlace_url());
 			int id = sb.toString().hashCode();
-			p.setId(id);
+			p.setId(id+"");
 			
 		}
 	}

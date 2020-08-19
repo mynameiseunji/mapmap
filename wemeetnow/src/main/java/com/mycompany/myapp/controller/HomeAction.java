@@ -183,17 +183,19 @@ public class HomeAction {
 		return "map/category";
 	}
 	@RequestMapping("route.do")
-	public String route(@ModelAttribute("id") String id, HttpSession session, Place place, Model model) {
+	public String route(@ModelAttribute("id") String id,String status, HttpSession session, Place place, Model model) {
 		//지하철,버스,
 		//공유하기 버튼 분기
 		model.addAttribute("original", 0);
 		System.out.println(id+"  ::  " +session.getAttribute("id"));
 		//boolean check = ms.idCheck(id); // already : true, first : false
 		Route r = ms.routeSearch(id);
+		if(status==null && r == null) {
+			return "map/routeResult";	
+		}
 		// r ==null  ==> 요구하는 경로가 db에 저장돼있는지?
-		// session.getAttribute("id") == null  ==> 공유된 링크를 통해서 진입한 상황 고려.
-		// !session.getAttribute("id").equals(id)  ==> 뒤로가기 했다가 다시 경로를 선택한 상황 고려.
-		if(r == null && (session.getAttribute("id") == null || !session.getAttribute("id").equals(id)) ) { // && session.getAttribute("id") != null
+
+		if(r == null ) { // && session.getAttribute("id") != null
 			session.setAttribute("id", id);
 			Place endPlace = place;
 			List<Place> startPlaceList =(List<Place>) session.getAttribute("startPlaceList");			
@@ -257,6 +259,7 @@ public class HomeAction {
 
 		return "map/route";
 	}
+	
 }
 // gterlyvsmtzaeejytlbhwdoasnosqe 서울 종로구 명륜3가 53-21/서울 서대문구 대현동 11-1/서울 은평구 진관동 88/ NONE/이대부고#272#서울지방경찰청.경복궁역#사직동주민센터#8002#자하문터널입구.석파정#36#/제각말5단지.은평뉴타운도서관#7211#구기터널입구#구기터널입구#7022#자하문고개.윤동주문학관#46#/ NONE/이대부고#272#서울지방경찰청.경복궁역#사직동주민센터#8002#자하문터널입구.석파정#36#/제각말5단지.은평뉴타운도서관#7211#구기터널입구#구기터널입구#7022#자하문고개.윤동주문학관#46#/ NULL     NULL
 

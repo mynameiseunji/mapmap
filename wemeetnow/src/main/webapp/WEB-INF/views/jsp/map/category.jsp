@@ -104,7 +104,8 @@ h1, h2, h3, h4, h5, h6 {
 	    var y = $(btn).data("y");
 	    var address = $(btn).data("address");
 	    var phone = $(btn).data("phone");
-	    location.href="route.do?name="+name+
+	    //status==1 :: 정상접근확인용. 링크로 route.jsp 링크 접속시 status==null
+	    location.href="route.do?status=1&name="+name+
 	    		"&id="+id+
 	    		"&x="+x+
 	    		"&y="+y+
