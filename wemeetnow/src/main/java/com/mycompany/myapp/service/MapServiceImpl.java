@@ -211,30 +211,18 @@ public class MapServiceImpl implements MapService {
 	//마지막 페이지에 필요한 정보(출발지, 경로1, 경로2, 시간1, 시간2)
 	@Override
 	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, String id){
-		/*ID
-		DEPARTURE
-		BUS_ROUTE
-		COMPLEX_ROUTE
-		BUS_TIME
-		COMPLEX_TIME*/		
+			
 		String BUS = getFinalPath(startPlaceList, endPlace,"Bus");
 		String BNS = getFinalPath(startPlaceList, endPlace,"BusNSub");
 				
 		StringBuilder DEPARTURE = new StringBuilder();
-//		StringBuilder COMPLEX_ROUTE = new StringBuilder();
-//		StringBuilder BUS_ROUTE = new StringBuilder();
-//		StringBuilder BUS_TIME = new StringBuilder();
-//		StringBuilder COMPLEX_TIME = new StringBuilder();
 		
 		for(int i=0; i<startPlaceList.size(); i++) {
 			DEPARTURE.append(startPlaceList.get(i).getAddress()).append("/");
 		}
-//		pathParse(COMPLEX_ROUTE,COMPLEX_TIME,BNS);
-//		pathParse(BUS_ROUTE,BUS_TIME,BUS);
 		
 		//데이터 파싱
 		// 인서트
-		// 프라이머리키 만들기
 		Route route = new Route();
 		route.setId(id);
 		route.setBus_route(BUS);
@@ -244,38 +232,6 @@ public class MapServiceImpl implements MapService {
 		//프라이머리키 리턴
 		return result;
 	}
-//	public String createId(int num) {
-//		
-//		//String[] parse = data.split("/");
-//		StringBuffer sb = new StringBuffer();
-//		Random rnd = new Random();
-//		for(int i=0; i<num; i++)
-//			sb.append(String.valueOf((char) ((int) (rnd.nextInt(26)) + 97)));
-//		
-//		return sb.toString();
-//	}
-//	public void pathParse(StringBuilder path, StringBuilder time, String route){
-//		String[] piece = route.split("/");
-//		
-//		//출발지 개수
-//		int len = piece.length;
-//		
-//		for(int i=0; i<len; i++) {
-//			//경로와 시간
-//			String[] part = piece[i].split("#");
-//			
-//			//공백 제거
-//			int lenlen = part.length;
-//			
-//			//마지막 인덱스는 시간.
-//			time.append(part[lenlen-1]).append("/");
-//			
-//			for(int j=0; j<lenlen-1;j++) {
-//				path.append(part[j]).append("#");
-//			}
-//			path.append("/");
-//		}
-//	}
 	@Override
 	public Route routeSearch(String id) {
 		

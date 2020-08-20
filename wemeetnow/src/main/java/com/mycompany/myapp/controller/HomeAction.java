@@ -151,7 +151,9 @@ public class HomeAction {
 	@RequestMapping("category.do")
 	public String categorySelect(Place place, Model model, HttpSession session) {
 
-		
+		if(session.getAttribute("startPlaceList")==null) {
+			return "member/sessionResult";
+		}
 		model.addAttribute("place", place);
 
 		//-------------------- 카테고리별 추천 장소 5개 ----- 08/05 김가을  --------------------
@@ -228,6 +230,7 @@ public class HomeAction {
 					rstr += br2[j] + "-";
 				}				
 				bus_route[i] = rstr;
+				rstr="";
 				bus_time[i] = br2[br2.length-1];
 			}
 			
@@ -247,6 +250,7 @@ public class HomeAction {
 					tstr += br2[j] + "-";
 				}				
 				complex_route[i] = tstr;
+				tstr ="";
 				complex_time[i] = br2[br2.length-1];
 			}
 
@@ -261,5 +265,4 @@ public class HomeAction {
 	}
 	
 }
-// gterlyvsmtzaeejytlbhwdoasnosqe 서울 종로구 명륜3가 53-21/서울 서대문구 대현동 11-1/서울 은평구 진관동 88/ NONE/이대부고#272#서울지방경찰청.경복궁역#사직동주민센터#8002#자하문터널입구.석파정#36#/제각말5단지.은평뉴타운도서관#7211#구기터널입구#구기터널입구#7022#자하문고개.윤동주문학관#46#/ NONE/이대부고#272#서울지방경찰청.경복궁역#사직동주민센터#8002#자하문터널입구.석파정#36#/제각말5단지.은평뉴타운도서관#7211#구기터널입구#구기터널입구#7022#자하문고개.윤동주문학관#46#/ NULL     NULL
-
+// 
