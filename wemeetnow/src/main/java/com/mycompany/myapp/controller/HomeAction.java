@@ -16,6 +16,7 @@ import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.Route;
+import com.mycompany.myapp.model.RouteM;
 import com.mycompany.myapp.model.stationXY;
 import com.mycompany.myapp.service.MapService;
 
@@ -82,8 +83,8 @@ public class HomeAction {
 		endplaceList.add(0,	center);//중심 좌표 추가.	
 		//tmap api 호출을 위해서  출발,도착지 정보를 js에서 사용해야함
 		// js에서 사용하기 편하게  json형식으로 변환.
-		String jsonEpl = jsonparser.josonParsing(endplaceList); // 추천지역 json 변환
-		String jsonSpl = jsonparser.josonParsing(startPlaceList); // 출발지역 json 변환
+		String jsonEpl = jsonparser.josonParsing(endplaceList); // 추천지역 json 변환 08.29
+		String jsonSpl = jsonparser.josonParsing(startPlaceList); // 출발지역 json 변환08.29
 		model.addAttribute("jsonEpl", jsonEpl);
 		model.addAttribute("jsonSpl", jsonSpl);
 		
@@ -137,78 +138,31 @@ public class HomeAction {
 	public String route(@ModelAttribute("id") String id,String status, HttpSession session, Place place, Model model) {
 		//지하철,버스,
 		//공유하기 버튼 분기
-		model.addAttribute("original", 0);
-		System.out.println(id+"  ::  " +session.getAttribute("id"));
-		//boolean check = ms.idCheck(id); // already : true, first : false
-		Route r = ms.routeSearch(id);
+//		model.addAttribute("original", 0);
+		
+		//경로 db에 저장된 정보 있는지 체크.
+		RouteM r = ms.routeSearch(id);
+		
+		//비성장 접근 체크
 		if(status==null && r == null) {
 			return "map/routeResult";	
 		}
-		// r ==null  ==> 요구하는 경로가 db에 저장돼있는지?
+		
 
 		if(r == null ) { // && session.getAttribute("id") != null
-			session.setAttribute("id", id);
+			//session.setAttribute("id", id);
 			Place endPlace = place;
 			List<Place> startPlaceList =(List<Place>) session.getAttribute("startPlaceList");			
 			
 			ms.finalDBSetting(startPlaceList,endPlace,id);
-			//최종 DB에 들어갈 칼럼 데이터 만들기,넣기
-			// survlrxbymwjdghmbboawthlitovss 서울 은평구 진관동 88/서울 서대문구 대현동 11-1/서울 종로구 명륜3가 53-21/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ 신도초교.은평메디텍고등학교#720#무악재역#30#/봉원사입구#서대문11#무악재역#19#/명륜시장.성대후문#종로08#연건동#이화동(이화장)#7025#무악재역#34#/ NULL     NULL
-			model.addAttribute("original", 1);
+			
+//			model.addAttribute("original", 1);
 			r = ms.routeSearch(id);
 		}
 		
-			//Route r = ms.routeSearch(id);
-
-			String[] departure = r.getDeparture().split("/");
-			String[] bus_route = new String[departure.length];
-			String[] bus_time = new String[departure.length];
-
-			String[] br1 = r.getBus_route().split("/");
-			String rstr = "";
-			String tstr = "";
-
-			for(int i=0; i<departure.length; i++) {
-				if(br1[i].equals("NONE")) {
-					bus_route[i] = "검색된 대중 교통 경로가 없습니다.";
-					bus_time[i] = "*";
-					continue;
-				}
-				String[] br2 = br1[i].split("#");
-				for(int j=0; j<br2.length-1; j++) {
-					rstr += br2[j] + "-";
-				}				
-				bus_route[i] = rstr;
-				rstr="";
-				bus_time[i] = br2[br2.length-1];
-			}
-			
-			String[] complex_route = new String[departure.length];
-			String[] complex_time = new String[departure.length];
-
-			br1 = r.getComplex_route().split("/");
-
-			for(int i=0; i<departure.length; i++) {
-				if(br1[i].equals("NONE")) {
-					complex_route[i] = "검색된 대중 교통 경로가 없습니다.";
-					complex_time[i] = "*";
-					continue;
-				}
-				String[] br2 = br1[i].split("#");
-				for(int j=0; j<br2.length-1; j++) {
-					tstr += br2[j] + "-";
-				}				
-				complex_route[i] = tstr;
-				tstr ="";
-				complex_time[i] = br2[br2.length-1];
-			}
-
-		model.addAttribute("id",id);
-		model.addAttribute("departure", departure);
-		model.addAttribute("bus_route", bus_route);
-		model.addAttribute("complex_route", complex_route);
-		model.addAttribute("bus_time", bus_time);
-		model.addAttribute("complex_time", complex_time);
+		List<RouteM> routeList = ms.getRouteList(r);
+		model.addAttribute("routelist", routeList);
+		model.addAttribute("endPlace",r);
 
 		return "map/route";
 	}

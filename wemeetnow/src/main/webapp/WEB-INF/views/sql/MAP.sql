@@ -1,20 +1,24 @@
-create table sub_rcm(
-    subName varchar2(50) primary key,
-    xs varchar2(50),
-    ys varchar2(50)
+create table route_master(
+id varchar2(30),
+num number(10),
+name varchar2(30),
+x_ varchar2(30) ,
+y_ varchar2(30),
+address varchar2(50),
+phone varchar2(30),
+place_url varchar2(100),
+constraint routem_pk primary key(id)
 );
-select * from sub_rcm;
-delete from sub_rcm;
-drop table sub_rcm;
 
-create table route(
-	id varchar2(30),
-	departure varchar2(300),
-	bus_route varchar2(500),
-	complex_route varchar2(500),
-	bus_time varchar2(10),
-	complex_time varchar2(10)
-	constraint route_pk primary key(id)
+create table route_slave(
+rno number(20),
+id varchar2(30),
+departure varchar2(300),
+bus_route varchar2(500),
+complex_route varchar2(500),
+bus_time varchar2(10),
+complex_time varchar2(10),
+constraint routes_pk primary key(rno)
 );
 select * from route;
 

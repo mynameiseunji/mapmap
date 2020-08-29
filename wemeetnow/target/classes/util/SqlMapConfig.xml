@@ -11,6 +11,8 @@
 		<typeAlias alias="place" type="com.mycompany.myapp.model.Place"></typeAlias>
 		<typeAlias alias="station" type="com.mycompany.myapp.model.stationXY"></typeAlias>
 		<typeAlias alias="route" type="com.mycompany.myapp.model.Route"></typeAlias>
+		<typeAlias alias="routeM" type="com.mycompany.myapp.model.RouteM"></typeAlias>
+		<typeAlias alias="routeS" type="com.mycompany.myapp.model.RouteS"></typeAlias>
 	</typeAliases>
 
 	<!-- <environments default="development">

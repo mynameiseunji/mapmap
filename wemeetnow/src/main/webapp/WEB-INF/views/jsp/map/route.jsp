@@ -143,9 +143,9 @@ function sendLink(btn){
 				<h1>Route</h1>
 			</div>
 			<div class="w3-col s6" align="right">
-				<c:if test="${original ==1}">
-				<input type="button" class="btn btn-outline-warning" value="공유공유" data-name="${param.name}" data-address="${param.address}" data-url="${param.place_url}" onclick="sendLink(this)"/>
-				</c:if>
+				<%-- <c:if test="${original ==1}"> --%>
+				<input type="button" class="btn btn-outline-warning" value="공유공유" data-name="${endPlace.name}" data-address="${endPlace.address}" data-url="${endPlace.place_url}" onclick="sendLink(this)"/>
+				<%-- </c:if> --%>
 			</div>
 		</div>
 		<table class="table">
@@ -154,22 +154,22 @@ function sendLink(btn){
 				<th colspan=2>경로</th>
 				<th width="100px">시간</th>
 			</tr>
-			<c:forEach var="item" items="${departure}" varStatus="status">
+			<c:forEach var="item" items="${routelist}" varStatus="status">
 				<tr>
 					<td rowspan=2 style="vertical-align: middle; text-align: center">
 					<i class="fas fa-user-alt fa-2x"></i>
 						<p>출발지${status.count}</p>
-						<p>${item}</p></td>
+						<p>${item.departure}</p></td>
 					<td width="70px">
 						<p class="station">
 							<i class="fas fa-bus"></i>
 						</p>
 					</td>
 					<td>
-						<p class="station">${bus_route[status.index]}</p>
+						<p class="station">${item.bus_route}</p>
 					</td>
 					<td align="center">
-						<p>${bus_time[status.index]}분</p>
+						<p>${item.bus_time}분</p>
 					</td>
 				</tr>
 				<tr>
@@ -179,10 +179,10 @@ function sendLink(btn){
 						</p>
 					</td>
 					<td>
-						<p class="station">${complex_route[status.index]}</p>
+						<p class="station">${item.complex_route}</p>
 					</td>
 					<td align="center">
-						<p>${complex_time[status.index]}분</p>
+						<p>${item.complex_time}분</p>
 					</td>
 				</tr>
 			</c:forEach>

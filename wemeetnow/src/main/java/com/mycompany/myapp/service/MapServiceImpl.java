@@ -22,6 +22,8 @@ import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.Route;
+import com.mycompany.myapp.model.RouteM;
+import com.mycompany.myapp.model.RouteS;
 import com.mycompany.myapp.model.stationXY;
 
 @Service
@@ -195,56 +197,69 @@ public class MapServiceImpl implements MapService {
 		}
 		return sb.toString();
 	}
-	public String getFinalPath(List<Place> startPlaceList, Place endPlace, String transport) {
+	public void getFinalPath(RouteS rs,Place startPlace, Place endPlace, String transport) {
 		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<startPlaceList.size(); i++) {
-			PublicDataService pds = new PublicDataService();				
-			sb.append(pds.getPath(
-					startPlaceList.get(i).getX(),
-					startPlaceList.get(i).getY(),
-					endPlace.getX(),
-					endPlace.getY(),
-					transport)).append("/");
-		}
-		return sb.toString();
+		PublicDataService pds = new PublicDataService();				
+		pds.getPath(startPlace, endPlace, transport, rs);
+		
 	}
 	
 	//마지막 페이지에 필요한 정보(출발지, 경로1, 경로2, 시간1, 시간2)
 	@Override
 	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, String id){
-			
-		String BUS = getFinalPath(startPlaceList, endPlace,"Bus");
-		String BNS = getFinalPath(startPlaceList, endPlace,"BusNSub");
-				
-		StringBuilder DEPARTURE = new StringBuilder();
 		
-		for(int i=0; i<startPlaceList.size(); i++) {
-			DEPARTURE.append(startPlaceList.get(i).getAddress()).append("/");
+		
+		RouteM rm = new RouteM();
+		rm.setId(id);
+		rm.setNum(startPlaceList.size());
+		rm.setAddress(endPlace.getAddress());
+		rm.setName(endPlace.getName());
+		rm.setPhone(endPlace.getPhone());
+		rm.setPlace_url(endPlace.getPlace_url());
+		rm.setX(endPlace.getX());
+		rm.setY(endPlace.getY());
+		md.insertRouteM(rm);
+		
+		for(Place p : startPlaceList) {
+			RouteS rs = new RouteS();
+			rs.setId(id);
+			rs.setDeparture(p.getAddress());
+			
+			getFinalPath(rs,p, endPlace,"Bus");
+			getFinalPath(rs,p, endPlace,"BusNSub");
+			md.insertRouteS(rs);
 		}
 		
-		//데이터 파싱
-		// 인서트
-		Route route = new Route();
-		route.setId(id);
-		route.setBus_route(BUS);
-		route.setComplex_route(BNS);
-		route.setDeparture(DEPARTURE.toString());		
-		int result = md.insertData(route);
+		
+//		StringBuilder DEPARTURE = new StringBuilder();
+//		
+//		for(int i=0; i<startPlaceList.size(); i++) {
+//			DEPARTURE.append(startPlaceList.get(i).getAddress()).append("/");
+//		}
+//		
+//		//데이터 파싱
+//		// 인서트
+//		Route route = new Route();
+//		route.setId(id);
+//		route.setBus_route(BUS);
+//		route.setComplex_route(BNS);
+//		route.setDeparture(DEPARTURE.toString());		
+//		int result = md.insertData(route);
 		//프라이머리키 리턴
-		return result;
+		return 0;
 	}
 	@Override
-	public Route routeSearch(String id) {
+	public RouteM routeSearch(String id) {
 		
-		Route r = md.routeSearch(id);
+		RouteM rm = md.routeSearch(id);
 		
-		return r;
+		return rm;
 	}
-	@Override
-	public String[] parsingRoute(String bus_route) {
-		String[] pieces= bus_route.split("#");
-		return null;
-	}
+//	@Override
+//	public String[] parsingRoute(String bus_route) {
+//		String[] pieces= bus_route.split("#");
+//		return null;
+//	}
 	public void createId(List<Place> list, String spl) {		
 		Collections.sort(list, new Comparator<Place>() {
 			public int compare(Place o1, Place o2) {
@@ -261,13 +276,17 @@ public class MapServiceImpl implements MapService {
 		}
 	}
 	
-	@Override
+	/*@Override
 	public boolean idCheck(String id) {
 		if(md.idCheck(id)==1)
 			return true;
 		else
 			return false;
 		
+	}*/
+	@Override
+	public List<RouteM> getRouteList(RouteM r) {
+		return md.getRouteList(r);
 	}
 }
 

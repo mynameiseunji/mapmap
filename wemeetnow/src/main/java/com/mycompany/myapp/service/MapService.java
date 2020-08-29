@@ -5,6 +5,8 @@ import java.util.List;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.Route;
+import com.mycompany.myapp.model.RouteM;
+import com.mycompany.myapp.model.RouteS;
 import com.mycompany.myapp.model.stationXY;
 
 public interface MapService {
@@ -27,15 +29,17 @@ public interface MapService {
 	public stationXY getRcm_station(String subName) throws Exception;
 	
 	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList,String transport);
-	public String getFinalPath(List<Place> startPlaceList, Place endPlace, String transport);
+	public void getFinalPath(RouteS rs,Place startPlace, Place endPlace, String transport);
 
 	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, String id);
 
-	public Route routeSearch(String id);
+	public RouteM routeSearch(String id);
 
-	public String[] parsingRoute(String bus_route);
+//	public String[] parsingRoute(String bus_route);
 
 	public void createId(List<Place> list, String spl);
 
-	public boolean idCheck(String id);
+	//public boolean idCheck(String id);
+
+	public List<RouteM> getRouteList(RouteM r);
 }
