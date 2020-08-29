@@ -155,8 +155,8 @@ public class MapServiceImpl implements MapService {
 	// 중심 좌표 구하기.
 	// 출발지 좌표 값의 평균.
 	@Override
-	public Coordinate getCenter(List<Place> placeList) {
-		Coordinate coor = new Coordinate();
+	public Place getCenter(List<Place> placeList) {
+		Place p = new Place();
 		float n = placeList.size();
 		float sumX = 0;
 		float sumY = 0;
@@ -164,9 +164,10 @@ public class MapServiceImpl implements MapService {
 			sumX += Float.parseFloat(placeList.get(i).getX());
 			sumY += Float.parseFloat(placeList.get(i).getY());
 		}
-		coor.setX(Float.toString(sumX / n));
-		coor.setY(Float.toString(sumY / n));
-		return coor;
+		p.setX(Float.toString(sumX / n));
+		p.setY(Float.toString(sumY / n));
+		p.setName("중심");
+		return p;
 	}
 
 	@Override

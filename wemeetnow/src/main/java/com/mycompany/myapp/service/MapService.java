@@ -22,7 +22,7 @@ public interface MapService {
 
 	public List<Place> getStationCoord(String url_, String options);
 
-	public Coordinate getCenter(List<Place> placeList);
+	public Place getCenter(List<Place> placeList);
 
 	public stationXY getRcm_station(String subName) throws Exception;
 	

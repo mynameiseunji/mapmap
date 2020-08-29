@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.Route;
@@ -26,7 +27,8 @@ public class HomeAction {
 	
 	@Autowired
 	private MapService ms;
-
+	@Autowired
+	private JsonParsing jsonparser;
 	@RequestMapping("test.do")
 	public String home_push(HttpSession session, HttpServletRequest request) {
 		return "map/home";
@@ -65,7 +67,7 @@ public class HomeAction {
 		
 		
 		//---------------------------------중점 좌표 get--------------------------------
-		Coordinate center_coor = ms.getCenter(startPlaceList);
+		Place center = ms.getCenter(startPlaceList);
 
 		//--------------------------------------------------------------------------
 		
@@ -73,70 +75,17 @@ public class HomeAction {
 		//--------------------------------가까운 지하철역 5개 get-------------------------------
 		// 중점좌표 기준 station 데이터를 API에 요청 (물리적으로 가까운 순)
 		// category_group_code:SW8(지하철), page:1, size:15(기본값), radius:2000 으로 제한하여 요청
-		String option = "x/" + center_coor.getX() + "/y/" + center_coor.getY() + "/page/1/radius/2000";
+		String option = "x/" + center.getX() + "/y/" + center.getY() + "/page/1/radius/2000";
 		List<Place> endplaceList = ms.categorySearch("SW8", option);
 		//--------------------------------------------------------------------------------
 		
-		
-		
-		//---------------------------08/03 권은지 : 추천역 DB로부터 가져오기 ------------------------------------	
-		// 중점좌표 기준 모든 station 데이터를 API에 요청 (radius:2000 동일)
-//		String rcm_option = "x/" + center_coor.getX() + "/y/" + center_coor.getY() + "/radius/2000";
-//		
-//		// rcm_placeList : 검색된 모든 지하철 객체(Place DTO)를 리스트로 반환받음
-//		List<Place> rcm_placeList = ms.categorySearch("SW8", rcm_option);
-//		
-//		// rcm_stationList : foundPlace.jsp 페이지에 넘길 추천역(stationXY DTO) 리스트
-//		List<stationXY> rcm_stationList = new ArrayList<stationXY>();
-//		
-//		//검색된 리스트에서 역 이름(p.getName()) 하나씩 꺼내와 DB에 존재하는지 비교
-//		for (Place p : rcm_placeList) {
-//			String subName = p.getName().trim();			
-//			stationXY st = ms.getRcm_station(subName);  // 역 이름으로 selectOne(조회)하여 매칭되는 객체 가져오기(DB에 없으면 NULL)
-//			if (rcm_stationList.size() > 5) { // 사이즈 5개 넘어가지 않도록
-//				break;
-//			} else {
-//				if (st != null) {
-//					rcm_stationList.add(st); // 검색 된 객체가 있다면 객체 리스트에 추가
-//				}
-//			}
-//		}
-		//--------------------------------------------------------------------------
-			
-		
-		
-		// 중심좌표 return
-		model.addAttribute("center", center_coor);
-
-		//endplacelist 정보 넘기기
-		//javascript에서 사용하기 편하게하기위해
-		//구분차 '#'를 사용해서 문자열로 형태 변환		
-		StringBuilder epl_x = new StringBuilder().append(center_coor.getX()).append("#");
-		StringBuilder epl_y = new StringBuilder().append(center_coor.getY()).append("#");;
-		StringBuilder epl_name = new StringBuilder().append("중심").append("#");;
-		for(Place p : endplaceList) {
-			epl_x.append(p.getX()).append("#");
-			epl_y.append(p.getY()).append("#");
-			epl_name.append(p.getName()).append("#");
-		}
-		
-		model.addAttribute("endPlaceList_x", epl_x.toString());
-		model.addAttribute("endPlaceList_y", epl_y.toString());
-		model.addAttribute("endPlaceList_name", epl_name.toString());
-		
-		//startplacelist 정보 넘기기
-		StringBuilder spl_x = new StringBuilder();
-		StringBuilder spl_y = new StringBuilder();
-		StringBuilder spl_name = new StringBuilder();
-		for(Place p : startPlaceList) {
-			spl_x.append(p.getX()).append("#");
-			spl_y.append(p.getY()).append("#");
-			spl_name.append(p.getName()).append("#");
-		}
-		
-		model.addAttribute("startPlaceList_x", spl_x.toString());
-		model.addAttribute("startPlaceList_y", spl_y.toString());
-		model.addAttribute("startPlaceList_name", spl_name.toString());
+		endplaceList.add(0,	center);//중심 좌표 추가.	
+		//tmap api 호출을 위해서  출발,도착지 정보를 js에서 사용해야함
+		// js에서 사용하기 편하게  json형식으로 변환.
+		String jsonEpl = jsonparser.josonParsing(endplaceList); // 추천지역 json 변환
+		String jsonSpl = jsonparser.josonParsing(startPlaceList); // 출발지역 json 변환
+		model.addAttribute("jsonEpl", jsonEpl);
+		model.addAttribute("jsonSpl", jsonSpl);
 		
 		// 각 후보지에 대해서 소요시간 보여주기.		
 		// 공공데이터포털에서 경로 찾아오기

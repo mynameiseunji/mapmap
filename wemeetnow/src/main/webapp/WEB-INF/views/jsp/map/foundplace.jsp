@@ -132,7 +132,9 @@ h1, h2, h3, h4, h5, h6 {
 	</footer>
 	
 	<script>
-   
+   	var epl = ${jsonEpl};
+   	var spl = ${jsonSpl};
+   	
       //각 장소에대한 친구들의 경로 정보  => 장소1까지 친구1읠 경로/장소1까지 친구2의 경로/...
       var path_list = '${pathInfo}'.split('/');      
       path_list.pop();
@@ -160,59 +162,38 @@ h1, h2, h3, h4, h5, h6 {
          times.push(str);
       }   
       
-      // 추천 후보지 보여주고 최종 좌표 값 다음 페이지로 넘기는 코드 ==== 시작 ===========================
-      // 컨트롤러에서 후보지 정보 받아와서 배열생성
-      // name#x#y#name#x#y...형식
-            
-      // tmap에 사용할 도착지점 x,y 배열 생성
-      var endPlaceList_x = '${endPlaceList_x}'.split("#");
-      var endPlaceList_y = '${endPlaceList_y}'.split("#")
-      var endPlaceList_name = '${endPlaceList_name}'.split("#")
-      endPlaceList_x.pop();
-      endPlaceList_y.pop();
-      endPlaceList_name.pop();
-      var epl_num = endPlaceList_x.length;
-
+      
       //append.
-      var cen = 'center';
-      $('#selected_x').attr('value',endPlaceList_x[0]);
-      $('#selected_y').attr('value',endPlaceList_y[0]);
-      $('#selected_name').attr('value',endPlaceList_name[0]);
+      $('#selected_x').attr('value',epl[0].x);
+      $('#selected_y').attr('value',epl[0].y);
+      $('#selected_name').attr('value',epl[0].name);
       
       // .tab-content 자손태그로 추가(반복)
-      for(var i=1; i<epl_num; i++){
+      for(var i=1; i<epl.length; i++){
          
          var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'">'+
-                     '<h1>'+endPlaceList_name[i]+'</h1>'+
+                     '<h1>'+epl[i].name+'</h1>'+
                      times[i-1]+'</p><span data-x="'
-                     +endPlaceList_x[i]+'" data-y="'+endPlaceList_y[i]+'"></span></div>';
+                     +epl[i].x+'" data-y="'+epl[i].y+'"></span></div>';
                      
          var posi_li_nav ='<li class="nav-item">'+      
-					         '<span data-name="'+endPlaceList_name[i]+
-					         '" data-x="'+endPlaceList_x[i]+
-					         '" data-y="'+endPlaceList_y[i]+
+					         '<span data-name="'+epl[i].name+
+					         '" data-x="'+epl[i].x+
+					         '" data-y="'+epl[i].y+
 					         '"></span>' +
 					         '<a id= "loc' + i + '" class="nav-link" '+
 					         'data-toggle="tab" href="#menu' + i + '" onclick="remarker(' + i + ')" >' +
-					         endPlaceList_name[i]+'</a></li>';
+					         epl[i].name+'</a></li>';
          
          
          $('.tab-content').append(posi_li_fade);
          $('.nav.nav-tabs').append(posi_li_nav);
       }
         
-		// 출발지 마커 좌표와 이름 
-		var startPlaceList_x = '${startPlaceList_x}'.split("#");
-		var startPlaceList_y = '${startPlaceList_y}'.split("#")
-		var startPlaceList_name = '${startPlaceList_name}'.split("#")
-		startPlaceList_x.pop();
-		startPlaceList_y.pop();
-		startPlaceList_name.pop();
-		var spl_num = startPlaceList_x.length;
 
 		// 1. 지도 띄우기
 		var map = new Tmapv2.Map("map_div", {
-			center : new Tmapv2.LatLng(endPlaceList_y[0], endPlaceList_x[0]),
+			center : new Tmapv2.LatLng(epl[0].y, epl[0].x),
 			width : "80%",
 			height : "50%"
 		});
@@ -223,13 +204,13 @@ h1, h2, h3, h4, h5, h6 {
 		var resultdrawArr = [];
 		// 2. 시작, 도착 심볼찍기
 		// 시작
-		for (var i = 0; i < startPlaceList_x.length; i++) {
+		for (var i = 0; i < spl.length; i++) {
 			marker_s = new Tmapv2.Marker(
 					{
-						position : new Tmapv2.LatLng(startPlaceList_y[i],
-								startPlaceList_x[i]),
+						position : new Tmapv2.LatLng(spl[i].y,
+								spl[i].x),
 						icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_b_s.png",
-						title : startPlaceList_name[i],
+						title : spl[i].name,
 						iconSize : new Tmapv2.Size(32, 50),
 						map : map
 					});
@@ -237,28 +218,28 @@ h1, h2, h3, h4, h5, h6 {
 		// 중심 마크 그리기 marker_e[0]
 		marker_e[0] = new Tmapv2.Marker(
 				{
-					position : new Tmapv2.LatLng(endPlaceList_y[0],
-							endPlaceList_x[0]),
+					position : new Tmapv2.LatLng(epl[0].y,
+							epl[0].x),
 					icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_w_m_c.png",
-					title : endPlaceList_name[0],
+					title : epl[0].name,
 					iconSize : new Tmapv2.Size(32, 50),
 					map : map
 				});
 		// 추천 지역들 찍기 marker_e[1]~[5]
-		for (var i = 1; i < epl_num; i++) {
+		for (var i = 1; i < epl.length; i++) {
 			marker_e[i] = new Tmapv2.Marker(
 					{
-						position : new Tmapv2.LatLng(endPlaceList_y[i],
-								endPlaceList_x[i]),
+						position : new Tmapv2.LatLng(epl[i].y,
+								epl[i].x),
 						icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_g_m_r.png",
-						title : endPlaceList_name[i],
+						title : epl[i].name,
 						map : map,
 					});
 		}
 		eplmarkerevent(0);
 		
 		//  경로탐색 API 사용요청
-		for (var t = 0; t < spl_num; t++) {
+		for (var t = 0; t < spl.length; t++) {
 			for (var j = 0; j < 100000000; j++) {
 			}
 			$
@@ -268,10 +249,10 @@ h1, h2, h3, h4, h5, h6 {
 						async : false,
 						data : {
 							appKey : "l7xx45b1d9cc7eb14ee98cb9d6aca431df5e",
-							startX : startPlaceList_x[t],
-							startY : startPlaceList_y[t],
-							endX : endPlaceList_x[0],
-							endY : endPlaceList_y[0],
+							startX : spl[t].x,
+							startY : spl[t].y,
+							endX : epl[0].x,
+							endY : epl[0].y,
 							reqCoordType : "WGS84GEO",
 							resCoordType : "EPSG3857",
 							startName : "출발지",
@@ -335,16 +316,16 @@ h1, h2, h3, h4, h5, h6 {
 		}
 		// 지도 레벨 맞추기 (풀발 좌표를 받아서 지도 레벨을 맞춤)
 		PTbounds = new Tmapv2.LatLngBounds();
-		for (var ii = 0; ii < spl_num; ii++) {
-			var linePt = new Tmapv2.LatLng(startPlaceList_y[ii],
-					startPlaceList_x[ii]);
+		for (var ii = 0; ii < spl.length; ii++) {
+			var linePt = new Tmapv2.LatLng(spl[ii].y,
+					spl[ii].x);
 			PTbounds.extend(linePt);
 		}
 		map.fitBounds(PTbounds);
 
 		// 마커 클릭 이벤트 생성
 		function eplmarkerevent(i) {
-			for (var j = 1; j < epl_num; j++) {
+			for (var j = 1; j < epl.length; j++) {
 				markerevent(j);
 			}
 		}
@@ -357,14 +338,14 @@ h1, h2, h3, h4, h5, h6 {
 		
 		// 마크 클릭 확대 및 넘어가는 값 저장
 		function remarker(i) {
-			for (var j = 1; j < epl_num; j++) {
+			for (var j = 1; j < epl.length; j++) {
 				marker_e[j].setMap(null);
 				marker_e[j] = new Tmapv2.Marker(
 						{
-							position : new Tmapv2.LatLng(endPlaceList_y[j],
-									endPlaceList_x[j]),
+							position : new Tmapv2.LatLng(epl[j].y,
+									epl[j].x),
 							icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_g_m_r.png",
-							title : endPlaceList_name[j],
+							title : epl[j].name,
 							//        	                   iconSize : new Tmapv2.Size(20, 30),
 							map : map
 						});
@@ -372,17 +353,17 @@ h1, h2, h3, h4, h5, h6 {
 			marker_e[i].setMap(null);
 			marker_e[i] = new Tmapv2.Marker(
 					{
-						position : new Tmapv2.LatLng(endPlaceList_y[i],
-								endPlaceList_x[i]),
+						position : new Tmapv2.LatLng(epl[i].y,
+								epl[i].x),
 						icon : "http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_r.png",
-						title : endPlaceList_name[i],
+						title : epl[i].name,
 						iconSize : new Tmapv2.Size(32, 50),
 						map : map
 					});
 			eplmarkerevent(0); //  새로 그려진 마크에 클릭함수 
-			$('#selected_x').attr('value', endPlaceList_x[i]);
-			$('#selected_y').attr('value', endPlaceList_y[i]);
-			$('#selected_name').attr('value', endPlaceList_name[i]);
+			$('#selected_x').attr('value', epl[i].x);
+			$('#selected_y').attr('value', epl[i].y);
+			$('#selected_name').attr('value', epl[i].name);
 		}
 		// 경로 그리는 함수
 		function drawLine(arrPoint) {

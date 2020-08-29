@@ -10,10 +10,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.stationXY;
 
-@Service("jsonParsing")
+@Service
 public class JsonParsing {
 	private Place stcoor = null;	
 	
@@ -48,5 +50,12 @@ public class JsonParsing {
 			e.printStackTrace();
 		}
 		return stationList;
+	}
+	
+	//20.08.29 view-controller 데이터 전달 개선
+	public String josonParsing(List<Place> list) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonText = mapper.writeValueAsString(list);
+		return jsonText;
 	}
 }
