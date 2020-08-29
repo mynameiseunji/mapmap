@@ -4,10 +4,8 @@ import java.util.List;
 
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
-import com.mycompany.myapp.model.Route;
 import com.mycompany.myapp.model.RouteM;
 import com.mycompany.myapp.model.RouteS;
-import com.mycompany.myapp.model.stationXY;
 
 public interface MapService {
 	public List<Place> categorySearch(String categoryCode);
@@ -25,21 +23,16 @@ public interface MapService {
 	public List<Place> getStationCoord(String url_, String options);
 
 	public Place getCenter(List<Place> placeList);
-
-	public stationXY getRcm_station(String subName) throws Exception;
 	
-	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList,String transport);
 	public void getFinalPath(RouteS rs,Place startPlace, Place endPlace, String transport);
 
-	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, String id);
-
+	public List<RouteS> test(List<Place> startList, Place end);
+	
+	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm);
+	
 	public RouteM routeSearch(String id);
 
-//	public String[] parsingRoute(String bus_route);
-
 	public void createId(List<Place> list, String spl);
-
-	//public boolean idCheck(String id);
-
+	
 	public List<RouteM> getRouteList(RouteM r);
 }

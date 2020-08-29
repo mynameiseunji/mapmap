@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mycompany.myapp.json.JsonParsing;
-import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
-import com.mycompany.myapp.model.Route;
 import com.mycompany.myapp.model.RouteM;
-import com.mycompany.myapp.model.stationXY;
+import com.mycompany.myapp.model.RouteS;
 import com.mycompany.myapp.service.MapService;
 
 /**
@@ -49,7 +47,6 @@ public class HomeAction {
 			p.setY(place.getY().split(",")[i]);
 			startPlaceList.add(p);
 		}
-		int listSize = startPlaceList.size();
 		request.getSession().setAttribute("startPlaceList", startPlaceList);
 		
 		return "map/home";
@@ -59,26 +56,17 @@ public class HomeAction {
 		
 		
 		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
-		
-
 		// 세션
 		HttpSession session = request.getSession();
-		session.setAttribute("startPlaceList", startPlaceList);
-		//resquest.setAttribute("startPlaceList", startPlaceList);
-		
+		session.setAttribute("startPlaceList", startPlaceList);		
 		
 		//---------------------------------중점 좌표 get--------------------------------
-		Place center = ms.getCenter(startPlaceList);
-
-		//--------------------------------------------------------------------------
-		
+		Place center = ms.getCenter(startPlaceList);		
 		
 		//--------------------------------가까운 지하철역 5개 get-------------------------------
-		// 중점좌표 기준 station 데이터를 API에 요청 (물리적으로 가까운 순)
 		// category_group_code:SW8(지하철), page:1, size:15(기본값), radius:2000 으로 제한하여 요청
 		String option = "x/" + center.getX() + "/y/" + center.getY() + "/page/1/radius/2000";
 		List<Place> endplaceList = ms.categorySearch("SW8", option);
-		//--------------------------------------------------------------------------------
 		
 		endplaceList.add(0,	center);//중심 좌표 추가.	
 		//tmap api 호출을 위해서  출발,도착지 정보를 js에서 사용해야함
@@ -91,9 +79,13 @@ public class HomeAction {
 		// 각 후보지에 대해서 소요시간 보여주기.		
 		// 공공데이터포털에서 경로 찾아오기
 		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
-		String pathInfo = ms.getPathInfo(startPlaceList, endplaceList,"BusNSub");		
-		model.addAttribute("pathInfo",pathInfo);
-		model.addAttribute("x_num",startPlaceList.size());
+		List<String> jsonPath = new ArrayList<String>();
+		endplaceList.remove(0);
+		for(int i=0; i<endplaceList.size(); i++) {
+			List<RouteS> list = ms.test(startPlaceList, endplaceList.get(i));
+			jsonPath.add(jsonparser.josonParsing(list));
+		}
+		model.addAttribute("path", jsonPath);
 		
 		return "map/foundplace";
 	}
@@ -108,7 +100,6 @@ public class HomeAction {
 
 		//-------------------- 카테고리별 추천 장소 5개 ----- 08/05 김가을  --------------------
 		String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/size/5/radius/2000";
-		//String option = "x/" + place.getX() + "/y/" + place.getY() + "/page/1/radius/2000";
 		
 		StringBuilder sb = new StringBuilder();
 		List<Place> startPlaceList = (List<Place>)session.getAttribute("startPlaceList");
@@ -135,29 +126,23 @@ public class HomeAction {
 		return "map/category";
 	}
 	@RequestMapping("route.do")
-	public String route(@ModelAttribute("id") String id,String status, HttpSession session, Place place, Model model) {
+	public String route(String status, HttpSession session, Place place, RouteM rm, Model model) {
 		//지하철,버스,
-		//공유하기 버튼 분기
-//		model.addAttribute("original", 0);
 		
 		//경로 db에 저장된 정보 있는지 체크.
-		RouteM r = ms.routeSearch(id);
+		RouteM r = ms.routeSearch(rm.getId());
 		
 		//비성장 접근 체크
 		if(status==null && r == null) {
 			return "map/routeResult";	
 		}
-		
 
-		if(r == null ) { // && session.getAttribute("id") != null
+		if(r == null ) {
 			//session.setAttribute("id", id);
 			Place endPlace = place;
-			List<Place> startPlaceList =(List<Place>) session.getAttribute("startPlaceList");			
-			
-			ms.finalDBSetting(startPlaceList,endPlace,id);
-			
-//			model.addAttribute("original", 1);
-			r = ms.routeSearch(id);
+			List<Place> startPlaceList =(List<Place>) session.getAttribute("startPlaceList");		
+			ms.finalDBSetting(startPlaceList,endPlace,rm);
+			r = ms.routeSearch(rm.getId());
 		}
 		
 		List<RouteM> routeList = ms.getRouteList(r);

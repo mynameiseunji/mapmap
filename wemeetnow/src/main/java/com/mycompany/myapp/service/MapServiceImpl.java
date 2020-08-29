@@ -8,10 +8,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,9 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.myapp.dao.MapDAO;
 import com.mycompany.myapp.json.JsonParsing;
-import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
-import com.mycompany.myapp.model.Route;
 import com.mycompany.myapp.model.RouteM;
 import com.mycompany.myapp.model.RouteS;
-import com.mycompany.myapp.model.stationXY;
 
 @Service
 public class MapServiceImpl implements MapService {
@@ -33,6 +30,8 @@ public class MapServiceImpl implements MapService {
 	private MapDAO md;
 	@Autowired
 	private JsonParsing par;
+	@Autowired
+	private PublicDataService pds;
 
 	private final String URL_HOME = "https://dapi.kakao.com";
 	private final String URL_CATEGORY = "/v2/local/search/category.json";
@@ -172,80 +171,43 @@ public class MapServiceImpl implements MapService {
 		return p;
 	}
 
-	@Override
-	public stationXY getRcm_station(String subName) throws Exception {
-		return md.getRcm_station(subName);
-	}
 	
 	//공공데이터포털에서 경로와 시간 구해오는 메소드
 	//리턴 형식은 '/'와 '#' 를 구분자로하는 문자열 타입
 	//각 경로는 '/'로 구분
 	//하나의 경로에서 시간 거리 출발지 도착지 등 정보는 '#'로 구분
-	public String getPathInfo(List<Place> startPlaceList, List<Place> endPlaceList,String transport) {
-		StringBuilder sb = new StringBuilder();
-		for(int i=0; i<endPlaceList.size(); i++) {
-			PublicDataService pds = new PublicDataService();
-			for(int j=0; j<startPlaceList.size(); j++) {
-				
-				sb.append(pds.getPath(
-						startPlaceList.get(j).getX(),
-						startPlaceList.get(j).getY(),
-						endPlaceList.get(i).getX(),
-						endPlaceList.get(i).getY(),
-						transport)).append("/");
-			}
-		}
-		return sb.toString();
-	}
+
 	public void getFinalPath(RouteS rs,Place startPlace, Place endPlace, String transport) {
 		StringBuilder sb = new StringBuilder();
-		PublicDataService pds = new PublicDataService();				
+		//PublicDataService pds = new PublicDataService();				
 		pds.getPath(startPlace, endPlace, transport, rs);
 		
 	}
 	
+	@Override
+	public List<RouteS> test(List<Place> startList, Place end) {
+		List<RouteS> list = new ArrayList<RouteS>();
+		for(Place p : startList) {
+			RouteS rs = new RouteS();
+			rs.setDeparture(p.getAddress());
+			pds.getPath(p, end, "Bus", rs);
+			pds.getPath(p, end, "BusNSub", rs);
+			list.add(rs);
+		}
+		return list;
+	}
+	
 	//마지막 페이지에 필요한 정보(출발지, 경로1, 경로2, 시간1, 시간2)
 	@Override
-	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, String id){
+	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm){		
 		
-		
-		RouteM rm = new RouteM();
-		rm.setId(id);
 		rm.setNum(startPlaceList.size());
-		rm.setAddress(endPlace.getAddress());
-		rm.setName(endPlace.getName());
-		rm.setPhone(endPlace.getPhone());
-		rm.setPlace_url(endPlace.getPlace_url());
-		rm.setX(endPlace.getX());
-		rm.setY(endPlace.getY());
 		md.insertRouteM(rm);
-		
-		for(Place p : startPlaceList) {
-			RouteS rs = new RouteS();
-			rs.setId(id);
-			rs.setDeparture(p.getAddress());
-			
-			getFinalPath(rs,p, endPlace,"Bus");
-			getFinalPath(rs,p, endPlace,"BusNSub");
+		List<RouteS> list = test(startPlaceList, endPlace);
+		for(RouteS rs : list) {
+			rs.setId(rm.getId());
 			md.insertRouteS(rs);
 		}
-		
-		
-//		StringBuilder DEPARTURE = new StringBuilder();
-//		
-//		for(int i=0; i<startPlaceList.size(); i++) {
-//			DEPARTURE.append(startPlaceList.get(i).getAddress()).append("/");
-//		}
-//		
-//		//데이터 파싱
-//		// 인서트
-//		Route route = new Route();
-//		route.setId(id);
-//		route.setBus_route(BUS);
-//		route.setComplex_route(BNS);
-//		route.setDeparture(DEPARTURE.toString());		
-//		int result = md.insertData(route);
-		//프라이머리키 리턴
 		return 0;
 	}
 	@Override
@@ -255,11 +217,6 @@ public class MapServiceImpl implements MapService {
 		
 		return rm;
 	}
-//	@Override
-//	public String[] parsingRoute(String bus_route) {
-//		String[] pieces= bus_route.split("#");
-//		return null;
-//	}
 	public void createId(List<Place> list, String spl) {		
 		Collections.sort(list, new Comparator<Place>() {
 			public int compare(Place o1, Place o2) {
@@ -275,15 +232,6 @@ public class MapServiceImpl implements MapService {
 			
 		}
 	}
-	
-	/*@Override
-	public boolean idCheck(String id) {
-		if(md.idCheck(id)==1)
-			return true;
-		else
-			return false;
-		
-	}*/
 	@Override
 	public List<RouteM> getRouteList(RouteM r) {
 		return md.getRouteList(r);
