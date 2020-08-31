@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.RouteM;
@@ -126,9 +127,8 @@ public class HomeAction {
 		return "map/category";
 	}
 	@RequestMapping("route.do")
-	public String route(String status, HttpSession session, Place place, RouteM rm, Model model) {
+	public String route(String status, HttpSession session, Place place, RouteM rm, Model model) throws JsonProcessingException {
 		//지하철,버스,
-		
 		//경로 db에 저장된 정보 있는지 체크.
 		RouteM r = ms.routeSearch(rm.getId());
 		
@@ -143,11 +143,12 @@ public class HomeAction {
 			List<Place> startPlaceList =(List<Place>) session.getAttribute("startPlaceList");		
 			ms.finalDBSetting(startPlaceList,endPlace,rm);
 			r = ms.routeSearch(rm.getId());
+			
 		}
-		
 		List<RouteM> routeList = ms.getRouteList(r);
 		model.addAttribute("routelist", routeList);
 		model.addAttribute("endPlace",r);
+		model.addAttribute("end",jsonparser.josonParsing(r));
 
 		return "map/route";
 	}

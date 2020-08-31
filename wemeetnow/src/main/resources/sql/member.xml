@@ -2,11 +2,7 @@
  <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="memberns">
-	
-	<!-- password find -->
-	<!-- <select id="pwd_find" resultType="member" parameterType="member">
-		select *  from join_member where join_id=#{join_id} and join_name=#{join_name}
-	</select> -->
+
 	
 	<!-- member information save -->
 	<insert id="member_join" parameterType="member">

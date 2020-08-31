@@ -57,4 +57,10 @@ public class JsonParsing {
 		String jsonText = mapper.writeValueAsString(list);
 		return jsonText;
 	}
+	//20.08.29 view-controller 데이터 전달 개선
+	public String josonParsing(Object o) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonText = mapper.writeValueAsString(o);
+		return jsonText;
+	}
 }
