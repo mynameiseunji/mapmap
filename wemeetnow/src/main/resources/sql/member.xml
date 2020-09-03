@@ -13,7 +13,7 @@
 	
 	<!-- member verification -->
 	<select id="login_check" parameterType="String" resultType="member">
-		select * from member where email=#{email}
+		select * from member where email=#{value}
 	</select>
     
 	<!-- member information update -->
@@ -28,6 +28,6 @@
 		delete from member where email=#{email}
 	</delete>
 	<delete id="member_delete_friend" parameterType="String">
-		delete from friendship where email1=#{email} or email2=#{email}
+		delete from friend where inviter=#{email} or invitee=#{email}
 	</delete>
 </mapper>

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.myapp.model.FriendBean;
-import com.mycompany.myapp.model.FriendConfirm;
+import com.mycompany.myapp.model.FriendPush;
 import com.mycompany.myapp.model.MemberBean;
 import com.mycompany.myapp.service.FriendService;
 import com.mycompany.myapp.service.Memberservice;
@@ -64,10 +64,11 @@ public class MemberAction {
 	public String member_login_ok_push(HttpSession session,@RequestParam("email") String email,
 			                      @RequestParam("pwd") String pwd,
 			                       Model model) throws Exception {
+
 		int result=0;		
-		MemberBean m = memberService.userCheck(email);		
+		MemberBean m = memberService.userCheck(email);
+
 		if (m == null) {	//member not exists
-			
 			result = 1;
 			model.addAttribute("result", result);
 			
@@ -84,13 +85,14 @@ public class MemberAction {
 	             */
 
 	            List<FriendBean> list = friendService.list(email);
-
-	            List<MemberBean> friendList = new ArrayList<MemberBean>();	            
+	            List<MemberBean> friendList = new ArrayList<MemberBean>();
 	            for(FriendBean fb : list) {
-	               friendList.add(memberService.userCheck(fb.getEmail2()));
+	            	if(fb.getInviter().equals(email))
+	            		friendList.add(memberService.userCheck(fb.getInvitee()));
+	            	else
+	            		friendList.add(memberService.userCheck(fb.getInviter()));
 	            }
 	            session.setAttribute("fr_list",friendList);
-	            
 	            //받은 친구 요청 리스트(aop)
 	            //List<FriendConfirm> invitedList = friendService.invited(email);
 	            //session.setAttribute("fr_push",invitedList);

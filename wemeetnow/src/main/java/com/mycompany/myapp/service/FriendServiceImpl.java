@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mycompany.myapp.dao.FriendDAOImpl;
 import com.mycompany.myapp.dao.MemberDAOImpl;
 import com.mycompany.myapp.model.FriendBean;
-import com.mycompany.myapp.model.FriendConfirm;
+import com.mycompany.myapp.model.FriendPush;
 import com.mycompany.myapp.model.MemberBean;
 
 
@@ -21,9 +21,15 @@ public class FriendServiceImpl implements FriendService {
 	@Autowired
 	private FriendDAOImpl friendDao;
 	
+	
 	@Override
-	public int addFriend(Map m) throws Exception{
-		return friendDao.addFriend(m);
+	public int accept(Map<String, String> m) {
+		return friendDao.accept(m);
+	}
+	
+	@Override
+	public int push_confirm(Map m) throws Exception{
+		return friendDao.push_confirm(m);
 	}
 	
 	@Override
@@ -47,17 +53,17 @@ public class FriendServiceImpl implements FriendService {
 	}
 	
 	@Override
-	public List<FriendConfirm> invite(String email){
+	public List<FriendPush> invite(String email){
 		return friendDao.invite(email);
 	}
 
 	@Override
-	public List<FriendConfirm> invited(String email) {
+	public List<FriendPush> invited(String email) {
 		return friendDao.invited(email);
 	}
 
 	@Override
-	public int accept(FriendConfirm fc) {
+	public int accept(FriendPush fc) {
 		return friendDao.accept(fc);
 	}
 	@Override
@@ -70,7 +76,7 @@ public class FriendServiceImpl implements FriendService {
 		return friendDao.recommend(email);
 	}
 	@Override
-	public int reject(FriendConfirm fc) {
-		return friendDao.reject(fc);
+	public int del(FriendPush fc) {
+		return friendDao.del(fc);
 	}
 }

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycompany.myapp.model.FriendBean;
-import com.mycompany.myapp.model.FriendConfirm;
+import com.mycompany.myapp.model.FriendPush;
 import com.mycompany.myapp.model.MemberBean;
 import com.mycompany.myapp.service.FriendService;
 import com.mycompany.myapp.service.MemberServiceImpl;
@@ -47,17 +47,17 @@ public class FriendAction {
 	}
 	@RequestMapping(value = "/friend_accept.do", method = RequestMethod.POST)
 	@ResponseBody
-	public int member_friendAccept_push(HttpSession session, HttpServletRequest request,FriendConfirm fc, Model model) throws Exception {
-		fc.setInvitee((String)request.getSession().getAttribute("email"));
+	public int member_friendAccept_push(HttpSession session, int status,FriendPush fc, Model model) throws Exception {
+		fc.setInvitee((String) session.getAttribute("email"));
 		int result =0;
-		if(fc.getStatus()==1)
-			result = friendService.accept(fc);
-		else
-			result = friendService.reject(fc);
-		
-		//받은 친구 요청 리스트(aop)
-       // List<FriendConfirm> invitedList = friendService.invited((String)session.getAttribute("email"));
-        //session.setAttribute("fr_push",invitedList);
+		if(status==1) {
+			Map<String, String> m = new HashMap<String, String>();
+			m.put("inviter", fc.getInviter());
+			m.put("invitee", fc.getInvitee());
+			result = friendService.accept(m);
+		}
+			result = friendService.del(fc);
+
 		return result;
 	}
 
@@ -74,18 +74,13 @@ public class FriendAction {
 		m.put("inviter", myEmail);
 		m.put("invitee", email);
 
-		int resultc = friendService.checkFriend(m);
-		if (resultc == -1) {
-
-			return resultc;
-
-		} else {
-			int result =friendService.checkFriendConfirm(m);
-			if(result==-2)
-				return result;
-			result = friendService.addFriend(m);
-			return result;
+		int result = friendService.checkFriend(m);
+		if (result != -1) {
+			result =friendService.checkFriendConfirm(m);
+			if (result ==1)
+				result = friendService.push_confirm(m);
 		}
+		return result;
 	}
 
 	// 친구 삭제 --------------------------------------------------
@@ -95,8 +90,8 @@ public class FriendAction {
 		
 		String myEmail = (String) request.getSession().getAttribute("email");
 		Map<String, String> m = new HashMap<String, String>();
-		m.put("email1", myEmail);
-		m.put("email2", email);
+		m.put("my", myEmail);
+		m.put("opponent", email);
 		int result = friendService.delFriend(m);
 		model.addAttribute("result",result);
 		return "member/fr_delResult";
@@ -110,23 +105,23 @@ public class FriendAction {
 		List<FriendBean> list = friendService.list(email);
 		List<MemberBean> friendList = new ArrayList<MemberBean>();	            
         for(FriendBean fb : list) {
-           friendList.add(memberService.userCheck(fb.getEmail2()));
+        	if(fb.getInviter().equals(email))
+        		friendList.add(memberService.userCheck(fb.getInvitee()));
+        	else
+        		friendList.add(memberService.userCheck(fb.getInviter()));
         }
         
 		model.addAttribute("list", friendList);
         //model.addAttribute("list", list);
 		
 		//친구 요청 보낸 목록 보여주기
-		List<FriendConfirm> invitationList = friendService.invite(email);
+		// 수락 혹은 거절될 경유 목록에서 사라집니다. 안내하기.
+		List<FriendPush> invitationList = friendService.invite(email);
 		model.addAttribute("invite",invitationList);
 		
-		//추천 친구 리스트
-        List<FriendBean> recommend = friendService.recommend(email);
-        session.setAttribute("fr_recommend",recommend);
-        
-      //받은 친구 요청 리스트
-        //List<FriendConfirm> invitedList = friendService.invited(email);
-        //session.setAttribute("fr_push",invitedList);
+//		//추천 친구 리스트
+//        List<FriendBean> recommend = friendService.recommend(email);
+//        session.setAttribute("fr_recommend",recommend);
         
 		return "member/friend";
 	}

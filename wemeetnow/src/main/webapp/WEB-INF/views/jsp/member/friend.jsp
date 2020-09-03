@@ -66,7 +66,7 @@ function email_check(){
         success: function (data) {
         	console.log(data)
         	if(data == ""){
-        		alert("그런 아이디 없어요~")
+        		alert("없는 회원입니다.")
        		}else{
        			
                	var obj = JSON.parse(data);	
@@ -78,7 +78,7 @@ function email_check(){
                	$("#resultList").append(str);
                	
                	
-               	var btn = '<span id="add_btn" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">+</span>';
+               	var btn = '<span id="add_btn" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">추가하기</span>';
                	$(".add").append(btn);
                	
                	$("#add_btn").attr('onclick', 'add("'+obj.email+'")');
@@ -124,10 +124,10 @@ function delf(btn2){
    }
   
 }
-//친구 삭제 --------------------------------------------------
+//친구 추가 --------------------------------------------------
 function add(email){
 	console.log(email);
-	var check = confirm('add Confirm');
+	var check = confirm('친구 추가 하시겠습니까?');
 	console.log(check);
 	if(check){
 		$.ajax({
@@ -141,6 +141,8 @@ function add(email){
 	        		return false;
 	        	} else if(data==-2){
 	        		alert("이미 요청을 보낸 친구입니다.")
+	        	}else if(data ==-3){
+	        		alert("이미 요청 받은 친구입니다.")
 	        	}else if(data==100){	
 	        		alert("자신을 추가할 수 없습니다.")
 	        	}else{
@@ -185,10 +187,10 @@ function add(email){
 												<span class="w3-bar-item ontop">${fr_push.inviter}</span>
 											</div>
 											<div class="w3-col s3">
-												<button class="w3-bar-item w3-button ontop" onclick="frpush1('${fr_push.inviter}','1')">O</button>
+												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','1')">O</button>
 											</div>
 											<div class="w3-col s3">
-												<button class="w3-bar-item w3-button ontop" onclick="frpush1('${fr_push.inviter}','2')">X</button>
+												<button class="w3-bar-item w3-button ontop" onclick="frpush('${fr_push.inviter}','2')">X</button>
 											</div>
 										</div>
 									</div>
@@ -266,16 +268,17 @@ function add(email){
 				</div>
 				<!-- Modal body -->
 				<div class="modal-body">
+				<h6>수락 혹은 거절시 요청 목록에서 사라집니다.</h6>
 					<c:if test="${empty invite}">
 						대기중인 친구신청 없음
 					</c:if>
 					<c:if test="${not empty invite}">
-						<h5>요청 대기중 ......</h5>
+						
 						<c:forEach var="invi" items="${invite}" varStatus="status">
 							${invi.invitee}<br>
 						</c:forEach>
 					</c:if>
-					<hr>
+					<%-- <hr>
 					<c:if test="${empty fr_recommend}">
 						추천 친구 없음
 					</c:if>
@@ -284,7 +287,7 @@ function add(email){
 						<c:forEach var="reco" items="${fr_recommend}" varStatus="status">
 							${reco.email1}<br>
 						</c:forEach>
-					</c:if>
+					</c:if> --%>
 				</div>
 			</div>
 		</div>
