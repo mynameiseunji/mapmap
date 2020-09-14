@@ -13,6 +13,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,7 +247,7 @@ public class MapServiceImpl implements MapService {
 	}
 	
 	@Override
-	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace) {
+	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException {
 //		String start ="126.865572139231,37.5507280806214";
 //		String start2 = "126.986400086711,37.5609634671841";
 //		String goal = "126.996969239236,37.6107638961532";
@@ -258,14 +263,25 @@ public class MapServiceImpl implements MapService {
 				.append(endplace.getY())
 				.toString();
 		int idx=0;
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		List<Future<String>> futures = new ArrayList<Future<String>>();
 		for( Place p : startPlaceList) {
 			String start = new StringBuilder()
 					.append(p.getX())
 					.append(",")
 					.append(p.getY())
 					.toString();
-			arr[idx++]= par.getPath(driving.getPath(start, goal));
-			//System.out.println(arr[idx].size());
+			futures.add(executor.submit(()->{
+				return driving.getPath(start, goal);
+			}));
+			
+//			arr[idx++]= par.getPath(driving.getPath(start, goal));
+//			System.out.println(arr[idx].size());
+		}
+		executor.shutdown();
+		System.out.println(executor.awaitTermination(3000,TimeUnit.MILLISECONDS));
+		for(int i=0; i<futures.size(); i++) {
+			arr[i]=par.getPath(futures.get(i).get());
 		}
 		return arr;
 	}

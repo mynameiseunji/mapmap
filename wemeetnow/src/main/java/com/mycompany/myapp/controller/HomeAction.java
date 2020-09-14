@@ -2,6 +2,7 @@ package com.mycompany.myapp.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +61,7 @@ public class HomeAction {
 	
 	@RequestMapping("geoJson.do")
 	@ResponseBody
-	public String geoJson(HttpSession session, Place endplace, Model model) {
+	public String geoJson(HttpSession session, Place endplace, Model model) throws InterruptedException, ExecutionException {
 		List<Place> startPlaceList = (List<Place>)session.getAttribute("startPlaceList");
 		long stime = System.currentTimeMillis();
 		JSONArray[] pathArr= ms.getPathArr(startPlaceList, endplace);
@@ -107,7 +108,10 @@ public class HomeAction {
 		Place center = ms.getCenter(startPlaceList);		
 		
 		// geoJson 생성 // 경로 그리기
+		long stime = System.currentTimeMillis();
 		JSONArray[] pathArr= ms.getPathArr(startPlaceList, center);
+		long etime = System.currentTimeMillis();
+		System.out.println("Naver api 소요시간 : "+ (etime -stime));
 		
 		JSONObject jsonObject = jsonparser.createGeoJson();
 		JSONArray arr = (JSONArray) jsonObject.get("features");

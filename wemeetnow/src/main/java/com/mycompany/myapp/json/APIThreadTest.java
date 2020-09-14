@@ -22,28 +22,24 @@ import com.mycompany.myapp.service.MapServiceImpl;
 public class APIThreadTest {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
-		/*
-		 
-		ExecutorService executor = Executors.newFixedThreadPool(5);
-		List<Future<String>> futures = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			final int index = i;
-			futures.add(executor.submit(() -> {
-				Thread.sleep(5000);
-				return Thread.currentThread().getName() + ", index=" + index + ", ended at " + new Date();
-			}));
+		int n =10;
+		List<String> list = new ArrayList<String>();
+		long startt = System.currentTimeMillis();
+		for(int i=0; i<n; i++) {
+			final int index =i;
+			//공공데이터 서비스		
+			String sx ="126.865572139231";
+			String sy ="37.5507280806214";
+			String ex ="126.996969239236";
+			String ey ="37.6107638961532"; 
+			pds(sx,sy,ex,ey,index);
+			list.add("index= "+index+ " is ended at "+new Date());
 		}
-		for (Future<String> eachFuture: futures) {
-			 String result = eachFuture.get();
-			 System.out.println("Thread result: " + result);
-		}
-		executor.shutdown();
-		 
-		  
-		 */
+		long endd = System.currentTimeMillis();
+		System.out.println(n+"번 호출 // 스레드 미적용 // 소요시간  :: "+(endd-startt));
 		
-//		String start ="126.865572139231,37.5507280806214";
-//		String goal = "126.996969239236,37.6107638961532";
+//		String start ="126.865572139231,37.5507280806214";등촌
+//		String goal = "126.996969239236,37.6107638961532";국민대
 		
 		MapServiceImpl ms = new MapServiceImpl();
 		String[] stl = {"신촌역","이대역","홍대역","등촌역","천호역"};
@@ -51,9 +47,8 @@ public class APIThreadTest {
 		ExecutorService executor = Executors.newFixedThreadPool(5);
 		List<Future<String>> futures = new ArrayList<Future<String>>();
 		long start = System.currentTimeMillis();
-		for(int i=0; i<30; i++) {
-			
-			
+		
+		for(int i=0; i<n; i++) {			
 			//카카오 api
 //			List<Place> list =ms.keywordSearch(stl[i]);
 			final int index =i;
@@ -63,43 +58,27 @@ public class APIThreadTest {
 				String sy ="37.5507280806214";
 				String ex ="126.996969239236";
 				String ey ="37.6107638961532"; 
-//				String data = pds(sx,sy,ex,ey);
+				pds(sx,sy,ex,ey,index);
 //				if(data.length()<300)
 //					data = pds(sx,sy,ex,ey);
-				return "index= "+index+ "is ended at "+new Date()+" "+pds(sx,sy,ex,ey,index).substring(0,4);
+				return "index= "+index+ "is ended at "+new Date()/*+" "+pds(sx,sy,ex,ey,index).substring(0,4)*/;
 			}));
 			
 		}
 		
 		executor.shutdown();
-		System.out.println(executor.awaitTermination(5000,TimeUnit.MILLISECONDS));
+		executor.awaitTermination(5000,TimeUnit.MILLISECONDS);
 //		for(Future<String> s : futures)
 //			s.get();
 		long end = System.currentTimeMillis();
-		System.out.println(" total  :: "+(end-start));
-		for(Future<String> each : futures) {
-			System.out.println(each.get());
-		}
-		System.out.println(executor.isShutdown());
-		if(!executor.isShutdown())
-			executor.shutdown();
-//		List<String> list = new ArrayList<String>();
-//		long start = System.currentTimeMillis();
-//		for(int i=0; i<0; i++) {
-//			final int index =i;
-//			//공공데이터 서비스		
-//			String sx ="126.865572139231";
-//			String sy ="37.5507280806214";
-//			String ex ="126.996969239236";
-//			String ey ="37.6107638961532"; 
-//			pds(sx,sy,ex,ey);
-//			list.add("index= "+index+ " is ended at "+new Date());
+		System.out.println(n+"번 호출 // 스레드 적용 // 소요시간  :: "+(end-start));
+//		for(Future<String> each : futures) {
+//			System.out.println(each.get());
 //		}
-//		long end = System.currentTimeMillis();
-//		System.out.println(" total  :: "+(end-start));
-//		for(String s : list)
-//			System.out.println(s);
-
+//		System.out.println(executor.isShutdown());
+//		if(!executor.isShutdown())
+//			executor.shutdown();
+		
 	}
 	private static final String APPKEY ="WB4qNFdvNtXIjPgY3zrN%2BtsN%2ByX3Wxjp%2BJJP%2F04WrIrs1pe1sj3y3pC2N1FTEzBM9TJM%2FGusxGrIAnep%2F0y9gA%3D%3D";
 	

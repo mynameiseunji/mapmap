@@ -75,7 +75,7 @@ public class JsonParsing {
 			JSONObject jsonOb = (JSONObject) jsonParser.parse(jsonData);
 			
 			Long result_code = (Long) jsonOb.get("code");
-			if(result_code == 0) { // 경로 검색 실패
+			if(result_code == 0) { // 경로 검색 성공
 				JSONObject ob = (JSONObject) jsonOb.get("route");
 				JSONArray docArray = (JSONArray)(ob.get("traavoidcaronly"));
 				ob = (JSONObject) docArray.get(0);

@@ -1,6 +1,7 @@
 package com.mycompany.myapp.service;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.json.simple.JSONArray;
 
@@ -38,5 +39,5 @@ public interface MapService {
 	
 	public List<RouteM> getRouteList(RouteM r);
 
-	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace);
+	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException;
 }
