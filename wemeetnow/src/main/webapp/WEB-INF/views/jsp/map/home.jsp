@@ -205,7 +205,7 @@ h1, h2, h3, h4, h5, h6 {
 	<br>
 	<hr>
 	<br>
-	<form id="form" action="sendAddr.do">
+	<form id="form" action="sendAddr2.do">
 		<div class="container-sm">
 
 			<ul class="w3-ul w3-card-4">

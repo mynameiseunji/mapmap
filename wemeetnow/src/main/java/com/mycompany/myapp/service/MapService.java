@@ -2,6 +2,8 @@ package com.mycompany.myapp.service;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
+
 import com.mycompany.myapp.model.Coordinate;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.RouteM;
@@ -35,4 +37,6 @@ public interface MapService {
 	public void createId(List<Place> list, String spl);
 	
 	public List<RouteM> getRouteList(RouteM r);
+
+	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace);
 }

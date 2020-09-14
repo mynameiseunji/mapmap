@@ -4,19 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.RouteM;
 import com.mycompany.myapp.model.RouteS;
+import com.mycompany.myapp.naver.DrivingAPI;
 import com.mycompany.myapp.service.MapService;
 
 /**
@@ -32,6 +37,42 @@ public class HomeAction {
 	@RequestMapping("test.do")
 	public String home_push(HttpSession session, HttpServletRequest request) {
 		return "map/home";
+	}
+//	@RequestMapping("navermap.do")
+//	public String test(HttpSession session, Place endplace, Model model) throws JsonProcessingException {
+////		//광화문 좌표 
+//		//37.575971, 126.976781
+//		endplace.setX("126.976781");
+//		endplace.setY("37.575971");
+//		List<Place> startPlaceList = (List<Place>)session.getAttribute("startPlaceList");
+//		List<double[]>[] pathArr= ms.getPathArr(startPlaceList, endplace);
+//		
+//		JSONObject jsonObject = jsonparser.createGeoJson();
+//		JSONArray arr = (JSONArray) jsonObject.get("features");
+//		for(List<double[]> list : pathArr) {
+//			jsonparser.addFeature(arr, list, "red");
+//		}
+//		model.addAttribute("centerPath", jsonObject.toString());
+//		
+//		
+//		return "map/navermap";
+//	}
+	
+	@RequestMapping("geoJson.do")
+	@ResponseBody
+	public String geoJson(HttpSession session, Place endplace, Model model) {
+		List<Place> startPlaceList = (List<Place>)session.getAttribute("startPlaceList");
+		long stime = System.currentTimeMillis();
+		JSONArray[] pathArr= ms.getPathArr(startPlaceList, endplace);
+		long etime = System.currentTimeMillis();
+		System.out.println("Naver api 소요시간 : "+ (etime -stime));
+		
+		JSONObject jsonObject = jsonparser.createGeoJson();
+		JSONArray arr = (JSONArray) jsonObject.get("features");
+		for(JSONArray path : pathArr) {
+			jsonparser.addFeature(arr, path, "red");
+		}
+		return jsonObject.toString();
 	}
 	
 	@RequestMapping("session_del.do")
@@ -52,8 +93,9 @@ public class HomeAction {
 		
 		return "map/home";
 	}
-	@RequestMapping("sendAddr.do")
-	public String sendAddr(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
+	
+	@RequestMapping("sendAddr2.do")
+	public String sendAddr2(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
 		
 		
 		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
@@ -63,6 +105,17 @@ public class HomeAction {
 		
 		//---------------------------------중점 좌표 get--------------------------------
 		Place center = ms.getCenter(startPlaceList);		
+		
+		// geoJson 생성 // 경로 그리기
+		JSONArray[] pathArr= ms.getPathArr(startPlaceList, center);
+		
+		JSONObject jsonObject = jsonparser.createGeoJson();
+		JSONArray arr = (JSONArray) jsonObject.get("features");
+		for(JSONArray list : pathArr) {
+			jsonparser.addFeature(arr, list, "red");
+		}
+		model.addAttribute("centerPath", jsonObject.toString());
+		
 		
 		//--------------------------------가까운 지하철역 5개 get-------------------------------
 		// category_group_code:SW8(지하철), page:1, size:15(기본값), radius:2000 으로 제한하여 요청
@@ -77,20 +130,48 @@ public class HomeAction {
 		model.addAttribute("jsonEpl", jsonEpl);
 		model.addAttribute("jsonSpl", jsonSpl);
 		
-		// 각 후보지에 대해서 소요시간 보여주기.		
-		// 공공데이터포털에서 경로 찾아오기
-		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
-		List<String> jsonPath = new ArrayList<String>();
-		endplaceList.remove(0);
-		for(int i=0; i<endplaceList.size(); i++) {
-			List<RouteS> list = ms.test(startPlaceList, endplaceList.get(i));
-			jsonPath.add(jsonparser.josonParsing(list));
-		}
-		model.addAttribute("path", jsonPath);
-		
-		return "map/foundplace";
-	}
 
+		
+		return "map/foundplace2";
+	}
+//	@RequestMapping("sendAddr.do")
+//	public String sendAddr(HttpServletRequest request, @ModelAttribute Place place, Model model) throws Exception {
+//		
+//		
+//		ArrayList<Place> startPlaceList = (ArrayList<Place>) place.getPlaces();
+//		// 세션
+//		HttpSession session = request.getSession();
+//		session.setAttribute("startPlaceList", startPlaceList);		
+//		
+//		//---------------------------------중점 좌표 get--------------------------------
+//		Place center = ms.getCenter(startPlaceList);		
+//		
+//		//--------------------------------가까운 지하철역 5개 get-------------------------------
+//		// category_group_code:SW8(지하철), page:1, size:15(기본값), radius:2000 으로 제한하여 요청
+//		String option = "x/" + center.getX() + "/y/" + center.getY() + "/page/1/radius/2000";
+//		List<Place> endplaceList = ms.categorySearch("SW8", option);
+//		
+//		endplaceList.add(0,	center);//중심 좌표 추가.	
+//		//tmap api 호출을 위해서  출발,도착지 정보를 js에서 사용해야함
+//		// js에서 사용하기 편하게  json형식으로 변환.
+//		String jsonEpl = jsonparser.josonParsing(endplaceList); // 추천지역 json 변환 08.29
+//		String jsonSpl = jsonparser.josonParsing(startPlaceList); // 출발지역 json 변환08.29
+//		model.addAttribute("jsonEpl", jsonEpl);
+//		model.addAttribute("jsonSpl", jsonSpl);
+//		
+//		// 각 후보지에 대해서 소요시간 보여주기.		
+//		// 공공데이터포털에서 경로 찾아오기
+//		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
+//		List<String> jsonPath = new ArrayList<String>();
+//		endplaceList.remove(0);
+//		for(int i=0; i<endplaceList.size(); i++) {
+//			List<RouteS> list = ms.test(startPlaceList, endplaceList.get(i));
+//			jsonPath.add(jsonparser.josonParsing(list));
+//		}
+//		model.addAttribute("path", jsonPath);
+//		
+//		return "map/foundplace";
+//	}
 	@RequestMapping("category.do")
 	public String categorySelect(Place place, Model model, HttpSession session) {
 
