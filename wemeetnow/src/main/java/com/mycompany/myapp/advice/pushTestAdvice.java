@@ -9,7 +9,7 @@ import org.aspectj.lang.JoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.mycompany.myapp.model.FriendConfirm;
+import com.mycompany.myapp.model.FriendPush;
 import com.mycompany.myapp.service.FriendService;
 
 public class pushTestAdvice {
@@ -24,7 +24,7 @@ public class pushTestAdvice {
 		if(session.getAttribute("email")==null)return;
 		
 		String email =(String)session.getAttribute("email");
-		List<FriendConfirm> invitedList = friendService.invited(email);
+		List<FriendPush> invitedList = friendService.invited(email);
         session.setAttribute("fr_push",invitedList);
 	}
 }

@@ -284,7 +284,9 @@ function frpush(inviter, status){
 	        },
 	        dataType:'text', 
 	        success: function (data){
-	        	location.reload(true);
+				//페이지 특정 부분만 리로드
+	        	$("#fr-accept").load(window.location.href + " #fr-accept");
+				//location.reload(true);
 	        }
 		});
 	}

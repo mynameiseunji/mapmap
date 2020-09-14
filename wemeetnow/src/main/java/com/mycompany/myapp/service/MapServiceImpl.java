@@ -13,7 +13,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +28,7 @@ import com.mycompany.myapp.json.JsonParsing;
 import com.mycompany.myapp.model.Place;
 import com.mycompany.myapp.model.RouteM;
 import com.mycompany.myapp.model.RouteS;
+import com.mycompany.myapp.naver.DrivingAPI;
 
 @Service
 public class MapServiceImpl implements MapService {
@@ -32,6 +39,8 @@ public class MapServiceImpl implements MapService {
 	private JsonParsing par;
 	@Autowired
 	private PublicDataService pds;
+	@Autowired
+	private DrivingAPI driving;
 
 	private final String URL_HOME = "https://dapi.kakao.com";
 	private final String URL_CATEGORY = "/v2/local/search/category.json";
@@ -149,7 +158,7 @@ public class MapServiceImpl implements MapService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		par = new JsonParsing();
 		return par.getPlaceInfo(sb.toString());
 	}
 
@@ -235,6 +244,46 @@ public class MapServiceImpl implements MapService {
 	@Override
 	public List<RouteM> getRouteList(RouteM r) {
 		return md.getRouteList(r);
+	}
+	
+	@Override
+	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException {
+//		String start ="126.865572139231,37.5507280806214";
+//		String start2 = "126.986400086711,37.5609634671841";
+//		String goal = "126.996969239236,37.6107638961532";
+//		String path = driving.getPath(start, goal);
+//		String path2 = driving.getPath(start2, goal);
+//		List<double[]> list = jsonparser.getPath(path);
+//		List<double[]> list2 = jsonparser.getPath(path2);
+		
+		JSONArray[] arr = new JSONArray[startPlaceList.size()];
+		String goal = new StringBuilder()
+				.append(endplace.getX())
+				.append(",")
+				.append(endplace.getY())
+				.toString();
+		int idx=0;
+		ExecutorService executor = Executors.newFixedThreadPool(5);
+		List<Future<String>> futures = new ArrayList<Future<String>>();
+		for( Place p : startPlaceList) {
+			String start = new StringBuilder()
+					.append(p.getX())
+					.append(",")
+					.append(p.getY())
+					.toString();
+			futures.add(executor.submit(()->{
+				return driving.getPath(start, goal);
+			}));
+			
+//			arr[idx++]= par.getPath(driving.getPath(start, goal));
+//			System.out.println(arr[idx].size());
+		}
+		executor.shutdown();
+		System.out.println(executor.awaitTermination(3000,TimeUnit.MILLISECONDS));
+		for(int i=0; i<futures.size(); i++) {
+			arr[i]=par.getPath(futures.get(i).get());
+		}
+		return arr;
 	}
 }
 

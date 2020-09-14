@@ -3,43 +3,40 @@
 
 <mapper namespace="friendns">
 		
-	
 	<!-- add friend -->
-	<insert id="add_friend" parameterType="Map">
-		insert into friend_confirm values(#{inviter}, #{invitee},0)
+	<insert id="insert_fr" parameterType="Map">
+		insert into friend values(#{inviter}, #{invitee})
+	</insert>
+	<!-- add friend -->	
+	<insert id="add_fr_push" parameterType="Map">
+		insert into friendpush values(#{inviter}, #{invitee})
 	</insert>
 	
-	<!-- check friend -->
+	<!-- check friend 20.09.02 친구 관계 확인 -->
 	<select id="check_friend" parameterType="Map" resultType="friend">
-		select * from friendship where email1=#{inviter} and email2=#{invitee}
+		select * from friend where (inviter=#{inviter} and invitee=#{invitee}) or (inviter=#{invitee} and invitee=#{inviter})
 	</select>
-	<select id="check_friendConfirm" parameterType="Map" resultType="friendconfirm">
-		select * from friend_confirm where inviter=#{inviter} and invitee=#{invitee} and status=0
+	<select id="check_friendpush" parameterType="Map" resultType="friendpush">
+		select * from friendpush where (inviter=#{inviter} and invitee=#{invitee}) or (inviter=#{invitee} and invitee=#{inviter})
 	</select>
-	<!-- friend list  -->
+	<!-- friend list  20.09.02-->
 	<select id="list" parameterType="String" resultType="friend">
-		select * from friendship where email1=#{email1}
+		select * from friend where inviter = #{email} or invitee = #{email}
 	</select>
 	
 	<!-- delete friend -->
 	<delete id="del_friend" parameterType="Map">
-		delete from friendship where email2=#{email2} and email1=#{email1}
+		delete from friend where (inviter=#{opponent} and invitee=#{my}) or (invitee=#{opponent} and inviter=#{my})
 	</delete>
-	
-	<select id="invite" parameterType="String" resultType="friendconfirm">
-		select * from friend_confirm where inviter=#{email} and status=0
+	<!-- 20.09.02 -->
+	<select id="invite" parameterType="String" resultType="friendpush">
+		select * from friendpush where inviter=#{email}
 	</select>
-	<select id="invited" parameterType="String" resultType="friendconfirm">
-		select * from friend_confirm where invitee=#{email} and status=0
+	<!-- 20.09.02 -->
+	<select id="invited" parameterType="String" resultType="friendpush">
+		select * from friendpush where invitee=#{email}
 	</select>
-	<update id="accept" parameterType="friendconfirm">
-		update friend_confirm set status=#{status}
-		where inviter=#{inviter} and invitee=#{invitee}
-	</update>
-	<select id="recommend" parameterType="String" resultType="friend">
-		select * from friendship where email2=#{email} and email1 not in (select email2 from friendship where email1=#{email})
-	</select>
-	<delete id="pushDel" parameterType="friendconfirm">
-		delete from friend_confirm where inviter=#{inviter} and invitee=#{invitee}
+	<delete id="pushDel" parameterType="friendpush">
+		delete from friendpush where inviter=#{inviter} and invitee=#{invitee}
 	</delete>
 </mapper>

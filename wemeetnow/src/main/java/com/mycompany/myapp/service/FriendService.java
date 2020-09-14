@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.mycompany.myapp.model.FriendBean;
-import com.mycompany.myapp.model.FriendConfirm;
+import com.mycompany.myapp.model.FriendPush;
 
 public interface FriendService {
 
-	int addFriend(Map m) throws Exception;
+	int push_confirm(Map m) throws Exception;
 
 	int checkFriend(Map m) throws Exception;
 
@@ -18,16 +18,18 @@ public interface FriendService {
 
 	int checkMemberEmail(String email) throws Exception;
 
-	List<FriendConfirm> invite(String email);
+	List<FriendPush> invite(String email);
 
-	List<FriendConfirm> invited(String email);
+	List<FriendPush> invited(String email);
 
-	int accept(FriendConfirm fc);
+	int accept(FriendPush fc);
 
 	int checkFriendConfirm(Map m) throws Exception;
 
 	List<FriendBean> recommend(String email);
 
-	int reject(FriendConfirm fc);
+	int del(FriendPush fc);
+
+	int accept(Map<String, String> m);
 
 }

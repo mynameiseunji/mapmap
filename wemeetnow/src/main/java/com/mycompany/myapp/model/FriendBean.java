@@ -1,32 +1,28 @@
 package com.mycompany.myapp.model;
 
 public class FriendBean {
-	private int fno;
+	private String inviter;
+	private String invitee;
+	
 
-	public int getFno() {
-		return fno;
+	public String getInviter() {
+		return inviter;
 	}
 
-	public void setFno(int fno) {
-		this.fno = fno;
+
+	public void setInviter(String inviter) {
+		this.inviter = inviter;
 	}
 
-	private String email1;
-	private String email2;
 
-	public String getEmail1() {
-		return email1;
+	public String getInvitee() {
+		return invitee;
 	}
 
-	public void setEmail1(String email1) {
-		this.email1 = email1;
+
+	public void setInvitee(String invitee) {
+		this.invitee = invitee;
 	}
 
-	public String getEmail2() {
-		return email2;
-	}
 
-	public void setEmail2(String email2) {
-		this.email2 = email2;
-	}
 }

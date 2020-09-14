@@ -64,7 +64,7 @@ h1, h2, h3, h4, h5, h6 {
 					<a href="member_join.do" class="w3-bar-item w3-button">회원가입</a>
 				</c:if>
 				<c:if test="${not empty email}">
-					<div class="w3-dropdown-hover">
+					<div class="w3-dropdown-hover" id="fr-accept">
 						<c:if test="${fn:length(fr_push) > 0}">
 							<button id="fr_request" class="w3-button">친구요청&ensp;<span class="badge badge-light">${fn:length(fr_push)}</span></button>
 							<div class="w3-dropdown-content w3-bar-block w3-card-4">
@@ -205,7 +205,7 @@ h1, h2, h3, h4, h5, h6 {
 	<br>
 	<hr>
 	<br>
-	<form id="form" action="sendAddr.do">
+	<form id="form" action="sendAddr2.do">
 		<div class="container-sm">
 
 			<ul class="w3-ul w3-card-4">
