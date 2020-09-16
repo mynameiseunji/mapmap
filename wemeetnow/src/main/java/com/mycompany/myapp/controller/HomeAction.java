@@ -75,6 +75,19 @@ public class HomeAction {
 		}
 		return jsonObject.toString();
 	}
+	@RequestMapping("publicDataService.do")
+	@ResponseBody
+	public String publicDataService(HttpSession session, Place endplace, Model model) throws InterruptedException, ExecutionException, JsonProcessingException {
+		List<Place> startPlaceList = (List<Place>)session.getAttribute("startPlaceList");
+		long stime = System.currentTimeMillis();
+		// 각 후보지에 대해서 소요시간 보여주기.		
+		// 공공데이터포털에서 경로 찾아오기
+		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
+		List<RouteS> jsonPath = ms.test(startPlaceList, endplace);
+		long etime = System.currentTimeMillis();
+		System.out.println("공공데이터 서비스 소요시간 : "+ (etime -stime));
+		return jsonparser.josonParsing(jsonPath);
+	}
 	
 	@RequestMapping("session_del.do")
 	public String testtest(HttpServletRequest request, Place place, Model model) {
@@ -135,6 +148,11 @@ public class HomeAction {
 		model.addAttribute("jsonSpl", jsonSpl);
 		
 
+//		// 각 후보지에 대해서 소요시간 보여주기.		
+//		// 공공데이터포털에서 경로 찾아오기
+//		// 필요한 정보 : 출발지 정보, 도착 후보지 정보
+//		List<RouteS> jsonPath = ms.test(startPlaceList, center);
+//		model.addAttribute("path", jsonparser.josonParsing(jsonPath));
 		
 		return "map/foundplace2";
 	}
@@ -212,7 +230,7 @@ public class HomeAction {
 		return "map/category";
 	}
 	@RequestMapping("route.do")
-	public String route(String status, HttpSession session, Place place, RouteM rm, Model model) throws JsonProcessingException {
+	public String route(String status, HttpSession session, Place place, RouteM rm, Model model) throws JsonProcessingException, InterruptedException {
 		//지하철,버스,
 		//경로 db에 저장된 정보 있는지 체크.
 		RouteM r = ms.routeSearch(rm.getId());
@@ -230,7 +248,7 @@ public class HomeAction {
 			r = ms.routeSearch(rm.getId());
 			
 		}
-		List<RouteM> routeList = ms.getRouteList(r);
+		List<RouteS> routeList = ms.getRouteList(r);
 		model.addAttribute("routelist", routeList);
 		model.addAttribute("endPlace",r);
 		model.addAttribute("end",jsonparser.josonParsing(r));

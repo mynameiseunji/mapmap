@@ -194,21 +194,29 @@ public class MapServiceImpl implements MapService {
 	}
 	
 	@Override
-	public List<RouteS> test(List<Place> startList, Place end) {
+	public List<RouteS> test(List<Place> startList, Place end) throws InterruptedException {
 		List<RouteS> list = new ArrayList<RouteS>();
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 		for(Place p : startList) {
 			RouteS rs = new RouteS();
 			rs.setDeparture(p.getAddress());
-			pds.getPath(p, end, "Bus", rs);
-			pds.getPath(p, end, "BusNSub", rs);
+			//pds.getPath(p, end, "Bus", rs);
+			rs.setBus_time("NONE");
+			rs.setBus_route("NONE");
 			list.add(rs);
+			executor.submit(()->{
+				pds.getPath(p, end, "BusNSub", rs);
+			});
+			
 		}
+		executor.shutdown();
+		executor.awaitTermination(3000,TimeUnit.MILLISECONDS);
 		return list;
 	}
 	
 	//마지막 페이지에 필요한 정보(출발지, 경로1, 경로2, 시간1, 시간2)
 	@Override
-	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm){		
+	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm) throws InterruptedException{		
 		
 		rm.setNum(startPlaceList.size());
 		md.insertRouteM(rm);
@@ -242,7 +250,7 @@ public class MapServiceImpl implements MapService {
 		}
 	}
 	@Override
-	public List<RouteM> getRouteList(RouteM r) {
+	public List<RouteS> getRouteList(RouteM r) {
 		return md.getRouteList(r);
 	}
 	
@@ -279,9 +287,9 @@ public class MapServiceImpl implements MapService {
 //			System.out.println(arr[idx].size());
 		}
 		executor.shutdown();
-		System.out.println(executor.awaitTermination(3000,TimeUnit.MILLISECONDS));
+		executor.awaitTermination(3000,TimeUnit.MILLISECONDS);
 		for(int i=0; i<futures.size(); i++) {
-			arr[i]=par.getPath(futures.get(i).get());
+			arr[i]=par.getPath(futures.get(i).get(), endplace);
 		}
 		return arr;
 	}

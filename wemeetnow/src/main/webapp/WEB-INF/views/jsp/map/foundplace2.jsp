@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주소 받기 테스트</title>
+<title>추천 후보지를 보여드립니다.</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -166,9 +166,11 @@ h1, h2, h3, h4, h5, h6 {
 	
 	function tab_click(k){
 		//현재 함수 실행 될때 발생되는 이벤트 리스트 적어놓기.
+		var headd = '';
+		var bodyy ='';
 		
 		//이미 호출한적 있는지 확인.
-  	  var hasData = $('#menu'+k).html()=="";
+  	  var hasData = $('#menu'+k+'_head').html()=="";
   	  alert(hasData);
   	  if(hasData){
 		 $.ajax({
@@ -179,12 +181,14 @@ h1, h2, h3, h4, h5, h6 {
 			    },
 			    dataType:'json', 
 			    success: function(data){
+			    	//경로 그릴 좌표 배열 데이터 : data
 			    	test(data, k);
 			    	
 			    	arrGeojson[k]=data;
 			    	
-			    	var str = '<h1>'+epl[k].name+'</h1>';
-			        $('#menu'+k).html(str);
+			    	headd ='<h1>'+epl[k].name+'</h1>';
+			    	document.getElementById('menu'+k+'_head').innerHTML = headd;
+			    	//console.log(headd);
 			        var posi = new naver.maps.LatLng(epl[k].y, epl[k].x);
 			        map.setCenter(posi);
 			        destination_marker.setPosition(posi);
@@ -193,8 +197,34 @@ h1, h2, h3, h4, h5, h6 {
 				  alert("data error"+e);
 				}
 			}); 
+		 $.ajax({
+			    url:"publicDataService.do",
+			    data :{
+			    	"x":epl[k].x,
+			    	"y":epl[k].y
+			    },
+			    dataType:'json', 
+			    success: function(data){
+			    	//경로 그릴 좌표 배열 데이터 : data
+			    	for(var i=0; i<data.length; i++){
+			    		bodyy += '<p>'+(i+1)+'번 소요시간:'+data[i].complex_time+'분</p>';	
+			    		
+			    	}
+			    	document.getElementById("menu"+k+"_body").innerHTML = bodyy;
+			    },
+				error:function(e){
+				  alert("data error"+e);
+				}
+			});
+		  //.innerHTML = headd+bodyy;
+		  //console.log(headd+bodyy);
   	  }else{
-  		  test(arrGeojson[k],k);
+		test(arrGeojson[k],k);
+		
+		//중심 옮기기
+	  	var posi = new naver.maps.LatLng(epl[k].y, epl[k].x);
+        map.setCenter(posi);
+        destination_marker.setPosition(posi);
   	  }
 	}
 	
@@ -232,7 +262,7 @@ h1, h2, h3, h4, h5, h6 {
       // .tab-content 자손태그로 추가(반복)
       for(var i=1; i<epl.length; i++){
          
-         var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'"></div>';/* +
+         var posi_li_fade = '<div class="tab-pane container fade" id="menu'+i+'"><h1 id="menu'+i+'_head"></h1><div id="menu'+i+'_body"></div></div>';/* +
                      '<h1>'+epl[i].name+'</h1>'+
                      times[i-1]+'</p><span data-x="'
                      +epl[i].x+'" data-y="'+epl[i].y+'"></span>';
