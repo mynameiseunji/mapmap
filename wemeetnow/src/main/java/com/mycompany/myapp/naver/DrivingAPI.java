@@ -25,7 +25,6 @@ public class DrivingAPI {
 		StringBuilder sb = null;
 		try {
 			
-			// 주소 확인용 디버깅 코드
 			String final_request_url = new StringBuffer()
 					.append(URL).append("?")
 					.append("start=").append(start).append("&")
@@ -49,7 +48,7 @@ public class DrivingAPI {
 			} else if (responseCode == 401) {
 				System.out.println("401:: Wrong X-Auth-Token Header");
 			} else if (responseCode == 500) {
-				System.out.println("500:: kakao server error");
+				System.out.println("500::server error");
 			} else { // 성공 후 응답 JSON 데이터받기
 				sb = new StringBuilder();
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
@@ -66,7 +65,6 @@ public class DrivingAPI {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//		System.out.println(sb.toString());
 		return sb.toString();
 	}
 }

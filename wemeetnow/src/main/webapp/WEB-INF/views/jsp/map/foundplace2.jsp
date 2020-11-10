@@ -164,6 +164,9 @@ h1, h2, h3, h4, h5, h6 {
 
 	var arrGeojson = []; // 경로 그려줄 geoJson 데이터 배열 // ajax 통해  서버로부터 받아옴.
 	
+	
+	<!-- 경로 polyline 그려줄  경로 배열 ajax 호출-->
+	<!-- naver driving api-->
 	function tab_click(k){
 		//현재 함수 실행 될때 발생되는 이벤트 리스트 적어놓기.
 		var headd = '';

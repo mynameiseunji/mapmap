@@ -29,7 +29,7 @@ public interface MapService {
 	
 	public void getFinalPath(RouteS rs,Place startPlace, Place endPlace, String transport);
 
-	public List<RouteS> test(List<Place> startList, Place end) throws InterruptedException;
+	public List<RouteS> getPublicDataPath(List<Place> startList, Place end) throws InterruptedException;
 	
 	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm) throws InterruptedException;
 	
@@ -39,5 +39,5 @@ public interface MapService {
 	
 	public List<RouteS> getRouteList(RouteM r);
 
-	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException;
+	public JSONArray[] getPolyPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException;
 }

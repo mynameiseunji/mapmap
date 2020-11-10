@@ -68,7 +68,7 @@ public class JsonParsing {
 	
 	
 	//==============================
-	public JSONArray getPath(String jsonData, Place endplace) {
+	public JSONArray polyPathParsing(String jsonData, Place endplace) {
 		JSONArray pathArray = new JSONArray();
 		double goalx = Double.parseDouble(endplace.getX());
 		double goaly = Double.parseDouble(endplace.getY());
@@ -81,6 +81,7 @@ public class JsonParsing {
 				JSONObject ob = (JSONObject) jsonOb.get("route");
 				JSONArray docArray = (JSONArray)(ob.get("traavoidcaronly"));
 				ob = (JSONObject) docArray.get(0);
+				//경로 데이터 
 				pathArray = (JSONArray) ob.get("path");
 			}
 			
@@ -102,8 +103,9 @@ public class JsonParsing {
 						break;
 					}
 				}
-				//System.out.println(dis);
 			}
+			
+			//idx 이후 데이터 제거
 			while(pathArray.size()>idx) {
 				pathArray.remove(idx);
 			};
