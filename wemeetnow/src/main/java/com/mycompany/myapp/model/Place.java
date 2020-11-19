@@ -11,7 +11,9 @@ public class Place implements Serializable{
 	private String phone;
 	private String place_url;
 	
+	//route.jsp에서 각 도착지에 대해 id 부여
 	private String id;
+	
 	//출발지 주소 받아올때 controller에서 
 	//리스트로 매핑받기 위해 필요함
 	private List<Place> places;

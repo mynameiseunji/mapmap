@@ -138,19 +138,19 @@ public class HomeAction {
 			sb.append(p.getAddress());
 		// CT1 문화시설
 		List<Place> ct1placeList = ms.categorySearch("CT1", option);
-		ms.createId(ct1placeList, sb.toString());
+		ms.createId(ct1placeList, sb.toString());//각 도착지에 대해 id부여
 		model.addAttribute("ct1placeList", ct1placeList);
 		// FD6 음식점
 		List<Place> fd6placeList = ms.categorySearch("FD6", option);
-		ms.createId(fd6placeList, sb.toString());
+		ms.createId(fd6placeList, sb.toString());//각 도착지에 대해 id부여
 		model.addAttribute("fd6placeList", fd6placeList);
 		// CE7 카페
 		List<Place> ce7placeList = ms.categorySearch("CE7", option);
-		ms.createId(ce7placeList, sb.toString());
+		ms.createId(ce7placeList, sb.toString());//각 도착지에 대해 id부여
 		model.addAttribute("ce7placeList", ce7placeList);
 		// AT4 관광명소
 		List<Place> at4placeList = ms.categorySearch("AT4", option);
-		ms.createId(at4placeList, sb.toString());
+		ms.createId(at4placeList, sb.toString());//각 도착지에 대해 id부여
 		model.addAttribute("at4placeList", at4placeList);
 		//------------------------------------------------------------
 		

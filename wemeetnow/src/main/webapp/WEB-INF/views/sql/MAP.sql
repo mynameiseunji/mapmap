@@ -20,6 +20,9 @@ bus_time varchar2(10),
 complex_time varchar2(10),
 constraint routes_pk primary key(rno)
 );
+
+create sequence route_slave_seq increment by 1 start with 1 nocache;
+
 select * from route;
 
 
