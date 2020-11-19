@@ -14,6 +14,6 @@ public interface MapDAO {
 
 	public int insertRouteS(RouteS rs);
 
-	public List<RouteM> getRouteList(RouteM r);
+	public List<RouteS> getRouteList(RouteM r);
 
 }

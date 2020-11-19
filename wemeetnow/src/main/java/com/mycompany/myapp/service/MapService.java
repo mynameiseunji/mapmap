@@ -29,15 +29,15 @@ public interface MapService {
 	
 	public void getFinalPath(RouteS rs,Place startPlace, Place endPlace, String transport);
 
-	public List<RouteS> test(List<Place> startList, Place end);
+	public List<RouteS> getPublicDataPath(List<Place> startList, Place end) throws InterruptedException;
 	
-	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm);
+	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm) throws InterruptedException;
 	
 	public RouteM routeSearch(String id);
 
 	public void createId(List<Place> list, String spl);
 	
-	public List<RouteM> getRouteList(RouteM r);
+	public List<RouteS> getRouteList(RouteM r);
 
-	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException;
+	public JSONArray[] getPolyPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException;
 }

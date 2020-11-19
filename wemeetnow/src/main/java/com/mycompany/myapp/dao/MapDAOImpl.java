@@ -32,7 +32,7 @@ public class MapDAOImpl implements MapDAO{
 		return sqlSession.insert("mapns.insertRs", rs);
 	}
 	@Override
-	public List<RouteM> getRouteList(RouteM r) {
+	public List<RouteS> getRouteList(RouteM r) {
 		return sqlSession.selectList("mapns.routeList", r);
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.myapp.model.Place;
+import com.mycompany.myapp.service.Distance;
 
 @Service
 public class JsonParsing {
@@ -67,9 +68,10 @@ public class JsonParsing {
 	
 	
 	//==============================
-	public JSONArray getPath(String jsonData) {
+	public JSONArray polyPathParsing(String jsonData, Place endplace) {
 		JSONArray pathArray = new JSONArray();
-		
+		double goalx = Double.parseDouble(endplace.getX());
+		double goaly = Double.parseDouble(endplace.getY());
 		try {
 			JSONParser jsonParser = new JSONParser();
 			JSONObject jsonOb = (JSONObject) jsonParser.parse(jsonData);
@@ -79,8 +81,35 @@ public class JsonParsing {
 				JSONObject ob = (JSONObject) jsonOb.get("route");
 				JSONArray docArray = (JSONArray)(ob.get("traavoidcaronly"));
 				ob = (JSONObject) docArray.get(0);
+				//경로 데이터 
 				pathArray = (JSONArray) ob.get("path");
 			}
+			
+			//code 37 ::목적지 근처에서 유턴 경로 제거
+			double now =100;
+			int idx =pathArray.size();
+			for(int i=pathArray.size()/2; i<pathArray.size(); i++) {
+				JSONArray jarr1 = (JSONArray) pathArray.get(i-1);
+				JSONArray jarr2 = (JSONArray) pathArray.get(i);
+				double dis = new Distance().pointToLineDistance(
+						(double)jarr1.get(0), (double)jarr1.get(1), 
+						(double)jarr2.get(0), (double)jarr2.get(1), 
+						goalx, goaly);
+				if(dis<80.0) {
+					if(now>dis) {
+						now = dis;
+						idx = i;
+					}else {
+						break;
+					}
+				}
+			}
+			
+			//idx 이후 데이터 제거
+			while(pathArray.size()>idx) {
+				pathArray.remove(idx);
+			};
+			// code 37 end------------------------------------------------
 			
 //			1	-	출발지와 도착지가 동일
 //			2	-	출발지 또는 도착지가 도로 주변이 아닌 경우

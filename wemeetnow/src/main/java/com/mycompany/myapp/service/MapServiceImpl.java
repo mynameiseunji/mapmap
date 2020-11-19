@@ -194,25 +194,33 @@ public class MapServiceImpl implements MapService {
 	}
 	
 	@Override
-	public List<RouteS> test(List<Place> startList, Place end) {
+	public List<RouteS> getPublicDataPath(List<Place> startList, Place end) throws InterruptedException {
 		List<RouteS> list = new ArrayList<RouteS>();
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 		for(Place p : startList) {
 			RouteS rs = new RouteS();
 			rs.setDeparture(p.getAddress());
-			pds.getPath(p, end, "Bus", rs);
-			pds.getPath(p, end, "BusNSub", rs);
+			//pds.getPath(p, end, "Bus", rs);
+			rs.setBus_time("NONE");
+			rs.setBus_route("NONE");
 			list.add(rs);
+			executor.submit(()->{
+				pds.getPath(p, end, "BusNSub", rs);
+			});
+			
 		}
+		executor.shutdown();
+		executor.awaitTermination(3000,TimeUnit.MILLISECONDS);
 		return list;
 	}
 	
 	//마지막 페이지에 필요한 정보(출발지, 경로1, 경로2, 시간1, 시간2)
 	@Override
-	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm){		
+	public int finalDBSetting(List<Place> startPlaceList, Place endPlace, RouteM rm) throws InterruptedException{		
 		
 		rm.setNum(startPlaceList.size());
 		md.insertRouteM(rm);
-		List<RouteS> list = test(startPlaceList, endPlace);
+		List<RouteS> list = getPublicDataPath(startPlaceList, endPlace);
 		for(RouteS rs : list) {
 			rs.setId(rm.getId());
 			md.insertRouteS(rs);
@@ -242,27 +250,25 @@ public class MapServiceImpl implements MapService {
 		}
 	}
 	@Override
-	public List<RouteM> getRouteList(RouteM r) {
+	public List<RouteS> getRouteList(RouteM r) {
 		return md.getRouteList(r);
 	}
 	
 	@Override
-	public JSONArray[] getPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException {
-//		String start ="126.865572139231,37.5507280806214";
-//		String start2 = "126.986400086711,37.5609634671841";
-//		String goal = "126.996969239236,37.6107638961532";
-//		String path = driving.getPath(start, goal);
-//		String path2 = driving.getPath(start2, goal);
-//		List<double[]> list = jsonparser.getPath(path);
-//		List<double[]> list2 = jsonparser.getPath(path2);
+	public JSONArray[] getPolyPathArr(List<Place> startPlaceList, Place endplace) throws InterruptedException, ExecutionException {
 		
+		//각 출발지에서 도착 후보지까지의 경로 데이터
 		JSONArray[] arr = new JSONArray[startPlaceList.size()];
+		
 		String goal = new StringBuilder()
 				.append(endplace.getX())
 				.append(",")
 				.append(endplace.getY())
 				.toString();
+		
 		int idx=0;
+		
+		//전체 호출 시간 감소를 위한 멀티스레드
 		ExecutorService executor = Executors.newFixedThreadPool(5);
 		List<Future<String>> futures = new ArrayList<Future<String>>();
 		for( Place p : startPlaceList) {
@@ -272,16 +278,18 @@ public class MapServiceImpl implements MapService {
 					.append(p.getY())
 					.toString();
 			futures.add(executor.submit(()->{
+				//
 				return driving.getPath(start, goal);
 			}));
-			
-//			arr[idx++]= par.getPath(driving.getPath(start, goal));
-//			System.out.println(arr[idx].size());
 		}
+		
 		executor.shutdown();
-		System.out.println(executor.awaitTermination(3000,TimeUnit.MILLISECONDS));
+		executor.awaitTermination(3000,TimeUnit.MILLISECONDS);
 		for(int i=0; i<futures.size(); i++) {
-			arr[i]=par.getPath(futures.get(i).get());
+			
+			// json 전체 데이터에서 필요한 경로 배열만 추출
+			// 목적지 근처의 유턴 경로는 제거
+			arr[i]=par.polyPathParsing(futures.get(i).get(), endplace);
 		}
 		return arr;
 	}
